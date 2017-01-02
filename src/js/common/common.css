@@ -8,12 +8,3 @@
     content: ' ';
     clear: both;
 }
-
-.spinnerWrap {
-    height: 50px;
-    display: flex;
-    -webkit-align-items: center;
-    align-items: center;
-    -webkit-justify-content: center;
-    justify-content: center;
-}

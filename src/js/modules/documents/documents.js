@@ -1,10 +1,10 @@
 import React from 'react';
 import axios from 'axios';
-import Spinner from 'react-spinkit';
 
 import TagSelector from '../../components/tag.selector/component';
 import DocumentForm from '../../components/document.form/component';
 import Document from '../../components/document.list.row/component';
+import Spinner from '../../components/spinner/component';
 
 import columns from '../../common/columns.css';
 import commonCss from '../../common/common.css';
@@ -20,7 +20,8 @@ class Documents extends React.Component {
             documents: [],
             loadingDocuments: false,
             tags: [],
-            loadingTags: false
+            loadingTags: false,
+            user: null
         };
 
         this.onSelectedTagChanged = this.onSelectedTagChanged.bind(this);
@@ -30,22 +31,23 @@ class Documents extends React.Component {
     componentWillMount() {
         this.reloadTags();
         this.loadDocuments();
+        this.props.userModule.getCurrentUser()
+            .then((user) => {
+                this.setState({
+                    user: user
+                });
+            });
     }
 
     onSelectedTagChanged(tag) {
         let selectedTag = tag !== this.state.selectedTag ? tag : null;
 
         this.setState({
-            selectedTag: selectedTag
+            selectedTag: selectedTag,
+            lastDocumentId: null
+        }, () => {
+            this.loadDocuments();
         });
-
-        let tagId = null;
-
-        if (selectedTag) {
-            tagId = selectedTag._id;
-        }
-
-        this.loadDocuments(tagId);
     }
 
     onDocumentSubmitted(title, markdown, tags) {
@@ -54,25 +56,35 @@ class Documents extends React.Component {
 
         return documentModule.addDocument(title, markdown, tags)
             .then(function(documents) {
+                self.setState({
+                    selectedTag: null,
+                    lastDocumentId: null
+                });
+
                 self.loadDocuments();
                 self.reloadTags();
             });
     }
 
-    loadDocuments(tag) {
+    loadDocuments() {
         let self = this;
         const documentModule = this.props.documentModule;
-        let id = null;
-
-        if (tag) {
-            id = tag._id;
-        }
 
         this.setState({
             loadingDocuments: true
         });
 
-        return documentModule.getDocuments(id)
+        let id = (() => {
+            const selectedTag = this.state.selectedTag;
+
+            if (selectedTag) {
+                return selectedTag._id;
+            } else {
+                return null;
+            }
+        })();
+
+        return documentModule.getDocuments(id, this.state.lastDocumentId)
             .then(function(documents) {
                 self.setState({
                     documents: documents,
@@ -102,9 +114,7 @@ class Documents extends React.Component {
         let tags = (() => {
             if (this.state.loadingTags) {
                 return (
-                    <div className={commonCss.spinnerWrap}>
-                        <Spinner spinnerName="cube-grid" noFadeIn />
-                    </div>
+                    <Spinner style={{ margin: '10px 0' }} />
                 );
             } else {
                 return (
@@ -119,9 +129,7 @@ class Documents extends React.Component {
         let documents = (() => {
             if (this.state.loadingDocuments) {
                 return (
-                    <div className={commonCss.spinnerWrap}>
-                        <Spinner spinnerName="cube-grid" noFadeIn />
-                    </div>
+                    <Spinner style={{ margin: '10px 0' }} />
                 );
             } else {
                 return this.state.documents.map((document) => {
@@ -141,8 +149,9 @@ class Documents extends React.Component {
                 </div>
                 <div className={columns.col9 + ' ' + columns.right}>
                     <div className={css.documents}>
-                        <DocumentForm 
+                        <DocumentForm
                             tags={this.state.tags}
+                            user={this.state.user}
                             onDocumentSubmitted={this.onDocumentSubmitted}/>
                         {documents}
                     </div>

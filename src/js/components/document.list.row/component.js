@@ -1,6 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 
+import Settings from '../../settings.js';
 import css from './style.css';
 
 class DocumentListRowComponent extends React.Component {
@@ -23,7 +24,9 @@ class DocumentListRowComponent extends React.Component {
         return (
             <div
                 className={css.documentWrap}>
-                <div className={css.profileImage} />
+                <div className={css.profileImage}>
+                    <img src={`${Settings.host}/user/picture/${this.props.document.author._id}`} />
+                </div>
                 <div className={css.document}>
                     <header className={css.header}>
                         <div className={css.title}>

@@ -1,6 +1,8 @@
 import React from 'react';
 import Hangul from 'hangul-js';
 
+import TagItem from '../tag.input.item/component';
+
 import css from './style.css';
 
 class TagInputComponent extends React.Component {
@@ -17,6 +19,7 @@ class TagInputComponent extends React.Component {
         this.onInputKeyDown = this.onInputKeyDown.bind(this);
         this.onBlur = this.onBlur.bind(this);
         this.onAutoCompleteClick = this.onAutoCompleteClick.bind(this);
+        this.onTagUpdated = this.onTagUpdated.bind(this);
         this.onTagRemoved = this.onTagRemoved.bind(this);
     }
 
@@ -85,13 +88,16 @@ class TagInputComponent extends React.Component {
     }
 
     onAutoCompleteClick(tagTitle) {
-        console.log(tagTitle);
         this.props.onTagAdded(tagTitle);
 
         this.setState({
             query: '',
             suggestions: []
         });
+    }
+
+    onTagUpdated(oldTag, newTagTitle, newTagColor) {
+        this.props.onTagUpdated(oldTag, newTagTitle, newTagColor);
     }
 
     onTagRemoved(tag) {
@@ -125,14 +131,11 @@ class TagInputComponent extends React.Component {
 
         let tags = this.props.tags.map((tag) => {
             return (
-                <span 
+                <TagItem
                     key={tag.title}
-                    style={{ backgroundColor: tag.color }}
-                    onClick={this.onTagRemoved.bind(this, tag)}
-                    className={css.tagItem}>
-                    {tag.title}
-                    <span className={css.removeBtn}>&times;</span>
-                </span>
+                    tag={tag}
+                    onTagUpdated={this.onTagUpdated}
+                    onTagRemoved={this.onTagRemoved} />
             );
         });
 

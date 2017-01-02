@@ -5,29 +5,6 @@
     line-height: 36px;
 }
 
-.tagItem {
-    position: relative;
-    margin-right: 5px;
-    padding: 0 20px 0 5px;
-    display: inline-block;
-    height: 30px;
-    line-height: 30px;
-    color: #fff;
-    border-radius: 3px;
-}
-
-.removeBtn {
-    position: absolute;
-    top: 0;
-    right: 0;
-    display: inline-block;
-    height: 30px;
-    width: 20px;
-    line-height: 30px;
-    text-align: center;
-    cursor: pointer;
-}
-
 .inputWrap {
     position: relative;
     display: inline-block;

@@ -1,5 +1,8 @@
 import React from 'react';
 
+import Spinner from '../../components/spinner/component';
+
+import Settings from '../../settings.js';
 import css from './style.css';
 
 class UserInfo extends React.Component {
@@ -7,29 +10,49 @@ class UserInfo extends React.Component {
         super(props);
 
         this.state = {
-            username: ''
+            id: null,
+            username: null,
+            loading: false
         };
     }
 
     componentWillMount() {
         let self = this;
 
-        this.props.loginModule
+        this.setState({
+            loading: true
+        });
+
+        this.props.userModule
             .getCurrentUser()
             .then(function(user) {
                 self.setState({
-                    username: user.username 
+                    id: user._id,
+                    username: user.username,
+                    loading: false
                 });
             });
     }
 
     render() {
+        let username = (() => {
+            if (this.state.loading) {
+                return (
+                    <Spinner style={{ height: '50px' }} innerStyle={{ width: '20px', height: '20px' }} />
+                );
+            } else {
+                return (
+                    <div className={css.userInfo}>
+                        <img 
+                            src={`${Settings.host}/user/picture/${this.state.id}`} 
+                            className={css.image}/>
+                        {this.state.username}
+                    </div>
+                );
+            }
+        })();
 
-        return (
-            <div className={css.userInfo}>
-                {this.state.username}
-            </div>
-        );
+        return username;
     }
 }
 

@@ -1,6 +1,6 @@
 .profileImage {
     display: inline-block;
-    background: rgb(98, 108, 120);
+    background: #ccc;
     width: 40px;
     height: 40px;
     border-radius: 3px;

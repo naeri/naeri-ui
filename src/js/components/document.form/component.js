@@ -27,13 +27,12 @@ class DocumentFormComponent extends React.Component {
         this.onWriteModeChanged = this.onWriteModeChanged.bind(this);
         this.onPreviewModeChanged = this.onPreviewModeChanged.bind(this);
         this.onTagAdded = this.onTagAdded.bind(this);
+        this.onTagUpdated = this.onTagUpdated.bind(this);
         this.onTagRemoved = this.onTagRemoved.bind(this);
         this.onScreenToggle = this.onScreenToggle.bind(this);
     }
 
     onFormSubmitted(event) {
-        event.preventDefault();
-
         if (this.setState.submitting) {
             return;
         }
@@ -57,7 +56,6 @@ class DocumentFormComponent extends React.Component {
                 });
                 this.form.reset();
             }).catch(function(error) {
-                console.dir(error);
                 self.setState({
                     submitting: false
                 });
@@ -117,6 +115,25 @@ class DocumentFormComponent extends React.Component {
         this.setState({ tags: tags });
     }
 
+    onTagUpdated(oldTag, newTagTitle, newTagColor) {
+        let tags = this.state.tags;
+
+        tags = tags.map((tag) => {
+            if (tag.title === oldTag.title) {
+                return {
+                    title: newTagTitle,
+                    color: newTagColor
+                };
+            } else {
+                return tag;
+            }
+        });
+
+        this.setState({
+            tags: tags
+        });
+    }
+
     onTagRemoved(removedTag) {
         let tags = this.state.tags;
         tags = tags.filter((tag) => {
@@ -170,10 +187,21 @@ class DocumentFormComponent extends React.Component {
             );
         }
 
+        let profileImage = (() => {
+            if (this.props.user) {
+                return (
+                    <img 
+                        src={`${Settings.host}/user/picture/${this.props.user._id}`}
+                        className={css.image} />
+                );
+            } else {
+                return null;
+            }
+        })();
+
         return (
-            <form
+            <div
                 className={this.state.fullScreen ? css.fullScreenForm : css.form}
-                onSubmit={this.onFormSubmitted}
                 ref={(form) => { this.form = form }}>
                 <div className={css.wrap}>
                     <nav className={css.tabs}>
@@ -196,7 +224,9 @@ class DocumentFormComponent extends React.Component {
                         </nav>
                     </nav>
                     <div className={css.write}>
-                        <div className={css.profileImage}></div>
+                        <div className={css.profileImage}>
+                            {profileImage}
+                        </div>
                         {displayPage}
                     </div>
                     <div className={css.bottom}>
@@ -204,17 +234,18 @@ class DocumentFormComponent extends React.Component {
                             tags={this.state.tags}
                             suggestions={this.props.tags}
                             onTagAdded={this.onTagAdded}
+                            onTagUpdated={this.onTagUpdated}
                             onTagRemoved={this.onTagRemoved}
                             key={this.state.timestamp}
                             />
                         <input
                             className={ this.state.submitting ? css.submittingBtn : css.submitBtn } 
                             type="submit"
-                            value={ this.state.submitting ? '게시 중..' : '게시' } />
+                            value={ this.state.submitting ? '게시 중..' : '게시' } 
+                            onClick={this.onFormSubmitted}/>
                     </div>
                 </div>
-                
-            </form>
+            </div>
         )
     }
 }

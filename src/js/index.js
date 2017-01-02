@@ -43,8 +43,8 @@ render((
             <Route component={Layout} onEnter={requireAuth}>
                 <IndexRoute components={{ 
                     header: DocumentSearch,
-                    headerRight: () => { return <UserInfo loginModule={userModule} /> },
-                    content: () => { return <Documents tagModule={tagModule} documentModule={documentModule} /> }
+                    headerRight: () => { return <UserInfo userModule={userModule} /> },
+                    content: () => { return <Documents userModule={userModule} tagModule={tagModule} documentModule={documentModule} /> }
                 }} />
             </Route>
             <Route onEnter={requireNotAuth}>

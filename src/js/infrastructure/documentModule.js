@@ -3,22 +3,15 @@ import axios from 'axios';
 import Settings from '../settings.js';
 
 class DocumentModule {
-    constructor() {
-        this.reset();
-    }
-
-    reset() {
-        this.lastDocumentId = null;
-        this.lastTagId = null;
-    }
-
-    getDocuments(tagId) {
-        let self = this;
-        let lastDocumentId = null;
-
+    getHasMoreDocuments(tagId) {
         if (this.lastTagId === tagId) {
-            lastDocumentId = this.lastDocumentId;
+            return this.hasMoreDocuments;
         }
+        return true;
+    }
+
+    getDocuments(tagId, lastDocumentId) {
+        let self = this;
 
         return axios.post(`${Settings.host}/document/search`, {
             tag: tagId,
