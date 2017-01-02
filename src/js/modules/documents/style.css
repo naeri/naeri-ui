@@ -1,0 +1,88 @@
+.searchForm {
+    display: inline-block;
+    position: relative;
+    line-height: 0;
+    padding: 5px;
+    background-color: #eee;
+    border: 2px solid transparent;
+    border-radius: 5px;
+    transition: background .2s, border .2s;
+}
+
+.icon {
+    position: absolute;
+    color: #666;
+    top: 6px;
+    left: 8px;
+    font-size: 16px;
+    transition: color .2s;
+}
+
+.input {
+    border: none;
+    outline: none;
+    font-size: 16px;
+    text-align: center;
+    margin: 0 20px;
+    width: 250px;
+    background: transparent;
+    color: #666;
+    transition: color .2s;
+}
+
+.input::-webkit-input-placeholder {
+    color: #666;
+    transition: color .2s;
+}
+
+.input:-moz-placeholder, header .search-wrap input::-moz-placeholder {
+   color: #666;
+   opacity: 1;
+   transition: color .2s;
+}
+
+.input:-ms-input-placeholder {
+   color: #666;
+   transition: color .2s;
+}
+
+.selectedForm {
+    composes: searchForm;
+    background-color: #fff;
+    border: 2px solid #eee;
+    transition: background .2s, border .2s;
+}
+
+.selectedForm .search-icon {
+    color: #000;
+    transition: color .2s;
+}
+
+.selectedForm .input::-webkit-input-placeholder {
+    color: #000;
+    transition: color .2s;
+}
+
+.selectedForm .input:-moz-placeholder {
+   color: #000;
+   transition: color .2s;
+   opacity: 1;
+}
+
+.selectedForm .input::-moz-placeholder {
+   color: #000;
+   transition: color .2s;
+   opacity: 1;
+}
+
+.selectedForm .input:-ms-input-placeholder {
+   color: #000;
+   transition: color .2s;
+}
+
+.documents {
+    margin-left: 15px;
+}
+
+.userInfo {
+}
