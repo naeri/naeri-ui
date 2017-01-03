@@ -49,6 +49,37 @@ class DocumentModule {
             }
         });
     }
+
+    getDocument(documentId) {
+        let self = this;
+
+        return axios.get(`${Settings.host}/document/get/${documentId}`)
+            .then(function(result) {
+                result = result.data;
+
+                if (result.error) {
+                    return Promise.reject(result.error.message);
+                }
+
+                return result.document;
+            });
+    }
+
+    addComment(documentId, tagInfo) {
+        let self = this;
+
+        return axios.post(`${Settings.host}/comment/add`, {
+            documentId: documentId,
+            content: tagInfo.comment,
+            range: tagInfo.selectionInfo
+        }).then(function(result) {
+            result = result.data;
+
+            if (result.error) {
+                return Promise.reject(result.error.message);
+            }
+        });
+    }
 }
 
 export default DocumentModule;

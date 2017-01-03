@@ -1,4 +1,5 @@
 import React from 'react';
+import { browserHistory } from 'react-router';
 import moment from 'moment';
 
 import Settings from '../../settings.js';
@@ -7,6 +8,12 @@ import css from './style.css';
 class DocumentListRowComponent extends React.Component {
     constructor(props) {
         super(props);
+
+        this.onClick = this.onClick.bind(this);
+    }
+
+    onClick() {
+        browserHistory.push(`/view/${this.props.document._id}`);
     }
 
     render() {
@@ -23,7 +30,8 @@ class DocumentListRowComponent extends React.Component {
 
         return (
             <div
-                className={css.documentWrap}>
+                className={css.documentWrap}
+                onClick={this.onClick}>
                 <div className={css.profileImage}>
                     <img src={`${Settings.host}/user/picture/${this.props.document.author._id}`} />
                 </div>

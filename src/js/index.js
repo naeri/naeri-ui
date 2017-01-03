@@ -8,6 +8,7 @@ import TagModule from './infrastructure/tagModule';
 
 import Documents from './modules/documents/documents';
 import DocumentSearch from './modules/documents/search';
+import Document from './modules/document/document';
 import UserInfo from './modules/documents/userInfo';
 import Layout from './modules/main-layout/layout';
 import Login from './modules/modal/login';
@@ -45,6 +46,10 @@ render((
                     header: DocumentSearch,
                     headerRight: () => { return <UserInfo userModule={userModule} /> },
                     content: () => { return <Documents userModule={userModule} tagModule={tagModule} documentModule={documentModule} /> }
+                }} />
+                <Route path="/view/:documentId" components={{
+                    headerRight: () => { return <UserInfo userModule={userModule} /> },
+                    content: (props) => { return <Document documentModule={documentModule} documentId={props.params.documentId} /> }
                 }} />
             </Route>
             <Route onEnter={requireNotAuth}>

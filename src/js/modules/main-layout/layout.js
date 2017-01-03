@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Link } from 'react-router';
 
 import css from './style.css';
 
@@ -11,9 +12,9 @@ class Layout extends React.Component {
             <div>
                 <header className={css.header}>
                     <div className={css.wrap}>
-                        <a className={css.title}>
+                        <Link to="/" className={css.title}>
                             Kokoto
-                        </a>
+                        </Link>
 
                         {header}
 
