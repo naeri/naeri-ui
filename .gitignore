@@ -1,2 +1,7 @@
 node_modules/
 .sync/
+.webpack_build_cache/
+dist/css/style.css
+dist/css/style.css.map
+dist/js/bundle.js
+dist/js/bundle.js.map
