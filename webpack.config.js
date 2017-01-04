@@ -12,7 +12,7 @@ module.exports = {
             {
                 test: /\.js$/,
                 loader: 'babel',
-                include: path.join(__dirname, 'src', 'js'),
+                include: path.join(__dirname, 'src'),
                 query: {
                     presets: ['react', 'es2015']
                 }
@@ -29,7 +29,7 @@ module.exports = {
                 loader: ExtractTextPlugin.extract(
                     'style', 'css'
                 ),
-                include: path.join(__dirname, 'node_modules')
+                exclude: path.join(__dirname, 'src')
             }
         ]
     },
