@@ -41,6 +41,14 @@ function requireNotAuth(nextState, replace) {
 render((
     <Router history={browserHistory}>
         <Route path="/">
+            <Route onEnter={requireNotAuth}>
+                <Route path="/join" component={
+                    () => { return <Join userModule={userModule} /> }
+                } />
+                <Route path="/login" component={
+                    () => { return <Login userModule={userModule} /> }
+                } />
+            </Route>
             <Route component={Layout} onEnter={requireAuth}>
                 <IndexRoute components={{ 
                     header: DocumentSearch,
@@ -51,14 +59,6 @@ render((
                     headerRight: () => { return <UserInfo userModule={userModule} /> },
                     content: (props) => { return <Document documentModule={documentModule} documentId={props.params.documentId} /> }
                 }} />
-            </Route>
-            <Route onEnter={requireNotAuth}>
-                <Route path="/join" component={
-                    () => { return <Join userModule={userModule} /> }
-                } />
-                <Route path="/login" component={
-                    () => { return <Login userModule={userModule} /> }
-                } />
             </Route>
         </Route>
     </Router>

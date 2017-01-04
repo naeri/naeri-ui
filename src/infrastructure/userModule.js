@@ -49,11 +49,13 @@ class UserModule {
             username: username,
             password: password
         }).then(function(result) {
-            if (result.data.error) {
-                return Promise.reject(result.data.error.message);
+            result = result.data;
+
+            if (result.error) {
+                return Promise.reject(result.error.message);
             }
 
-            self.user = result.data.user;
+            self.user = result.user;
             self.loggedIn = true;
 
             return self.user;
@@ -74,18 +76,20 @@ class UserModule {
             });
     }
 
-    join() {
+    join(username, password) {
         let self = this;
 
         return axios.post(`${Settings.host}/user/signup`, {
             username: username,
             password: password
         }).then(function(result) {
-            if (result.data.error) {
-                return Promise.reject(result.data.error.message);
-            }
+            result = result.data;
 
-            self.user = result.data.user;
+            if (result.error) {
+                return Promise.reject(result.error.message);
+            }
+            
+            self.user = result.user;
             self.loggedIn = true;
 
             return self.user;

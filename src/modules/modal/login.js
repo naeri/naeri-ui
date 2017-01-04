@@ -1,16 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { browserHistory } from 'react-router';
 import axios from 'axios';
 
+import Settings from '../../settings.js';
 import css from './style.css';
 
-class Join extends React.Component {
+class Login extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
             username: '',
             password: '',
+            error: '',
             submitting: false
         }
 
@@ -44,7 +47,7 @@ class Join extends React.Component {
         let self = this;
 
         userModule
-            .join(username, password)
+            .login(username, password)
             .then(function() {
                 browserHistory.push('/');
             })
@@ -71,7 +74,7 @@ class Join extends React.Component {
                         className={css.modal}
                         onSubmit={this.onFormSubmit}>
                         <div className={css.title}>
-                            회원 가입
+                            Kokoto
                         </div>
                         {error}
                         <input
@@ -90,13 +93,13 @@ class Join extends React.Component {
                         <button
                             type="submit"
                             className={ this.state.submitting ? css.submitting : css.submit }>
-                            { this.state.submitting ? '회원 가입 중..' : '회원 가입' }
+                            { this.state.submitting ? '로그인 중..' : '로그인' }
                         </button>
                     </form>
                     <a
-                        href="./login"
+                        href="./join"
                         className={css.link}>
-                        로그인 화면으로 돌아가기
+                        계정이 없으세요? <b>회원 가입</b>
                     </a>
                 </div>
             </div>
@@ -104,4 +107,4 @@ class Join extends React.Component {
     }
 }
 
-export default Join;
+export default Login;
