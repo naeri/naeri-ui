@@ -23,17 +23,15 @@ class DocumentModule {
             params.query = tagId;
         }
 
-        return await axios.get(`${Settings.host}/document/search`, {
-            params: params
-        }).then(function(result){
-            result = result.data;
-
-            if (result.error) {
-                return Promise.reject(result.error.message);
-            }
+        try {
+            let { data: result } = await axios.get(`${Settings.host}/document/search`, {
+                params: params
+            })
 
             return result.documents;
-        });
+        } catch (e) {
+            throw e.response.data.error;
+        }
     }
 
     async addDocument(title, content, tags) {

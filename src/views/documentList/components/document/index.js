@@ -1,11 +1,12 @@
 import React from 'react';
 import { browserHistory } from 'react-router';
 import moment from 'moment';
+import _ from 'utils';
 
 import Settings from 'settings.js';
 import css from './style.css';
 
-class DocumentListRowComponent extends React.Component {
+class Document extends React.Component {
     constructor(props) {
         super(props);
 
@@ -13,11 +14,14 @@ class DocumentListRowComponent extends React.Component {
     }
 
     onClick() {
-        browserHistory.push(`/view/${this.props.document._id}`);
+        browserHistory.push(`/view/${this.props.document.id}`);
     }
 
     render() {
-        let tags = this.props.document.tags.map((tag) => {
+        const translation = this.context.translation;
+        const { document } = this.props;
+
+        let tags = document.tags.map((tag) => {
             return (
                 <span 
                     className={css.tag}
@@ -33,12 +37,12 @@ class DocumentListRowComponent extends React.Component {
                 className={css.documentWrap}
                 onClick={this.onClick}>
                 <div className={css.profileImage}>
-                    <img src={`${Settings.host}/user/picture/${this.props.document.author._id}`} />
+                    <img src={`${Settings.host}/user/${document.author.id}/picture`} />
                 </div>
                 <div className={css.document}>
                     <header className={css.header}>
                         <div className={css.title}>
-                            {this.props.document.title}
+                            {document.title}
                         </div>
                         <div className={css.tags}>
                             {tags}
@@ -46,17 +50,17 @@ class DocumentListRowComponent extends React.Component {
                     </header>
                     <hr className={css.hr} />
                     <div className={css.content}>
-                        {this.props.document.markdown.substring(0, 100)}
-                        {this.props.document.markdown.length > 100 ? ' ...' : ''}
+                        {document.content.substring(0, 100)}
+                        {document.content.length > 100 ? ' ...' : ''}
                     </div>
                     <footer className={css.footer}>
                         <i className="fa fa-refresh" />
                         {' '}
-                        <b>{this.props.document.author.username}</b>님이
-                        {' '} 
-                        {moment(this.props.document.createdAt).format(' MM월 DD일').replace(/ 0/gi, ' ')}에
-                        {' '}
-                        업데이트함
+                        {_.format(
+                            translation.updated, 
+                            document.author.username, 
+                            moment(document.createdAt).format(translation.updatedTimeFormat)
+                        )}
                     </footer>
                 </div>
             </div>
@@ -64,4 +68,8 @@ class DocumentListRowComponent extends React.Component {
     }
 }
 
-export default DocumentListRowComponent;
+Document.contextTypes = {
+    translation: React.PropTypes.object
+}
+
+export default Document;

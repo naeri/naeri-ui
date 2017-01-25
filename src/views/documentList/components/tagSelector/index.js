@@ -5,7 +5,7 @@ import Hangul from 'hangul-js';
 
 import css from './style.css';
 
-class TagSelectorComponent extends React.Component {
+class TagSelector extends React.Component {
     constructor(props) {
         super(props);
 
@@ -28,6 +28,8 @@ class TagSelectorComponent extends React.Component {
     }
 
     render() {
+        const { translation } = this.context;
+
         var rows = [];
 
         this.props.tags.forEach((tag) => {
@@ -51,7 +53,7 @@ class TagSelectorComponent extends React.Component {
                 <input 
                     type="text"
                     className={css.input}
-                    placeholder="태그 검색"
+                    placeholder={translation.searchTag}
                     value={this.state.searchText}
                     onChange={this.searchTextChanged} />
                 <ul className={css.tags}>
@@ -62,4 +64,8 @@ class TagSelectorComponent extends React.Component {
     }
 }
 
-export default TagSelectorComponent;
+TagSelector.contextTypes = {
+    translation: React.PropTypes.object
+};
+
+export default TagSelector;

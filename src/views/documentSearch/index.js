@@ -2,7 +2,7 @@ import React from 'react';
 
 import css from './style.css';
 
-class Search extends React.Component {
+class DocumentSearch extends React.Component {
     constructor(props) {
         super(props);
 
@@ -35,6 +35,8 @@ class Search extends React.Component {
     }
 
     render() {
+        const { translation } = this.props;
+
         return (
             <form className={this.state.selected ? css.selectedForm : css.searchForm}>
                 <input 
@@ -44,11 +46,11 @@ class Search extends React.Component {
                     onChange={this.onSearchTextChanged}
                     onFocus={this.onSearchInputFocus}
                     onBlur={this.onSearchInputBlur}
-                    placeholder="검색" />
+                    placeholder={translation.search} />
                 <i className={'fa fa-search ' + css.icon}></i>
             </form>
         );
     }
 }
 
-export default Search;
+export default DocumentSearch;

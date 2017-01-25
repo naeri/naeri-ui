@@ -5,7 +5,7 @@ import TagItem from './components/tagItem';
 
 import css from './style.css';
 
-class TagInputComponent extends React.Component {
+class TagInput extends React.Component {
     constructor(props) {
         super(props);
     
@@ -105,6 +105,8 @@ class TagInputComponent extends React.Component {
     }
 
     render() {
+        const { translation } = this.context;
+
         let suggestionList = this.state.suggestions;
         let suggestions = null;
 
@@ -151,7 +153,7 @@ class TagInputComponent extends React.Component {
                         onKeyDown={this.onInputKeyDown}
                         onFocus={this.onQueryChanged}
                         onBlur={this.onBlur}
-                        placeholder="새 태그 입력"
+                        placeholder={translation.addTag}
                         ref={(input) => this.input = input} />
                     {suggestions}
                 </div>
@@ -160,4 +162,8 @@ class TagInputComponent extends React.Component {
     }
 }
 
-export default TagInputComponent;
+TagInput.contextTypes = {
+    translation: React.PropTypes.object
+}
+
+export default TagInput;

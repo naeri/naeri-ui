@@ -3,7 +3,16 @@ import { browserHistory } from 'react-router';
 import path from 'path';
 
 export default (routeTable, userModule) => {
-    let language = navigator.language.toLowerCase();
+    let language;
+
+    if (navigator.language) {
+        language = navigator.language.toLowerCase();
+    }
+
+    if (navigator.browserLanguage) {
+        language = navigator.browserLanguage.toLowerCase();
+    }
+
     if (navigator.languages) {
         language = navigator.languages[0].toLowerCase();
     }
@@ -29,17 +38,26 @@ export default (routeTable, userModule) => {
             return;
         }
 
-        return table.map((route) => {
-            const onEnter = route.authed ? requireAuth : requireNotAuth;
-            
+        return table.map(function formatRoute(route) {
+            let onEnter = null;
+            if (route.authed !== null) {
+                onEnter = route.authed ? requireAuth : requireNotAuth;
+            }
+
             const req = require.context('../intl', true, /js$/);
-            const translation = req('./' + route.translationKey + '/' + language + '.js');
+            let translation;
+            
+            try {
+                translation = req('./' + route.translationKey + '/' + language + '.js').default;
+            } catch (e) { 
+                translation = req('./' + route.translationKey + '/' + 'en-us' + '.js').default
+            }
 
             Object.keys(route.components || {}).forEach((key) => {
-                let component = route.components[key];
-                
+                let Component = route.components[key];
+
                 route.components[key] = (props) => (
-                    <component 
+                    <Component
                         translation={translation} 
                         {...props} />
                 );
@@ -58,8 +76,8 @@ export default (routeTable, userModule) => {
 
             return {
                 path: route.path,
-                onEnter: onEnter,
-                indexRoute: indexRoute,
+                onEnter: onEnter || undefined,
+                indexRoute: indexRoute ? formatRoute(indexRoute) : undefined,
                 component: route.component ? (props) => (
                     <route.component 
                         translation={translation} 

@@ -7,7 +7,7 @@ import TagInput from '../tagInput';
 
 import css from './style.css';
 
-class DocumentFormComponent extends React.Component {
+class DocumentForm extends React.Component {
     constructor(props) {
         super(props);
 
@@ -151,6 +151,8 @@ class DocumentFormComponent extends React.Component {
     }
 
     render() {
+        const { translation } = this.context;
+
         let displayPage = null;
 
         if (this.state.writeMode) {
@@ -161,7 +163,7 @@ class DocumentFormComponent extends React.Component {
                         type="text"
                         value={this.state.title}
                         onChange={this.onTitleChanged}
-                        placeholder="어떤 제목으로 글을 올릴까요?" 
+                        placeholder={translation.whatTitle}
                         autoFocus/>
                     <hr className={css.hr} />
                     <textarea 
@@ -169,35 +171,35 @@ class DocumentFormComponent extends React.Component {
                         name="document"
                         value={this.state.text}
                         onChange={this.onTextChanged}
-                        placeholder="어떤 말을 하시고 싶으신가요?" />
+                        placeholder={translation.whatContent}/>
                 </div>
             );
         } else {
             displayPage = (
                 <div className={css.preview}>
                     <div className={css.titlePreview}>
-                        { this.state.title ? this.state.title : '제목 없음' }
+                        { this.state.title ? this.state.title : translation.noTitle }
                     </div>
                     <hr className={css.hr}/>
                     <div
                         className={css.contentPreview}
-                        dangerouslySetInnerHTML={{ __html: marked(this.state.text ? this.state.text : '내용을 작성해 주세요.') }}>
+                        dangerouslySetInnerHTML={{ __html: marked(this.state.text ? this.state.text : translation.pleaseWriteContent) }}>
                     </div>
                 </div>
             );
         }
 
-        let profileImage = (() => {
-            if (this.props.user) {
+        let profileImage = ((user) => {
+            if (user) {
                 return (
                     <img 
-                        src={`${Settings.host}/user/picture/${this.props.user._id}`}
+                        src={`${Settings.host}/user/${this.props.user.id}/picture`}
                         className={css.image} />
                 );
             } else {
                 return null;
             }
-        })();
+        })(this.props.user);
 
         return (
             <div
@@ -209,13 +211,13 @@ class DocumentFormComponent extends React.Component {
                             type="button"
                             className={ this.state.writeMode ? css.tabBtnActive : css.tabBtn}
                             onClick={this.onWriteModeChanged}>
-                            쓰기
+                            {translation.write.toUpperCase()}
                         </button>
                         <button 
                             type="button"
                             className={ this.state.writeMode ? css.tabBtn : css.tabBtnActive}
                             onClick={this.onPreviewModeChanged}>
-                            보기
+                            {translation.preview.toUpperCase()}
                         </button>
                         <nav className={css.secondaryBtns}>
                             <i
@@ -241,7 +243,7 @@ class DocumentFormComponent extends React.Component {
                         <input
                             className={ this.state.submitting ? css.submittingBtn : css.submitBtn } 
                             type="submit"
-                            value={ this.state.submitting ? '게시 중..' : '게시' } 
+                            value={ this.state.submitting ? translation.publishing : translation.publish } 
                             onClick={this.onFormSubmitted}/>
                     </div>
                 </div>
@@ -250,4 +252,8 @@ class DocumentFormComponent extends React.Component {
     }
 }
 
-export default DocumentFormComponent;
+DocumentForm.contextTypes = {
+    translation: React.PropTypes.object
+}
+
+export default DocumentForm;

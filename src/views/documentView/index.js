@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 import moment from 'moment';
+import _ from 'utils';
 
 import CommentInput from './components/commentInput';
 import CommentView from './components/commentView';
@@ -13,12 +14,18 @@ import SelectionManager from 'utils/selectionManager';
 
 import css from './style.css';
 
-class DocumentModule extends React.Component {
+class DocumentView extends React.Component {
+    getChildContext() {
+        return {
+            translation: this.props.translation
+        }
+    }
+
     constructor(props) {
         super(props);
 
         this.state = {
-            document: null,
+            document: undefined,
             showSelectionMenu: false,
             selectionInfo: null,
             comments: null,
@@ -40,16 +47,20 @@ class DocumentModule extends React.Component {
         this.onClearHighlight = this.onClearHighlight.bind(this);
     }
 
-    componentDidMount() {
-        const documentId = this.props.documentId;
-        const self = this;
+    async componentDidMount() {
+        const documentId = this.props.params.documentId;
 
-        this.props.documentModule.getDocument(documentId)
-            .then(function(document) {
-                self.setState({
-                    document: document
-                });
+        try {
+            let document = await this.context.documentModule.getDocument(documentId);
+
+            this.setState({
+                document: document
             });
+        } catch (e) {
+            this.setState({
+                document: null
+            });
+        }
     }
 
     componentDidUpdate() {
@@ -161,26 +172,23 @@ class DocumentModule extends React.Component {
         });
     }
 
-    onCommentAdded() {
-        const self = this;
+    async onCommentAdded() {
         const documentId = this.props.documentId;
         const documentModule = this.props.documentModule;
 
         this.setState({
-            document: null,
+            document: undefined,
             comments: null
         });
 
-        documentModule.getDocument(documentId)
-            .then(function(document) {
-                return self.setState({
-                    document: document,
-                    showSelectionMenu: false,
-                    selectionInfo: null,
-                    commentInputShow: false
-                });
-            });
-
+        let document = await documentModule.getDocument(documentId)
+            
+        return this.setState({
+            document: document,
+            showSelectionMenu: false,
+            selectionInfo: null,
+            commentInputShow: false
+        });
     }
 
     onSelectionMenuSelected() {
@@ -213,10 +221,15 @@ class DocumentModule extends React.Component {
     }
 
     render() {
-        const document = this.state.document;
+        const { document } = this.state;
+        const { translation } = this.props;
 
-        if (!document) {
+        if (document === undefined) {
             return <Spinner />;
+        }
+
+        if (document === null) {
+            return <div className={css.wrap}>{translation.cannotFind}</div>;
         }
 
         const tags = <TagsList tags={document.tags} />;
@@ -256,26 +269,32 @@ class DocumentModule extends React.Component {
                     <div className={css.topMenu}>
                         <div className={css.left}>
                             <Link to="/">
-                                &lt; 목록으로 돌아가기
+                                &lt; {translation.goBack}
                             </Link>
                         </div>
-                        <div className={css.right}>
-                            <a>
-                                <i className="fa fa-pencil" />
-                                {' '}
-                                수정
-                            </a>
-                            <a>
-                                <i className="fa fa-history" />
-                                {' '}
-                                역사
-                            </a>
-                            <a>
-                                <i className="fa fa-trash" />
-                                {' '}
-                                지우기
-                            </a>
-                        </div>
+                        {(() => {
+                            if (this.state.document) {
+                                return (
+                                    <div className={css.right}>
+                                        <a>
+                                            <i className="fa fa-pencil" />
+                                            {' '}
+                                            {translation.edit}
+                                        </a>
+                                        <a>
+                                            <i className="fa fa-history" />
+                                            {' '}
+                                            {translation.history}
+                                        </a>
+                                        <a>
+                                            <i className="fa fa-trash" />
+                                            {' '}
+                                            {translation.delete}
+                                        </a>
+                                    </div>
+                                )
+                            }
+                        })()}
                     </div>
                     <div className={css.document}>
                         <header className={css.header}>
@@ -286,9 +305,11 @@ class DocumentModule extends React.Component {
                                 <div className={css.authorDate}>
                                     <i className="fa fa-refresh" />
                                     {' '}
-                                    <b>{document.author.username}</b>님이
-                                    {' '}
-                                    {moment(document.createdAt).format('M월 D일')}에 업데이트함
+                                    {_.format(
+                                        translation.updated, 
+                                        document.author.username, 
+                                        moment(document.createdAt).format(translation.updatedTimeFormat)
+                                    )}
                                 </div>
                                 <div className={css.tags}>
                                     {tags}
@@ -297,7 +318,7 @@ class DocumentModule extends React.Component {
                         </header>
                         <section 
                             className={css.content}
-                            dangerouslySetInnerHTML={{ __html: document.html }}
+                            dangerouslySetInnerHTML={{ __html: document.content }}
                             ref={(section) => { this.contentSection = section; }}
                             key={this.state.contentKey}>
                         </section>
@@ -311,4 +332,12 @@ class DocumentModule extends React.Component {
     }
 }
 
-export default DocumentModule;
+DocumentView.childContextTypes = {
+    translation: React.PropTypes.object
+}
+
+DocumentView.contextTypes = {
+    documentModule: React.PropTypes.object
+};
+
+export default DocumentView;

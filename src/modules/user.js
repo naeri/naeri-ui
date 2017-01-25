@@ -12,7 +12,8 @@ class UserModule {
         if (this.loggedIn) {
             return this.user;
         } else {
-            return await this.updateStatus();
+            await this.updateStatus();
+            return this.user;
         }
     }
 

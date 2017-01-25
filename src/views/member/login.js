@@ -58,6 +58,8 @@ class Login extends React.Component {
     }
 
     render() {
+        const { translation } = this.props;
+
         let error = this.state.error ? (
             <div className={css.error}>
                 {this.state.error}
@@ -78,25 +80,25 @@ class Login extends React.Component {
                             type="text"
                             value={this.state.username}
                             onChange={this.onUsernameChanged}
-                            placeholder="아이디"
+                            placeholder={translation.id}
                             className={css.username} />
                         <input
                             type="password"
                             value={this.state.password}
                             onChange={this.onPasswordChanged}
-                            placeholder="비밀번호"
+                            placeholder={translation.password}
                             className={css.password}
                             ref={(input) => this.passwordInput = input} />
                         <button
                             type="submit"
                             className={ this.state.submitting ? css.submitting : css.submit }>
-                            { this.state.submitting ? '로그인 중..' : '로그인' }
+                            { this.state.submitting ? translation.loggingIn : translation.login }
                         </button>
                     </form>
                     <a
                         href="./join"
                         className={css.link}>
-                        계정이 없으세요? <b>회원 가입</b>
+                        {translation.noAccount} <b>{translation.join}</b>
                     </a>
                 </div>
             </div>

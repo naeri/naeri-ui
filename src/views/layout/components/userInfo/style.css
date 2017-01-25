@@ -1,0 +1,15 @@
+.userInfo {
+    display: flex;
+    -webkit-align-items: center;
+    align-items: center;
+    height: 50px;
+    cursor: pointer;
+}
+
+.image {
+    width: 30px;
+    height: 30px;
+    border-radius: 30px;
+    margin-right: 5px;
+    border: 1px solid #ccc;
+}

@@ -12,6 +12,12 @@ import commonCss from 'common/common.css';
 import css from './style.css';
 
 class DocumentList extends React.Component {
+    getChildContext() {
+        return {
+            translation: this.props.translation
+        }
+    }
+
     constructor(props) {
         super(props);
 
@@ -29,15 +35,14 @@ class DocumentList extends React.Component {
         this.onDocumentSubmitted = this.onDocumentSubmitted.bind(this);
     }
 
-    componentWillMount() {
+    async componentWillMount() {
         this.reloadTags();
         this.loadDocuments();
-        this.context.userModule.getCurrentUser()
-            .then((user) => {
-                this.setState({
-                    user: user
-                });
-            });
+        
+        let user = await this.context.userModule.getCurrentUser()
+        this.setState({
+            user: user
+        });
     }
 
     onSelectedTagChanged(tag) {
@@ -51,23 +56,21 @@ class DocumentList extends React.Component {
         });
     }
 
-    onDocumentSubmitted(title, markdown, tags) {
-        let self = this;
+    async onDocumentSubmitted(title, markdown, tags) {
         const documentModule = this.context.documentModule;
 
-        return documentModule.addDocument(title, markdown, tags)
-            .then(function(documents) {
-                self.setState({
-                    selectedTag: null,
-                    lastDocumentId: null
-                });
-
-                self.loadDocuments();
-                self.reloadTags();
-            });
+        await documentModule.addDocument(title, markdown, tags)
+         
+        this.setState({
+            selectedTag: null,
+            lastDocumentId: null
+        }, () => {
+            this.loadDocuments();
+            this.reloadTags();
+        });
     }
 
-    loadDocuments() {
+    async loadDocuments() {
         let self = this;
         const documentModule = this.context.documentModule;
 
@@ -79,19 +82,18 @@ class DocumentList extends React.Component {
             const selectedTag = this.state.selectedTag;
 
             if (selectedTag) {
-                return selectedTag._id;
+                return selectedTag.id;
             } else {
                 return null;
             }
         })();
 
-        return documentModule.getDocuments(id, this.state.lastDocumentId)
-            .then(function(documents) {
-                self.setState({
-                    documents: documents,
-                    loadingDocuments: false
-                });
-            });
+        let documents = await documentModule.getDocuments(id, this.state.lastDocumentId);
+
+        this.setState({
+            documents: documents,
+            loadingDocuments: false
+        });
     }
 
     reloadTags() {
@@ -137,7 +139,7 @@ class DocumentList extends React.Component {
                     return (
                         <Document 
                             document={document} 
-                            key={document._id}/>
+                            key={document.id}/>
                     );
                 });
             }
@@ -160,6 +162,10 @@ class DocumentList extends React.Component {
             </div>
         );
     }
+}
+
+DocumentList.childContextTypes = {
+    translation: React.PropTypes.object
 }
 
 DocumentList.contextTypes = {

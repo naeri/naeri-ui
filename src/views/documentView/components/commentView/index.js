@@ -39,6 +39,8 @@ class CommentViewComponent extends React.Component {
     }
 
     render() {
+        const { translation } = this.context;
+
         const content = (() => {
             if (this.state.expand) {
                 const comments = this.props.comments.map((comment) => {
@@ -51,7 +53,7 @@ class CommentViewComponent extends React.Component {
                             <div className={css.author}>
                                 <b>{comment.author.username}</b>
                                 {' '}
-                                {moment(comment.createdAt).format("M월 D일 hh:mm")}
+                                {moment(comment.createdAt).format(translation.updatedTimeFormat)}
                             </div>
                             {comment.content}
                         </div>
@@ -61,7 +63,7 @@ class CommentViewComponent extends React.Component {
                 return (
                     <div>
                         <header className={css.title}>
-                            댓글 목록
+                            {translation.commentList}
                             <a
                                 className={css.close}
                                 onClick={this.toggleExpand}>

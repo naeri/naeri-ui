@@ -12,7 +12,7 @@ import DocumentView from 'views/documentView';
 
 const routeTable = [
     {
-        path: '/',
+        path: '/join',
         authed: false,
         translationKey: 'join',
         component: Join
@@ -30,6 +30,7 @@ const routeTable = [
         routes: [
             {
                 indexRoute: true,
+                authed: true,
                 translationKey: 'documentList',
                 components: {
                     header: DocumentSearch,
@@ -38,6 +39,7 @@ const routeTable = [
             },
             {
                 path: '/view/:documentId',
+                authed: true,
                 translationKey: 'documentView',
                 components: {
                     content: DocumentView

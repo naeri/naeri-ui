@@ -4,15 +4,13 @@ import Settings from '../settings.js';
 
 class TagModule {
     async getTagList() {
-        return await axios.get(`${Settings.host}/tag/list`).then(function(result) {
-            result = result.data;
-
-            if (result.error) {
-                return Promise.reject(result.error.message);
-            }
+        try {
+            let { data: result } = await axios.get(`${Settings.host}/tag/search`);
 
             return result.tags;
-        });
+        } catch (e) {
+            return e.response.data.error;
+        }
     }
 }
 

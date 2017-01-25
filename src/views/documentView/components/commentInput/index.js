@@ -3,7 +3,7 @@ import React from 'react';
 import Settings from 'settings';
 import css from './style.css';
 
-class CommentInputComponent extends React.Component {
+class CommentInput extends React.Component {
     constructor(props) {
         super(props);
 
@@ -47,19 +47,21 @@ class CommentInputComponent extends React.Component {
     }
 
     render() {
+        const { translation } = this.context;
+
         if (this.state.hidden) {
             return null;
         }
 
         const buttonContent = (() => {
             if (this.state.submitting) {
-                return '댓글 다는 중...';
+                return translation.replying;
             } else {
                 return (
                     <span>
                         <i className="fa fa-comment"></i>
                         {' '}
-                        댓글 달기
+                        {translation.reply}
                     </span>
                 );
             }
@@ -72,13 +74,13 @@ class CommentInputComponent extends React.Component {
                     top: this.props.Y - 14
                 }}>
                 <header className={css.title}>
-                    댓글 달기
+                    {translation.reply}
                 </header>
                 <textarea
                     className={css.textarea}
                     value={this.state.comment} 
                     onChange={this.onCommentChanged}
-                    placeholder="어떤 의견을 갖고 계신가요?" />
+                    placeholder={translation.whatOpinion} />
                 <button
                     className={this.state.submitting ? css.submitting : css.button}
                     onClick={this.onCommentAdded}>
@@ -89,4 +91,8 @@ class CommentInputComponent extends React.Component {
     }
 }
 
-export default CommentInputComponent;
+CommentInput.contextTypes = {
+    translation: React.PropTypes.object
+}
+
+export default CommentInput;

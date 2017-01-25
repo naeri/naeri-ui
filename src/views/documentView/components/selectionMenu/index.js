@@ -2,7 +2,7 @@ import React from 'react';
 
 import css from './style.css';
 
-class SelectionMenuComponent extends React.Component {
+class SelectionMenu extends React.Component {
     constructor(props) {
         super(props);
 
@@ -38,6 +38,8 @@ class SelectionMenuComponent extends React.Component {
     }
 
     render() {
+        const { translation } = this.context;
+
         const x = this.props.X;
         const y = this.props.Y;
 
@@ -53,11 +55,15 @@ class SelectionMenuComponent extends React.Component {
                 <a onMouseDown={this.onCommentAdding}>
                     <i className="fa fa-comment"></i>
                     {' '}
-                    댓글 달기
+                    {context.reply}
                 </a>
             </div>
         );
     }
 }
 
-export default SelectionMenuComponent;
+SelectionMenu.contextTypes = {
+    translations: React.PropTypes.object
+}
+
+export default SelectionMenu;

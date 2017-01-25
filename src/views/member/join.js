@@ -57,6 +57,8 @@ class Join extends React.Component {
     }
 
     render() {
+        const { translation } = this.props;
+
         let error = this.state.error ? (
             <div className={css.error}>
                 {this.state.error}
@@ -70,32 +72,32 @@ class Join extends React.Component {
                         className={css.modal}
                         onSubmit={this.onFormSubmit}>
                         <div className={css.title}>
-                            회원 가입
+                            {translation.join}
                         </div>
                         {error}
                         <input
                             type="text"
                             value={this.state.username}
                             onChange={this.onUsernameChanged}
-                            placeholder="아이디"
+                            placeholder={translation.id}
                             className={css.username} />
                         <input
                             type="password"
                             value={this.state.password}
                             onChange={this.onPasswordChanged}
-                            placeholder="비밀번호"
+                            placeholder={translation.password}
                             className={css.password}
                             ref={(input) => this.passwordInput = input} />
                         <button
                             type="submit"
                             className={ this.state.submitting ? css.submitting : css.submit }>
-                            { this.state.submitting ? '회원 가입 중..' : '회원 가입' }
+                            { this.state.submitting ? translation.joining : translation.join }
                         </button>
                     </form>
                     <a
                         href="./login"
                         className={css.link}>
-                        로그인 화면으로 돌아가기
+                        {translation.goBack}
                     </a>
                 </div>
             </div>

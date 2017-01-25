@@ -5,7 +5,7 @@ import Settings from 'settings';
 
 import css from './style.css';
 
-class TagInputItemComponent extends React.Component {
+class TagItem extends React.Component {
     constructor(props) {
         super(props);
     
@@ -60,6 +60,8 @@ class TagInputItemComponent extends React.Component {
     }
 
     render() {
+        const { translation } = this.context;
+
         return (
             <div className={css.wrap}>
                 <div
@@ -79,7 +81,7 @@ class TagInputItemComponent extends React.Component {
                 <div className={this.state.showModal ? css.modalWrap : css.modalWrapHidden}>
                     <div className={css.modal}>
                         <div className={css.modalTitle}>
-                            태그 정보 변경
+                            {translation.editTag}
                             <span 
                                 className={css.close}
                                 onClick={this.onModalCloseClick}>
@@ -89,7 +91,7 @@ class TagInputItemComponent extends React.Component {
                         <label 
                             htmlFor="tagName"
                             className={css.label}>
-                            태그 이름
+                            {translation.tagName}
                         </label>
                         <input 
                             type="text"
@@ -98,7 +100,7 @@ class TagInputItemComponent extends React.Component {
                             value={this.state.tagTitle}
                             onChange={this.onTagTitleChanged} />
                         <label className={css.label}>
-                            태그 색상
+                            {translation.tagColor}
                         </label>
                         <ColorPicker 
                             width="100%"
@@ -109,7 +111,7 @@ class TagInputItemComponent extends React.Component {
                         <button 
                             className={css.button}
                             onClick={this.onFormSubmit}>
-                            변경
+                            {translation.edit}
                         </button>
                     </div>
                 </div>
@@ -118,4 +120,8 @@ class TagInputItemComponent extends React.Component {
     }
 }
 
-export default TagInputItemComponent;
+TagItem.contextTypes = {
+    translation: React.PropTypes.object
+}
+
+export default TagItem;

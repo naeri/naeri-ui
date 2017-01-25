@@ -1,4 +1,5 @@
 import React from 'react';
+import { browserHistory } from 'react-router';
 
 import Spinner from 'components/spinner';
 
@@ -14,6 +15,8 @@ class UserInfo extends React.Component {
             username: null,
             loading: false
         };
+
+        this.logout = this.logout.bind(this);
     }
 
     async componentWillMount() {
@@ -23,13 +26,18 @@ class UserInfo extends React.Component {
             loading: true
         });
 
-        let user = this.context.userModule.getCurrentUser()
+        let { id, username } = await this.context.userModule.getCurrentUser();
         
         self.setState({
-            id: user._id,
-            username: user.username,
+            id: id,
+            username: username,
             loading: false
         });
+    }
+
+    async logout() {
+        await this.context.userModule.logout();
+        browserHistory.push('/login');
     }
 
     render() {
@@ -40,9 +48,9 @@ class UserInfo extends React.Component {
                 );
             } else {
                 return (
-                    <div className={css.userInfo}>
+                    <div className={css.userInfo} onClick={this.logout}>
                         <img 
-                            src={`${Settings.host}/user/picture/${this.state.id}`} 
+                            src={`${Settings.host}/user/${this.state.id}/picture`} 
                             className={css.image}/>
                         {this.state.username}
                     </div>
