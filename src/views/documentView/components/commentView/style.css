@@ -1,0 +1,57 @@
+.wrap {
+    position: absolute;
+    left: calc(50% + 450px);
+}
+
+.count {
+    color: #666;
+    cursor: pointer;
+}
+
+.modalWrap {
+    composes: wrap from 'commonCss/modalMini.css';
+}
+
+.title {
+    composes: title from 'commonCss/modalMini.css';
+    position: relative;
+}
+
+.close {
+    position: absolute;
+    right: 0;
+    cursor: pointer;
+    color: #666;
+    text-decoration: none;
+}
+
+.comment {
+    position: relative;
+    margin-top: 10px;
+    cursor: pointer;
+    background: #fff;
+    transition: background .1s;
+}
+
+.comment:after {
+    content: ' ';
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border-radius: 16px;
+    background-color: #fff;
+    transition: background .1s;
+}
+
+.comment:hover:after {
+    background-color: #b9f1d1;
+    transition: background .1s;
+}
+
+.author {
+    margin-bottom: 5px;
+    color: #666;
+}

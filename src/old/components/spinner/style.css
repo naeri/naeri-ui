@@ -1,0 +1,23 @@
+.wrap {
+    display: flex;
+    -webkit-justify-content: center;
+    justify-content: center;
+}
+
+.left {
+    composes: wrap;
+    -webkit-align-items: left;
+    align-items: left;
+}
+
+.center {
+    composes: wrap;
+    -webkit-align-items: center;
+    align-items: center;
+}
+
+.right {
+    composes: wrap;
+    -webkit-align-items: right;
+    align-items: right;
+}

@@ -1,0 +1,10 @@
+.wrap {
+    max-width: 850px;
+    margin: 0 auto;
+}
+
+.wrap::before, .wrap::after {
+    display: block;
+    content: ' ';
+    clear: both;
+}

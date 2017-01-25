@@ -1,0 +1,97 @@
+.button {
+    display: inline-block;
+    margin: 0;
+    padding: 8px 16px;
+    background: #2382e5;
+    border: none;
+    border-radius: 3px;
+    font-weight: 700;
+    font-size: 1.1em;
+    height: 40px;
+    line-height: 40px;
+    color: #fff;
+    font-family: inherit;
+    text-decoration: none;
+    outline: none;
+    cursor: pointer;
+    border: 1px solid transparent;
+    line-height: 120%;
+    transition: background-color .2s cubic-bezier(.2, .8, .5, 1), width .2s cubic-bezier(.2, .8, .5, 1);
+}
+
+.button:hover {
+    background: #3a8fe7;
+    box-shadow: inset 0 -1px rgba(0, 0, 0, .3); 
+}
+
+.button:active {
+    box-shadow: inset 0 1px rgba(0, 0, 0, .3);
+    transform: scale(.98);
+}
+
+.submittingBtn {
+    composes: button;
+    background-color: #747f8d !important;
+    box-shadow: inset 0 1px rgba(0, 0, 0, .3) !important;
+    transition: background-color .2s cubic-bezier(.2, .8, .5, 1), width .2s cubic-bezier(.2, .8, .5, 1);
+}
+
+.red {
+    composes: button;
+    background: #e73a46;
+}
+
+.red:hover {
+    background: #e94b56;
+}
+
+.gray {
+    composes: button;
+    background: #777;
+}
+
+.gray:hover {
+    background: #7f7f7f;
+}
+
+.green {
+    composes: button;
+    background: #17bd61;
+}
+
+.green:hover {
+    background: #1ad46d;
+}
+
+.white {
+    composes: button;
+    background: #fafafa;
+    color: #000;
+}
+
+.white:hover {
+    background: #fff;
+}
+
+.small {
+    composes: button;
+    font-weight: 400;
+    font-size: .9em;
+    padding: 6px 12px;
+}
+
+.xSmall {
+    composes: button;
+    padding: 0 8px;
+    font-weight: 400;
+    font-size: 14px;
+    height: 26px;
+    line-height: 26px;
+}
+
+.disabled {
+    composes: button;
+    background: #fefefe;
+    color: #666;
+    border: 1px solid #ddd;
+}

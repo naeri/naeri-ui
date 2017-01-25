@@ -1,0 +1,38 @@
+.searchForm {
+    display: inline-block;
+    position: relative;
+    line-height: 0;
+    padding: 5px;
+    background-color: #eee;
+    border: 2px solid transparent;
+    border-radius: 5px;
+    transition: background .2s, border .2s;
+}
+
+.icon {
+    position: absolute;
+    color: #666;
+    top: 6px;
+    left: 8px;
+    font-size: 16px;
+    transition: color .2s;
+}
+
+.documents {
+    margin-left: 15px;
+}
+
+.userInfo {
+    display: flex;
+    -webkit-align-items: center;
+    align-items: center;
+    height: 50px;
+}
+
+.image {
+    width: 30px;
+    height: 30px;
+    border-radius: 30px;
+    margin-right: 5px;
+    border: 1px solid #ccc;
+}

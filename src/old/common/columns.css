@@ -1,0 +1,23 @@
+.left {
+    float: left;
+}
+
+.right {
+    float: right;
+}
+
+.col3 {
+    width: 25%;
+}
+
+.col4 {
+    width: 33.33%;
+}
+
+.col8 {
+    width: 66.66%;
+}
+
+.col9 {
+    width: 75%;
+}

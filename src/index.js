@@ -2,64 +2,34 @@ import React from 'react';
 import { render } from 'react-dom';
 import { Router, Route, browserHistory, IndexRoute } from 'react-router';
 
-import UserModule from './infrastructure/userModule';
-import DocumentModule from './infrastructure/documentModule';
-import TagModule from './infrastructure/tagModule';
+import routes from 'routes';
 
-import Documents from './modules/documents/documents';
-import DocumentSearch from './modules/documents/search';
-import Document from './modules/document/document';
-import UserInfo from './modules/documents/userInfo';
-import Layout from './modules/main-layout/layout';
-import Login from './modules/modal/login';
-import Join from './modules/modal/join';
+import UserModule from 'modules/user';
+import TagModule from 'modules/tag';
+import DocumentModule from 'modules/document';
 
 const userModule = new UserModule();
 const tagModule = new TagModule();
 const documentModule = new DocumentModule();
 
-function requireAuth(nextState, replace) {
-    return userModule
-        .getIsLoggedIn()
-        .then(function(loggedIn) {
-            if (!loggedIn) {
-                browserHistory.push('/login');
-            }
-        });
+class AppContainer extends React.Component {
+    getChildContext() {
+        return {
+            userModule: userModule,
+            tagModule: tagModule,
+            documentModule: documentModule
+        }
+    }
+
+    render() {
+        return <Router history={browserHistory} routes={routes(userModule)} />;
+    }
 }
 
-function requireNotAuth(nextState, replace) {
-    return userModule
-        .getIsLoggedIn()
-        .then(function(loggedIn) {
-            if (loggedIn) {
-                browserHistory.push('/');
-            }
-        });
+AppContainer.childContextTypes = {
+    userModule: React.PropTypes.object,
+    tagModule: React.PropTypes.object,
+    documentModule: React.PropTypes.object
 }
 
-render((
-    <Router history={browserHistory}>
-        <Route path="/">
-            <Route onEnter={requireNotAuth}>
-                <Route path="/join" component={
-                    () => { return <Join userModule={userModule} /> }
-                } />
-                <Route path="/login" component={
-                    () => { return <Login userModule={userModule} /> }
-                } />
-            </Route>
-            <Route component={Layout} onEnter={requireAuth}>
-                <IndexRoute components={{ 
-                    header: DocumentSearch,
-                    headerRight: () => { return <UserInfo userModule={userModule} /> },
-                    content: () => { return <Documents userModule={userModule} tagModule={tagModule} documentModule={documentModule} /> }
-                }} />
-                <Route path="/view/:documentId" components={{
-                    headerRight: () => { return <UserInfo userModule={userModule} /> },
-                    content: (props) => { return <Document documentModule={documentModule} documentId={props.params.documentId} /> }
-                }} />
-            </Route>
-        </Route>
-    </Router>
-), document.getElementById("kokoto"));
+render(<AppContainer />, document.getElementById('kokoto'));

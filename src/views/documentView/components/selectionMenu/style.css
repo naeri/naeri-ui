@@ -1,0 +1,12 @@
+.wrap {
+    position: absolute;
+    padding: 10px;
+    background: #333;
+    color: #fff;
+    border-radius: 5px;
+}
+
+.wrap a {
+    color: #fff;
+    text-decoration: none;
+}
