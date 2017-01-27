@@ -55,7 +55,7 @@ class SelectionMenu extends React.Component {
                 <a onMouseDown={this.onCommentAdding}>
                     <i className="fa fa-comment"></i>
                     {' '}
-                    {context.reply}
+                    {translation.reply}
                 </a>
             </div>
         );
@@ -63,7 +63,7 @@ class SelectionMenu extends React.Component {
 }
 
 SelectionMenu.contextTypes = {
-    translations: React.PropTypes.object
+    translation: React.PropTypes.object
 }
 
 export default SelectionMenu;

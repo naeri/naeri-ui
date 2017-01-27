@@ -91,6 +91,7 @@
     border-radius: 0;
     height: 30px;
     box-shadow: none !important;
+    outline: none;
 }
 
 .tabBtnActive {

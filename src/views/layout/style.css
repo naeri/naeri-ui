@@ -1,13 +1,11 @@
 .header {
     margin-bottom: 20px;
-    height: 50px;
+    height: 90px;
     color: #fff;
-    background: #fff;
-    color: #000;
     position: relative;
 }
 
-.wrap {
+.top {
     composes: wrap from 'commonCss/common.css';
     position: relative;
     display: flex;
@@ -15,25 +13,51 @@
     align-items: center;
     -webkit-justify-content: center;
     justify-content: center;
+    line-height: 90px;
     height: 100%;
 }
 
-.title {
+.leftMenu {
     position: absolute;
-    top: 0;
     left: 0;
-    display: inline-block;
-    text-decoration: none;
-    height: 50px;
-    line-height: 52px;
-    font-size: 20px;
-    color: #000;
+    top: 0;
+    height: 90px;
+    display: flex;
+    -webkit-align-items: center;
+    align-items: center;
 }
 
 .rightMenu {
     position: absolute;
     top: 0;
     right: 0;
+    height: 90px;
+    display: flex;
+    -webkit-align-items: center;
+    align-items: center;
+}
+
+.menuBtn {
+    text-decoration: none;
+    margin-right: 25px;
+    font-size: 20px;
+    color: #000;
+}
+
+.menuBtn i {
+    margin-right: 3px;
+}
+
+.title {
+    margin-bottom: 5px;
     height: 50px;
+    text-decoration: none;
+}
+
+.img {
+    height: 50px;
+}
+
+.rightMenu {
     color: #000;
 }

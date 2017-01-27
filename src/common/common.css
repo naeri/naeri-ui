@@ -3,7 +3,11 @@
     margin: 0 auto;
 }
 
-.wrap::before, .wrap::after {
+.floatWrap {
+    composes: wrap;
+}
+
+.floatWrap::before, .floatWrap::after {
     display: block;
     content: ' ';
     clear: both;

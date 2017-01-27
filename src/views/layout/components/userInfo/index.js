@@ -49,10 +49,17 @@ class UserInfo extends React.Component {
             } else {
                 return (
                     <div className={css.userInfo} onClick={this.logout}>
-                        <img 
-                            src={`${Settings.host}/user/${this.state.id}/picture`} 
-                            className={css.image}/>
-                        {this.state.username}
+                        <div className={css.item}>
+                            <img 
+                                src={`${Settings.host}/user/${this.state.id}/picture`} 
+                                className={css.image}/>
+                            {this.state.username}
+                        </div>
+                        <div className={css.item}>
+                            <i className="fa fa-sign-out" />
+                            {' '}
+                            로그아웃
+                        </div>
                     </div>
                 );
             }
