@@ -4,5 +4,6 @@ export default {
     password: "Password",
     loggingIn: "Logging in..",
     noAccount: "Don't have an account?",
-    join: "Join"
+    join: "Join",
+    welcome: "Welcome"
 };

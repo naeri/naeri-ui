@@ -10,19 +10,27 @@ class Join extends React.Component {
         super(props);
 
         this.state = {
-            username: '',
+            id: '',
+            name: '',
             password: '',
             submitting: false
         }
 
-        this.onUsernameChanged = this.onUsernameChanged.bind(this);
+        this.onIdChanged = this.onIdChanged.bind(this);
+        this.onNameChanged = this.onNameChanged.bind(this);
         this.onPasswordChanged = this.onPasswordChanged.bind(this);
         this.onFormSubmit = this.onFormSubmit.bind(this);
     }
 
-    onUsernameChanged(event) {
+    onIdChanged(event) {
         this.setState({
-            username: event.target.value
+            id: event.target.value
+        });
+    }
+
+    onNameChanged(event) {
+        this.setState({
+            name: event.target.value
         });
     }
 
@@ -40,12 +48,11 @@ class Join extends React.Component {
         });
 
         const userModule = this.context.userModule;
-        const username = this.state.username;
-        const password = this.state.password;
+        const { id, name, password } = this.state;
         let self = this;
 
         try {
-            await userModule.join(username, password);
+            await userModule.join(id, name, password);
             browserHistory.push('/');
         } catch ({ message }) {
             self.setState({
@@ -66,21 +73,39 @@ class Join extends React.Component {
         ) : null;
 
         return (
-            <div className={css.wrap}>
-                <div>
+            <div className={css.flex}>
+                <div className={css.wrap}>
+                    <div className={css.left}>
+                        <h1 className={css.featured}>
+                            {translation.welcome}
+                        </h1>
+                        <footer className={css.leftFooter}>
+                            <a
+                                href="./login"
+                                className={css.link}>
+                                {translation.goBack}
+                            </a> 
+                        </footer>
+                    </div>
                     <form 
-                        className={css.modal}
+                        className={css.right}
                         onSubmit={this.onFormSubmit}>
-                        <div className={css.title}>
+                         <div className={css.title}>
                             {translation.join}
                         </div>
                         {error}
                         <input
                             type="text"
-                            value={this.state.username}
-                            onChange={this.onUsernameChanged}
+                            value={this.state.id}
+                            onChange={this.onIdChanged}
                             placeholder={translation.id}
                             className={css.username} />
+                        <input
+                            type="text"
+                            value={this.state.name}
+                            onChange={this.onNameChanged}
+                            placeholder={translation.name}
+                            className={css.input} />
                         <input
                             type="password"
                             value={this.state.password}
@@ -94,12 +119,7 @@ class Join extends React.Component {
                             { this.state.submitting ? translation.joining : translation.join }
                         </button>
                     </form>
-                    <a
-                        href="./login"
-                        className={css.link}>
-                        {translation.goBack}
-                    </a>
-                </div>
+                </div>  
             </div>
         );
     }

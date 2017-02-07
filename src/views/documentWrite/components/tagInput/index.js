@@ -22,6 +22,10 @@ class TagInput extends React.Component {
         this.onTagUpdated = this.onTagUpdated.bind(this);
         this.onTagRemoved = this.onTagRemoved.bind(this);
     }
+    
+    static contextTypes = {
+        translation: React.PropTypes.object
+    }
 
     onQueryChanged(event) {
         let query = event.target.value;
@@ -107,22 +111,23 @@ class TagInput extends React.Component {
     render() {
         const { translation } = this.context;
 
-        let suggestionList = this.state.suggestions;
+        let { suggestions: suggestionList } = this.state;
         let suggestions = null;
 
         if (suggestionList.length > 0) {
-            suggestions = suggestionList.map((suggestion, index) => {
+            suggestions = suggestionList.reduce((result, suggestion, index) => {
                 let isActive = this.state.selectedIndex == index;
 
-                return (
+                result.push(
                     <li 
-                        key={suggestion.title}
+                        key={index}
                         className={isActive ? css.active : css.li}
                         onMouseDown={this.onAutoCompleteClick.bind(this, suggestion.title)}>
                         {suggestion.title}
                     </li>
                 );
-            });
+                return result;
+            }, []);
 
             suggestions = (
                 <ul className={css.suggestions}>
@@ -160,10 +165,6 @@ class TagInput extends React.Component {
             </div>
         );
     }
-}
-
-TagInput.contextTypes = {
-    translation: React.PropTypes.object
 }
 
 export default TagInput;

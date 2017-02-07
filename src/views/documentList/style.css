@@ -1,38 +1,24 @@
-.searchForm {
-    display: inline-block;
-    position: relative;
-    line-height: 0;
-    padding: 5px;
-    background-color: #eee;
-    border: 2px solid transparent;
-    border-radius: 5px;
-    transition: background .2s, border .2s;
+.wrap {
+    composes: wrap from 'commonCss/grid.css';
 }
 
-.icon {
-    position: absolute;
-    color: #666;
-    top: 6px;
-    left: 8px;
-    font-size: 16px;
-    transition: color .2s;
+.left {
+    composes: small from 'commonCss/grid.css';
+    border-right: 1px solid #ddd;
 }
 
-.documents {
-    margin-left: 15px;
+.right {
+    composes: big from 'commonCss/grid.css';
 }
 
-.userInfo {
-    display: flex;
-    -webkit-align-items: center;
-    align-items: center;
-    height: 50px;
+.title {
+    composes: title from 'commonCss/grid.css';
 }
 
-.image {
-    width: 30px;
-    height: 30px;
-    border-radius: 30px;
-    margin-right: 5px;
-    border: 1px solid #ccc;
+.titleText {
+    composes: titleText from 'commonCss/grid.css';
+}
+
+.buttons {
+    composes: buttons from 'commonCss/grid.css';
 }

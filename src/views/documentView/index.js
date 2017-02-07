@@ -317,7 +317,7 @@ class DocumentView extends React.Component {
                             </div>
                         </header>
                         <section 
-                            className={css.content}
+                            className={css.parsedContent}
                             dangerouslySetInnerHTML={{ __html: document.content }}
                             ref={(section) => { this.contentSection = section; }}
                             key={this.state.contentKey}>

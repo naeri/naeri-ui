@@ -2,21 +2,39 @@ import React from 'react';
 import { browserHistory } from 'react-router';
 import path from 'path';
 
+let language;
+
+if (navigator.language) {
+    language = navigator.language.toLowerCase();
+}
+
+if (navigator.browserLanguage) {
+    language = navigator.browserLanguage.toLowerCase();
+}
+
+if (navigator.languages) {
+    language = navigator.languages[0].toLowerCase();
+}
+
+language = 'en-us';
+
+function getTranslation(translationKey) {
+    const req = require.context('../intl', true, /js$/);
+    let translation;
+            
+    try {
+        translation = req('./' + translationKey + '/' + language + '.js').default;
+    } catch (e) {
+        language = 'en-us';
+        translation = req('./' + translationKey + '/' + language + '.js').default;
+    } finally {
+        translation.lang = language.split('-')[0];                
+    }
+
+    return translation;
+}
+
 export default (routeTable, userModule) => {
-    let language;
-
-    if (navigator.language) {
-        language = navigator.language.toLowerCase();
-    }
-
-    if (navigator.browserLanguage) {
-        language = navigator.browserLanguage.toLowerCase();
-    }
-
-    if (navigator.languages) {
-        language = navigator.languages[0].toLowerCase();
-    }
-
     const requireAuth = async () => {
         let loggedIn = await userModule.getIsLoggedIn();
 
@@ -36,32 +54,17 @@ export default (routeTable, userModule) => {
     const createRoute = (table) => {
         if (!table) {
             return;
-        }
+        }        
 
         return table.map(function formatRoute(route) {
-            let onEnter = null;
+            if (!route) {
+                return;
+            }
+
+            let onEnter = undefined;
             if (route.authed !== null) {
                 onEnter = route.authed ? requireAuth : requireNotAuth;
             }
-
-            const req = require.context('../intl', true, /js$/);
-            let translation;
-            
-            try {
-                translation = req('./' + route.translationKey + '/' + language + '.js').default;
-            } catch (e) { 
-                translation = req('./' + route.translationKey + '/' + 'en-us' + '.js').default
-            }
-
-            Object.keys(route.components || {}).forEach((key) => {
-                let Component = route.components[key];
-
-                route.components[key] = (props) => (
-                    <Component
-                        translation={translation} 
-                        {...props} />
-                );
-            });
 
             let indexRoute;
             for (let i in (route.routes || [])) {
@@ -74,17 +77,35 @@ export default (routeTable, userModule) => {
                 }
             }
 
+            let component = undefined;
+            if (route.component) {
+                let { component: Component, translationKey } = route.component;
+
+                component = (props) => (
+                    <Component 
+                        translation={getTranslation(translationKey)}
+                        {...props} />
+                );
+            }
+
+            Object.keys(route.components || {}).forEach((key) => {
+                let { component: Component, translationKey } = route.components[key];
+
+                route.components[key] = (props) => (
+                    <Component
+                        translation={getTranslation(translationKey)} 
+                        {...props} />
+                );
+            });
+
             return {
                 path: route.path,
-                onEnter: onEnter || undefined,
-                indexRoute: indexRoute ? formatRoute(indexRoute) : undefined,
-                component: route.component ? (props) => (
-                    <route.component 
-                        translation={translation} 
-                        {...props} />
-                ) : undefined,
+                onEnter: onEnter,
+                indexRoute: formatRoute(indexRoute),
+                component: component,
                 components: route.components,
-                childRoutes: createRoute(route.routes)
+                childRoutes: createRoute(route.routes),
+                key: route.key
             }
         });
     }

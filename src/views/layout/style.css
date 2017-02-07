@@ -1,63 +1,85 @@
-.header {
-    margin-bottom: 20px;
-    height: 90px;
-    color: #fff;
-    position: relative;
-}
-
-.top {
-    composes: wrap from 'commonCss/common.css';
-    position: relative;
-    display: flex;
-    -webkit-align-items: center;
-    align-items: center;
-    -webkit-justify-content: center;
-    justify-content: center;
-    line-height: 90px;
+.wrap {
+    margin: 0 auto;
+	display: flex;
+    width: 100%;
+    max-width: 1200px;
     height: 100%;
+    background: #fff;
+    box-shadow: 0 0 3px 3px rgba(0, 0, 0, .2);
 }
 
-.leftMenu {
-    position: absolute;
-    left: 0;
-    top: 0;
-    height: 90px;
-    display: flex;
-    -webkit-align-items: center;
-    align-items: center;
+.sidebar {
+    position: relative;
+    height: 100%;
+    background: #213246;
+    flex-shrink: 0;
+    flex-basis: 200px;
+    border-right: 1px solid #000;
 }
 
-.rightMenu {
+.logo {
     position: absolute;
-    top: 0;
-    right: 0;
-    height: 90px;
-    display: flex;
-    -webkit-align-items: center;
-    align-items: center;
+    opacity: .5;
+    left: 10px;
+    bottom: 10px;
 }
 
 .menuBtn {
+    padding: 0 15px;
+    display: block;
+    color: #a0a0a0;
     text-decoration: none;
-    margin-right: 25px;
     font-size: 20px;
-    color: #000;
+    height: 50px;
+    line-height: 50px;
 }
 
 .menuBtn i {
-    margin-right: 3px;
+    margin-right: 5px;
+    display: inline-block;
+    width: 25px;
+    height: 25px;
+    text-align: center;
 }
 
-.title {
-    margin-bottom: 5px;
+.activeBtn {
+    composes: menuBtn;
+    background: linear-gradient(#3f92e8, #519cea);
+    color: #fff;
+}
+
+.content {
+    flex-grow: 1;
+    box-shadow: -2px 0 4px 2px rgba(0, 0, 0, .2);
+    z-index: 99;
+}
+
+.header {
+    padding: 10px 20px;
+	display: flex;
+    -webkit-align-items: center;
+    align-items: center;
+    -webkit-justify-content: space-between;
+    justify-content: space-between;
     height: 50px;
-    text-decoration: none;
+    background: #eee;
+    border-bottom: 1px solid #ddd;
 }
 
-.img {
-    height: 50px;
+.left {
+    flex-basis: 250px;
 }
 
-.rightMenu {
-    color: #000;
+.communityName {
+    text-align: left;
+    font-size: 20px;
+    color: #666;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.right {
+    flex-shrink: 0;
+    flex-basis: 230px;
 }

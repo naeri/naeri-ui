@@ -15,7 +15,10 @@ module.exports = {
             {
                 test: /\.js$/,
                 loader: 'babel',
-                include: path.join(__dirname, 'src'),
+                include: [
+                    path.join(__dirname, 'src'),
+                    path.dirname(require.resolve('koto-parser'))
+                ],
                 query: {
                     presets: ['react', 'es2015', 'stage-0'],
                     plugins: [['resolver', { resolveDirs: ['src'] }], "transform-async-to-generator"]
@@ -27,13 +30,6 @@ module.exports = {
                     'style', 'css?modules&importLoaders=1&localIdentName=[name]__[local]__[hash:base64:5]'
                 ),
                 include: path.join(__dirname, 'src')
-            },
-            {
-                test: /\.css$/,
-                loader: ExtractTextPlugin.extract(
-                    'style', 'css'
-                ),
-                exclude: path.join(__dirname, 'src')
             }
         ]
     },

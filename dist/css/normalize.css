@@ -437,6 +437,7 @@ a {
     color: #0d64ad;
     text-decoration: underline;
     cursor: pointer;
+    outline: none;
 }
 
 #kokoto {

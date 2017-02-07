@@ -9,41 +9,73 @@ import Layout from 'views/layout';
 import DocumentSearch from 'views/documentSearch';
 import DocumentList from 'views/documentList';
 import DocumentView from 'views/documentView';
+import DocumentWrite from 'views/documentWrite';
 
 const routeTable = [
     {
         path: '/join',
         authed: false,
-        translationKey: 'join',
-        component: Join
+        component:  {
+            component: Join,
+            translationKey: 'join'
+        }
     },
     {
         path: '/login',
         authed: false,
         translationKey: 'login',
-        component: Login
+        component: {
+            component: Login,
+            translationKey: 'login'
+        }
     },
     {
         authed: true,
-        translationKey: 'layout',
-        component: Layout,
+        component: {
+            component: Layout,
+            translationKey: 'layout'
+        },
         routes: [
             {
                 indexRoute: true,
                 authed: true,
-                translationKey: 'documentList',
                 components: {
-                    header: DocumentSearch,
-                    content: DocumentList
-                }
+                    header: {
+                        component: DocumentSearch,
+                        translationKey: 'documentSearch'
+                    },
+                    content: {
+                        component: DocumentList,
+                        translationKey: 'documentList'
+                    }
+                },
+                key: 'documents'
+            },
+            {
+                path: '/write',
+                authed: true,
+                components: {
+                    header: {
+                        component: DocumentSearch,
+                        translationKey: 'documentSearch'
+                    },
+                    content: {
+                        component: DocumentWrite,
+                        translationKey: 'documentWrite'
+                    },
+                },
+                key: 'documents'
             },
             {
                 path: '/view/:documentId',
                 authed: true,
-                translationKey: 'documentView',
                 components: {
-                    content: DocumentView
-                }
+                    content: {
+                        component: DocumentView,
+                        translationKey: 'documentView'
+                    },
+                },
+                key: 'documents'
             }
         ]
     }

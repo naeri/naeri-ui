@@ -1,21 +1,16 @@
-.tags {
-    padding: 2px 5px;
-    padding-right: 90px;
-    background: #fff;
-    line-height: 36px;
-}
-
 .inputWrap {
     position: relative;
     display: inline-block;
 }
 
 .input {
+    margin: 5px 0;
     padding: 0 5px;
-    height: 30px;
-    line-height: 30px;
+    height: 35px;
+    line-height: 35px;
     border: 1px solid #ccc;
     border-radius: 3px;
+    font-size: 20px;
     outline: none;
 }
 

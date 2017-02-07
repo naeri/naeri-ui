@@ -3,12 +3,9 @@ import { Link } from 'react-router';
 import axios from 'axios';
 
 import TagSelector from './components/tagSelector';
-import Form from './components/form';
 import Document from './components/document';
 import Spinner from 'components/spinner';
 
-import columns from 'common/columns.css';
-import commonCss from 'common/common.css';
 import css from './style.css';
 
 class DocumentList extends React.Component {
@@ -32,7 +29,6 @@ class DocumentList extends React.Component {
         };
 
         this.onSelectedTagChanged = this.onSelectedTagChanged.bind(this);
-        this.onDocumentSubmitted = this.onDocumentSubmitted.bind(this);
     }
 
     async componentWillMount() {
@@ -53,20 +49,6 @@ class DocumentList extends React.Component {
             lastDocumentId: null
         }, () => {
             this.loadDocuments();
-        });
-    }
-
-    async onDocumentSubmitted(title, markdown, tags) {
-        const documentModule = this.context.documentModule;
-
-        await documentModule.addDocument(title, markdown, tags)
-         
-        this.setState({
-            selectedTag: null,
-            lastDocumentId: null
-        }, () => {
-            this.loadDocuments();
-            this.reloadTags();
         });
     }
 
@@ -96,7 +78,7 @@ class DocumentList extends React.Component {
         });
     }
 
-    reloadTags() {
+    async reloadTags() {
         let self = this;
         const tagModule = this.context.tagModule;
 
@@ -104,16 +86,17 @@ class DocumentList extends React.Component {
             loadingTags: true
         });
 
-        return tagModule.getTagList()
-            .then(function(tags) {
-                self.setState({
-                    tags: tags,
-                    loadingTags: false
-                });
-            });
+        const tags = await tagModule.getTagList();
+        
+        self.setState({
+            tags: tags,
+            loadingTags: false
+        });
     }
 
     render() {
+        const { translation } = this.props;
+
         let tags = (() => {
             if (this.state.loadingTags) {
                 return (
@@ -146,19 +129,38 @@ class DocumentList extends React.Component {
         })();
 
         return (
-            <div className={commonCss.wrap}>
-                <div className={columns.col3 + ' ' + columns.left}>
+            <div className={css.wrap}>
+                <div className={css.left}>
+                    <div className={css.title}>
+                        <span className={css.titleText}>
+                            {translation.tags}
+                        </span>
+                        <span className={css.buttons}>
+                            <button>
+                                <i className="fa fa-cog" />
+                            </button>
+                        </span>
+                    </div>
                     {tags}
                 </div>
-                <div className={columns.col9 + ' ' + columns.right}>
+                <div className={css.right}>
+                    <div className={css.title}>
+                        <span className={css.titleText}>
+                            {translation.documents}
+                        </span>
+                        <span className={css.buttons}>
+                            <Link to="/write">
+                                <button>
+                                    <i className="fa fa-pencil" />
+                                </button>
+                            </Link>
+                        </span>
+                    </div>
                     <div className={css.documents}>
-                        <Form
-                            tags={this.state.tags}
-                            user={this.state.user}
-                            onDocumentSubmitted={this.onDocumentSubmitted}/>
                         {documents}
                     </div>
                 </div>
+
             </div>
         );
     }

@@ -36,32 +36,40 @@ class Document extends React.Component {
             <div
                 className={css.documentWrap}
                 onClick={this.onClick}>
-                <div className={css.profileImage}>
-                    <img src={`${Settings.host}/user/${document.author.id}/picture`} />
+                <div className={css.userInfo}>
+                    <div className={css.profileImage}>
+                        <img src={`${Settings.host}/user/${document.author.id}/picture`} />
+                    </div>
+                    <div className={css.authorWrap}>
+                        <div className={css.author}>
+                            {document.author.name}
+                            <span className={css.small}>
+                                @{document.author.id}
+                            </span>
+                        </div>
+                        <div className={css.meta}>
+                            <span className={css.updated}>
+                                {moment(document.createdAt).locale(translation.lang).fromNow()}
+                            </span>
+                            { 
+                                tags.length > 0 ? 
+                                <span className={css.tags}>
+                                    {tags}
+                                </span> :
+                                ''
+                            }  
+                        </div>
+                    </div>
                 </div>
+                
                 <div className={css.document}>
-                    <header className={css.header}>
-                        <div className={css.title}>
-                            {document.title}
-                        </div>
-                        <div className={css.tags}>
-                            {tags}
-                        </div>
+                    <header className={css.title}>
+                        {document.title}
                     </header>
-                    <hr className={css.hr} />
                     <div className={css.content}>
                         {document.content.substring(0, 100)}
                         {document.content.length > 100 ? ' ...' : ''}
                     </div>
-                    <footer className={css.footer}>
-                        <i className="fa fa-refresh" />
-                        {' '}
-                        {_.format(
-                            translation.updated, 
-                            document.author.username, 
-                            moment(document.createdAt).format(translation.updatedTimeFormat)
-                        )}
-                    </footer>
                 </div>
             </div>
         )

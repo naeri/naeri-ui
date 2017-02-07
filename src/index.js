@@ -21,15 +21,15 @@ class AppContainer extends React.Component {
         }
     }
 
+    static childContextTypes = {
+        userModule: React.PropTypes.object,
+        tagModule: React.PropTypes.object,
+        documentModule: React.PropTypes.object
+    }
+
     render() {
         return <Router history={browserHistory} routes={routes(userModule)} />;
     }
-}
-
-AppContainer.childContextTypes = {
-    userModule: React.PropTypes.object,
-    tagModule: React.PropTypes.object,
-    documentModule: React.PropTypes.object
 }
 
 render(<AppContainer />, document.getElementById('kokoto'));

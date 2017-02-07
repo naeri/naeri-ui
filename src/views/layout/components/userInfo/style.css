@@ -1,20 +1,53 @@
 .userInfo {
-    font-size: 20px;
+    padding: 15px;
+    height: 40px;
+    color: #a0a0a0;
+    background: #1a2a3a;
+    border-bottom: 1px solid #333;
 }
 
-.item {
-    margin-left: 25px;
-    display: inline-block;
-    -webkit-align-items: center;
-    align-items: center;
+.title {
+    margin-bottom: 10px;
+    font-size: 16px;
+    font-weight: 700;
+    color: #bababa;
 }
 
 .image {
-    margin-bottom: 5px;
-    width: 30px;
-    height: 30px;
-    border-radius: 30px;
-    margin-right: 5px;
-    border: 1px solid #ccc;
+    margin-right: 7px;
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    border-radius: 5px;
     vertical-align: middle;
+}
+
+.id {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.name {
+    width: 120px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.small {
+    color: #a0a0a0;
+    font-size: 12px;
+    font-weight: 400;
+}
+
+.item {
+    margin-right: 10px;
+    color: #a0a0a0;
+    text-decoration: none;
+    transition: color .1s;
+}
+
+.item:hover {
+    color: #bababa;
+    transition: color .1s;
 }

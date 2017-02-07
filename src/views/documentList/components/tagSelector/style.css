@@ -1,13 +1,14 @@
 .input {
-    padding: 7px 10px;
-    width: calc(100% - 22px);
-    border: 1px solid #aaa;
-    border-radius: 3px;
+    padding: 0 20px;
+    width: calc(100% - 40px);
+    height: 40px;
+    line-height: 40px;
+    border: none;
+    border-bottom: 1px solid #ddd;
 }
 
 .tags {
-    margin: 0;
-    margin-top: 10px;
+    margin-top: 5px;
     padding: 0;
     list-style: none;
 }

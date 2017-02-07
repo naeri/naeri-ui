@@ -2,29 +2,28 @@
     display: inline-block;
     position: relative;
     line-height: 0;
-    padding: 5px;
-    background-color: #eee;
-    border: 2px solid transparent;
-    border-radius: 5px;
+    background-color: #fff;
+    border: 2px solid #ddd;
     transition: background .2s, border .2s;
 }
 
 .icon {
     position: absolute;
     color: #666;
-    top: 6px;
-    left: 8px;
+    top: 12px;
+    left: 12px;
     font-size: 16px;
     transition: color .2s;
 }
 
 .input {
+    margin-left: 45px;
+    padding: 12px 0;
     border: none;
     outline: none;
     font-size: 16px;
-    text-align: center;
-    margin: 0 20px;
-    width: 250px;
+    text-align: left;
+    width: 500px;
     background: transparent;
     color: #666;
     transition: color .2s;
@@ -49,7 +48,8 @@
 .selectedForm {
     composes: searchForm;
     background-color: #fff;
-    border: 2px solid #eee;
+    color: #000;
+    border: 2px solid #ccc;
     transition: background .2s, border .2s;
 }
 

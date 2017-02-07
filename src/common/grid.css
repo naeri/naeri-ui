@@ -1,0 +1,55 @@
+.wrap {
+	display: flex;
+    width: 100%;
+    height: calc(100% - 91px);
+}
+
+.big {
+    flex-grow: 1;
+    height: 100%;
+}
+
+.small {
+    flex-shrink: 0;
+    flex-basis: 250px;
+    height: 100%;
+}
+
+.title {
+    position: relative;
+    height: 50px;
+    line-height: 50px;
+    font-size: 20px;
+    color: #666;
+    border-bottom: 1px solid #ddd;
+}
+
+.titleText {
+    padding: 0 20px;
+}
+
+.buttons {
+    position: absolute;
+    right: 15px;
+    top: 0;
+    bottom: 0;
+}
+
+.buttons button {
+    min-width: 30px;
+    height: 30px;
+    line-height: 30px;
+    background: linear-gradient(#3f92e8, #519cea);
+    border: none;
+    vertical-align: middle;
+    color: #fff;
+    font-size: 16px;
+    border-radius: 40px;
+    text-align: center;
+    transition: background .1s;
+    outline: none;
+}
+
+.buttons button:hover {
+    background: linear-gradient(#519cea, #62a6ec);
+}

@@ -1,14 +1,16 @@
 .wrap {
     display: inline-block;
+    margin: 5px 0;
 }
 
 .tagItem {
     position: relative;
-    margin-right: 5px;
-    padding: 0 20px 0 5px;
+    margin-right: 7px;
+    padding: 0 25px 0 5px;
     display: inline-block;
-    height: 30px;
-    line-height: 30px;
+    height: 35px;
+    line-height: 35px;
+    font-size: 20px;
     color: #fff;
     border-radius: 3px;
 }
@@ -20,11 +22,11 @@
 .removeBtn {
     position: absolute;
     top: 0;
-    right: 0;
+    right: 5px;
     display: inline-block;
-    height: 30px;
+    height: 35px;
     width: 20px;
-    line-height: 30px;
+    line-height: 35px;
     text-align: center;
     cursor: pointer;
 }
@@ -36,7 +38,7 @@
     right: 0;
     bottom: 0;
     background: rgba(0, 0, 0, .3);
-    display: flex;
+	display: flex;
     -webkit-align-items: center;
     align-items: center;
     -webkit-justify-content: center;

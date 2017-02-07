@@ -67,13 +67,25 @@ class Login extends React.Component {
         ) : null;
 
         return (
-            <div className={css.wrap}>
-                <div>
+            <div className={css.flex}>
+                <div className={css.wrap}>
+                    <div className={css.left}>
+                        <h1 className={css.featured}>
+                            {translation.welcome}
+                        </h1>
+                        <footer className={css.leftFooter}>
+                            <a
+                                href="./join"
+                                className={css.link}>
+                                {translation.noAccount} <b>{translation.join}</b>
+                            </a> 
+                        </footer>
+                    </div>
                     <form 
-                        className={css.modal}
+                        className={css.right}
                         onSubmit={this.onFormSubmit}>
                         <div className={css.title}>
-                            Kokoto
+                            {translation.login}
                         </div>
                         {error}
                         <input
@@ -95,12 +107,7 @@ class Login extends React.Component {
                             { this.state.submitting ? translation.loggingIn : translation.login }
                         </button>
                     </form>
-                    <a
-                        href="./join"
-                        className={css.link}>
-                        {translation.noAccount} <b>{translation.join}</b>
-                    </a>
-                </div>
+                </div>  
             </div>
         );
     }

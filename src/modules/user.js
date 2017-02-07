@@ -25,10 +25,10 @@ class UserModule {
         return await this.updateStatus();
     }
 
-    async login(username, password) {
+    async login(id, password) {
         try {
             let { data: result } = await axios.put(`${Settings.host}/session`, {
-                username: username,
+                id: id,
                 password: password
             });
 
@@ -37,7 +37,11 @@ class UserModule {
 
             return this.user;
         } catch (e) {
-            throw e.response.data.error;
+            if (e.response.data) {
+                throw e.response.data.error;
+            } else {
+                throw new Error('');
+            }
         }
     }
 
@@ -52,10 +56,11 @@ class UserModule {
         }
     }
 
-    async join(username, password) {
+    async join(id, name, password) {
         try {
             let { data: result } = await axios.post(`${Settings.host}/user`, {
-                username: username,
+                id: id,
+                name: name,
                 password: password
             });
             
