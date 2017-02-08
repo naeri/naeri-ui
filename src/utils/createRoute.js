@@ -16,8 +16,6 @@ if (navigator.languages) {
     language = navigator.languages[0].toLowerCase();
 }
 
-language = 'en-us';
-
 function getTranslation(translationKey) {
     const req = require.context('../intl', true, /js$/);
     let translation;

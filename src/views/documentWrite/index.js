@@ -6,6 +6,7 @@ import Parser from 'koto-parser';
 import Settings from 'settings';
 import TagInput from './components/tagInput';
 import ResizeAnimationButton from 'components/resizeAnimationButton';
+import Editor from './components/editor';
 
 import css from './style.css';
 
@@ -154,11 +155,9 @@ class DocumentWrite extends React.Component {
                     onChange={(event) => this.setState({ title: event.target.value })}
                     placeholder={translation.whatTitle} />
                 <div className={css.contentWrap}>
-                    <textarea
-                        className={css.editor}
+                    <Editor
                         value={this.state.text}
-                        onChange={(event) => this.setState({ text: event.target.value })}
-                        placeholder={translation.whatContent} />
+                        onChange={(event) => this.setState({ text: event.target.value })} />
                 </div>
                 <div className={css.tagWrap}>
                     <div className={css.tagInputWrap}>

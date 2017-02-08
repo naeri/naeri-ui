@@ -8,4 +8,6 @@ export default {
     tagName: "Tag name",
     tagColor: "Tag color",
     edit: "Edit",
+    write: "Write",
+    preview: "Preview",
 };

@@ -8,4 +8,6 @@ export default {
     tagName: "태그 이름",
     tagColor: "태그 색상",
     edit: "변경",
+    write: "쓰기",
+    preview: "보기",
 };

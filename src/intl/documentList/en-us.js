@@ -1,8 +1,4 @@
 export default {
-    noTitle: "No title",
-    pleaseWriteContent: "No content specified.",
-    write: "Write",
-    preview: "Preview",
     publishing: "Publishing..",
     publish: "Publish",
     searchTag: "Search tag",

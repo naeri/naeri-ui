@@ -1,0 +1,86 @@
+.button {
+    margin-right: 5px;
+    padding: 0 7px;
+    display: inline-block;
+    max-width: 30px;
+    height: 30px;
+    line-height: 30px;
+    cursor: pointer;
+    box-sizing: border-box;
+    transition: color .1s;
+}
+
+.button:hover {
+    color: #519cea;
+}
+
+.sep {
+    display: inline-block;
+    width: 7px;
+    text-align: center;
+    position: relative;
+}
+
+.wrap {
+    display: flex;
+    height: 100%;
+    background: #fafafa;
+}
+
+.left, .right {
+    flex-grow: 1;
+    flex-shrink: 0;
+    flex-basis: 50%;
+    height: 100%;
+}
+
+.left {
+    flex-basis: calc(50% - 1px);
+    border-right: 1px solid #ddd;
+}
+
+.title {
+    margin-top: 15px;
+    padding: 0 20px;
+    height: 30px;
+    line-height: 30px;
+    position: relative;
+    color: #666;
+    overflow: hidden;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.menu {
+    flex-grow: 1;
+    flex-shrink: 0;
+    flex-basis: 0;
+}
+
+.buttonTitle {
+    composes: title;
+    padding-left: 13px;
+}
+
+.text {
+    margin-left: 10px;
+    flex-shrink: 0;
+    flex-grow: 0;
+}
+
+.textarea {
+    padding: 15px 20px;
+    width: calc(100% - 40px);
+    height: calc(100% - 85px);
+    border: none;
+    resize: none;
+    outline: none;
+    background: none;
+    font-family: monospace;
+}
+
+.container {
+    padding: 15px 20px;
+    padding-top: 5px;
+    height: calc(100% - 65px);
+}
