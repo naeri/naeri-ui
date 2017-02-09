@@ -59,9 +59,10 @@
 
 .tag {
     display: inline-block;
-    padding: 2px 3px;
+    padding: 3px 5px;
     vertical-align: middle;
     color: #fff;
+    font-size: 12px;
 }
 
 .tag:first-child {

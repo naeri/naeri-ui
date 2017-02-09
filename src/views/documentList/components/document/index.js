@@ -67,8 +67,8 @@ class Document extends React.Component {
                         {document.title}
                     </header>
                     <div className={css.content}>
-                        {document.content.substring(0, 100)}
-                        {document.content.length > 100 ? ' ...' : ''}
+                        {document.content.substring(0, 200)}
+                        {document.content.length > 200 ? ' ...' : ''}
                     </div>
                 </div>
             </div>

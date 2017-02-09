@@ -74,7 +74,7 @@
 
 .input {
     padding: 10px;
-    width: calc(100% - 22px);
+    width: 100%;
     font-size: 18px;
     border: 1px solid #ccc;
     border-bottom: none;

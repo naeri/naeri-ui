@@ -40,12 +40,15 @@
     width: 25px;
     height: 25px;
     text-align: center;
+    outline: none;
 }
 
 .activeBtn {
     composes: menuBtn;
     background: linear-gradient(#3f92e8, #519cea);
     color: #fff;
+    border-top: 1px solid #000;
+    border-bottom: 1px solid #000;
 }
 
 .content {
@@ -61,7 +64,7 @@
     align-items: center;
     -webkit-justify-content: space-between;
     justify-content: space-between;
-    height: 50px;
+    height: 70px;
     background: #eee;
     border-bottom: 1px solid #ddd;
 }
