@@ -6,25 +6,219 @@ import css from './style.css';
 const CTRL = 'ctrl';
 const SHIFT = 'shift';
 
+const buttons = [
+    {
+        icon: {
+            text: <b>B</b>
+        },
+        key: {
+            specialKeys: [ CTRL ],
+            key: 'b'
+        },
+        text: {
+            leadingText: '**',
+            trailingText: '**',
+            defaultText: '굵게'
+        }
+    },
+    {
+        icon: {
+            text: <i>i</i>
+        },
+        key: {
+            specialKeys: [ CTRL ],
+            key: 'i'
+        },
+        text: {
+            leadingText: '*',
+            trailingText: '*',
+            defaultText: '기울여서'
+        }
+    },
+    {
+        icon: {
+            text: <u>U</u>
+        },
+        key: {
+            specialKeys: [ CTRL ],
+            key: 'u'
+        },
+        text: {
+            leadingText: '__',
+            trailingText: '__',
+            defaultText: '밑줄'
+        }
+    },
+    {
+        icon: {
+            text: <strike>S</strike>
+        },
+        key: {
+            specialKeys: [ CTRL, SHIFT ],
+            key: 's'
+        },
+        text: {
+            leadingText: '~~',
+            trailingText: '~~',
+            defaultText: '취소선'
+        }
+    },
+    {
+        separate: true
+    },
+    { 
+        icon: {
+            icon: 'image'
+        },
+        key: {
+            specialKeys: [ CTRL, SHIFT ],
+            key: 'i'
+        },
+        text: {
+            leadingText: '![](',
+            trailingText: ')',
+            defaultText: '이미지 링크'
+        }
+    },
+    { 
+        icon: {
+            icon: 'file-text-o'
+        },
+        key: {
+            specialKeys: [ CTRL, SHIFT ],
+            key: 'f'
+        },
+        text: {
+            leadingText: '#[](',
+            trailingText: ')',
+            defaultText: '파일 링크'
+        }
+    },
+    { 
+        icon: {
+            icon: 'link'
+        },
+        key: {
+            specialKeys: [ CTRL, SHIFT ],
+            key: 'k'
+        },
+        text: {
+            leadingText: '[](',
+            trailingText: ')',
+            defaultText: '링크'
+        }
+    },
+    {
+        separate: true
+    },
+    { 
+        icon: {
+            text: 'H1'
+        },
+        key: {
+            specialKeys: [ CTRL ],
+            key: 'h'
+        },
+        text: {
+            leadingText: '\n\n# ',
+            trailingText: '\n',
+            defaultText: '큰 제목'
+        }
+    },
+    { 
+        icon: {
+            text: 'H2'
+        },
+        key: {
+            specialKeys: [ CTRL, SHIFT ],
+            key: 'h'
+        },
+        text: {
+            leadingText: '\n\n## ',
+            trailingText: '\n',
+            defaultText: '중간 제목'
+        }
+    },
+    { 
+        icon: {
+            icon: 'quote-left'
+        },
+        key: {
+            specialKeys: [ CTRL ],
+            key: 'q'
+        },
+        text: {
+            leadingText: '\n\n> ',
+            trailingText: '\n\n',
+            defaultText: '인용문'
+        }
+    },
+    { 
+        icon: {
+            icon: 'list'
+        },
+        key: {
+            specialKeys: [ CTRL ],
+            key: 'l'
+        },
+        text: {
+            leadingText: '\n\n* ',
+            trailingText: '\n\n',
+            defaultText: '순서 없는 목록'
+        }
+    },
+    { 
+        icon: {
+            icon: 'list-ol'
+        },
+        key: {
+            specialKeys: [ CTRL, SHIFT ],
+            key: 'l'
+        },
+        text: {
+            leadingText: '\n\n1. ',
+            trailingText: '\n\n',
+            defaultText: '순서 있는 목록'
+        }
+    }
+];
+
 function insertAndCreateRange(textarea, startStr, endStr, defaultValue) {
     const { value } = textarea;
 
-    const startPos = textarea.selectionStart;
-    const endPos = textarea.selectionEnd;
+    let startPos = textarea.selectionStart;
+    let endPos = textarea.selectionEnd;
     
-    const start = value.substring(0, startPos);
-    const middle = value.substring(startPos, endPos);
-    const end = value.substring(endPos);
+    let start = value.substring(0, startPos);
+    let middle = value.substring(startPos, endPos);
+    let end = value.substring(endPos);
 
-    let text = '';
-    if (middle === '') {
-        text = defaultValue;
+    if (start.slice(-startStr.length, ) === startStr) {
+        start = start.substring(0, start.length - startStr.length);
+        console.log(start);
+        startPos -= startStr.length;
+        endPos -= startStr.length;
+    } else {
+        start += startStr;
+        startPos += startStr.length;
+        endPos += startStr.length;
     }
 
-    textarea.value = start + startStr + middle + text + endStr + end;
+    if (middle === '') {
+        middle = defaultValue;
+        endPos += defaultValue.length;
+    }
 
-    textarea.selectionStart = startPos + startStr.length;
-    textarea.selectionEnd = endPos + startStr.length + text.length;
+    if (end.substring(0, endStr.length) === endStr) {
+        end = end.substring(endStr.length);
+    } else {
+        end = endStr + end;
+    }
+
+    textarea.value = start + middle + end;
+
+    textarea.selectionStart = startPos;
+    textarea.selectionEnd = endPos;
 }
 
 const Button = ({ icon: _icon, onClick, title }) => {
@@ -51,119 +245,33 @@ class Editor extends React.Component {
         super(props);
 
         this.state = {
-            parsedValue: props.value
+            parsedValue: props.value,
+            textareaHover: false,
+            previewHover: false
         };                        
 
-        this.buttons = [
-            {
-                icon: {
-                    text: <b>B</b>
-                },
-                specialKeys: [ CTRL ],
-                key: 'b',
-                onClick: () => this.onInsert('**', '**', '굵게')
-            },
-            {
-                icon: {
-                    text: <i>i</i>
-                },
-                specialKeys: [ CTRL ],
-                key: 'i',
-                onClick: () => this.onInsert('*', '*', '기울여서')
-            },
-            {
-                icon: {
-                    text: <u>U</u>
-                },
-                specialKeys: [ CTRL ],
-                key: 'u',
-                onClick: () => this.onInsert('__', '__', '밑줄')
-            },
-            {
-                icon: {
-                    text: <strike>S</strike>
-                },
-                specialKeys: [ CTRL, SHIFT ],
-                key: 's',
-                onClick: () => this.onInsert('~~', '~~', '취소선')
-            },
-            {
-                separate: true
-            },
-            { 
-                icon: {
-                    icon: 'image'
-                },
-                specialKeys: [ CTRL, SHIFT ],
-                key: 'i',
-                onClick: () => this.onInsert('![](', ')', '이미지 링크')
-            },
-            { 
-                icon: {
-                    icon: 'file-text-o'
-                },
-                specialKeys: [ CTRL, SHIFT ],
-                key: 'f',
-                onClick: () => this.onInsert('#[](', ')', '파일 링크')
-            },
-            { 
-                icon: {
-                    icon: 'link'
-                },
-                specialKeys: [ CTRL, SHIFT ],
-                key: 'k',
-                onClick: () => this.onInsert('[](', ')', '링크')
-            },
-            {
-                separate: true
-            },
-            { 
-                icon: {
-                    text: 'H1'
-                },
-                specialKeys: [ CTRL ],
-                key: 'h',
-                onClick: () => this.onInsert('\n\n# ', '\n', '큰 제목')
-            },
-            { 
-                icon: {
-                    text: 'H2'
-                },
-                specialKeys: [ CTRL, SHIFT ],
-                key: 'h',
-                onClick: () => this.onInsert('\n\n## ', '\n', '중간 제목')
-            },
-                { 
-                icon: {
-                    icon: 'quote-left'
-                },
-                specialKeys: [ CTRL ],
-                key: 'q',
-                onClick: () => this.onInsert('\n\n> ', '\n\n', '인용문')
-            },
-            { 
-                icon: {
-                    icon: 'list'
-                },
-                specialKeys: [ CTRL ],
-                key: 'l',
-                onClick: () => this.onInsert('\n\n* ', '\n\n', '순서 없는 목록')
-            },
-            { 
-                icon: {
-                    icon: 'list-ol'
-                },
-                specialKeys: [ CTRL, SHIFT ],
-                key: 'l',
-                onClick: () => this.onInsert('\n\n1. ', '\n\n', '순서 있는 목록')
-            },
-        ];
-
         this.onKeyDown = this.onKeyDown.bind(this);
+        this.onScroll = this.onScroll.bind(this);
     }
-
+    
     static contextTypes = {
         translation: React.PropTypes.object
+    }
+
+    componentWillMount() {
+        this.buttons = buttons.map((button) => {
+            if (button.separate) {
+                return button;
+            }
+
+            const { leadingText, trailingText, defaultText } = button.text;
+
+            return {
+                icon: button.icon,
+                key: button.key,
+                onClick: () => this.onInsert(leadingText, trailingText, defaultText)
+            }
+        });
     }
 
     componentDidMount() {
@@ -188,18 +296,20 @@ class Editor extends React.Component {
                 return true;
             }
 
-            if (button.specialKeys.includes(CTRL) && !ctrlKey) {
+            const { key: buttonKey } = button;
+
+            if (buttonKey.specialKeys.includes(CTRL) && !ctrlKey) {
                 return true;
             }
 
-            if (button.specialKeys.includes(SHIFT) && !shiftKey) {
+            if (buttonKey.specialKeys.includes(SHIFT) && !shiftKey) {
                 return true;
             }
 
             let code = charCode || keyCode;
             let keyStr = String.fromCharCode(code);
 
-            if (button.key !== keyStr.toLowerCase()) {
+            if (buttonKey.key !== keyStr.toLowerCase()) {
                 return true;
             }
 
@@ -222,6 +332,19 @@ class Editor extends React.Component {
         });
     }
 
+    onScroll(event) {
+        const { textareaHover, previewHover } = this.state;
+        
+        const { scrollTop, scrollHeight, offsetHeight } = event.target;
+        const ratio = scrollTop / (scrollHeight - offsetHeight);
+
+        if (textareaHover) {
+            this.preview.scrollTop = (this.preview.scrollHeight - this.preview.offsetHeight) * ratio;
+        } else {
+            this.textarea.scrollTop = (this.textarea.scrollHeight - this.textarea.offsetHeight) * ratio;
+        }
+    }
+
     updateParsedValue(value) {
         Parser.render(value, (error, result) => {
             if (error) {
@@ -239,12 +362,12 @@ class Editor extends React.Component {
         const { parsedValue } = this.state;
         const { translation } = this.context;
 
-        const buttons = this.buttons.map((item, i) => {
-            if (item.separate) {
+        const buttons = this.buttons.map((button, i) => {
+            if (button.separate) {
                 return <span key={i} className={css.sep} />;
             }
 
-            const { specialKeys, key } = item;
+            const { specialKeys, key } = button.key;
             let title = '';
 
             if (specialKeys.includes(CTRL)) {
@@ -257,7 +380,7 @@ class Editor extends React.Component {
 
             title += key.toUpperCase();
 
-            return <Button key={i} icon={item.icon} onClick={item.onClick} title={title} />
+            return <Button key={i} icon={button.icon} onClick={button.onClick} title={title} />;
         });
 
         return (
@@ -276,6 +399,9 @@ class Editor extends React.Component {
                         value={value}
                         onKeyDown={this.onKeyDown}
                         onChange={(event) => this.props.onChange(event)}
+                        onMouseEnter={(event) => this.setState({ textareaHover: true })}
+                        onMouseLeave={(event) => this.setState({ textareaHover: false })}
+                        onScroll={this.onScroll}
                         ref={(textarea) => this.textarea = textarea}
                         placeholder={translation.whatContent} />
                 </div>
@@ -288,7 +414,11 @@ class Editor extends React.Component {
                     </div>
                     <div 
                         className={css.container}
-                        dangerouslySetInnerHTML={{ __html: parsedValue }} />
+                        dangerouslySetInnerHTML={{ __html: parsedValue }}
+                        onMouseEnter={(event) => this.setState({ previewHover: true })}
+                        onMouseLeave={(event) => this.setState({ previewHover: false })}
+                        onScroll={this.onScroll} 
+                        ref={(container) => this.preview = container}/>
                 </div>
             </div>
         )

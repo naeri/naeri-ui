@@ -82,4 +82,13 @@
 .right {
     flex-shrink: 0;
     flex-basis: 230px;
+    text-align: right;
+}
+
+.item {
+    margin-left: 10px;
+    display: inline-block;
+    font-size: 18px;
+    text-decoration: none;
+    color: #666;
 }

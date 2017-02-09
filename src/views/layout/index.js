@@ -2,7 +2,6 @@ import React from 'react';
 import { Link } from 'react-router';
 
 import UserInfo from './components/userInfo';
-import UserButtons from './components/userButtons';
 import SiteName from './components/siteName';
 
 import css from './style.css';
@@ -56,7 +55,16 @@ class Layout extends React.Component {
                             </div>
                         </div>
                         <div className={css.right}>
-                            <UserButtons />
+                            <a className={css.item}>
+                                <i className="fa fa-cog" />
+                                {' '}
+                                {translation.settings}
+                            </a>
+                            <a className={css.item} onClick={this.logout}>
+                                <i className="fa fa-sign-out" />
+                                {' '}
+                                {translation.logout}
+                            </a>
                         </div>
                     </div>
                     {content}
