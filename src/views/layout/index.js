@@ -1,7 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router';
+
 import UserInfo from './components/userInfo';
 import UserButtons from './components/userButtons';
+import SiteName from './components/siteName';
 
 import css from './style.css';
 
@@ -49,7 +51,9 @@ class Layout extends React.Component {
                 <div className={css.content}>
                     <div className={css.header}>
                         <div className={css.left}>
-                            <div className={css.communityName}>샘플 커뮤니티</div>
+                            <div className={css.communityName}>
+                                <SiteName />
+                            </div>
                         </div>
                         <div className={css.right}>
                             <UserButtons />

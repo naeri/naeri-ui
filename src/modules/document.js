@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import Settings from '../settings.js';
+import Settings from 'settings';
 
 class DocumentModule {
     getHasMoreDocuments(tagId) {
