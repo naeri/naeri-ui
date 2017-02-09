@@ -1,6 +1,6 @@
 export default {
     cannotFind: "Couldn't load the article.",
-    goBack: "Go back to list",
+    toList: "List",
     edit: "Edit",
     history: "History",
     delete: "Delete",

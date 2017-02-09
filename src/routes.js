@@ -40,10 +40,6 @@ const routeTable = [
                 indexRoute: true,
                 authed: true,
                 components: {
-                    header: {
-                        component: DocumentSearch,
-                        translationKey: 'documentSearch'
-                    },
                     content: {
                         component: DocumentList,
                         translationKey: 'documentList'
@@ -55,16 +51,22 @@ const routeTable = [
                 path: '/write',
                 authed: true,
                 components: {
-                    header: {
-                        component: DocumentSearch,
-                        translationKey: 'documentSearch'
-                    },
                     content: {
                         component: DocumentWrite,
                         translationKey: 'documentWrite'
                     },
                 },
                 key: 'documents'
+            },
+            {
+                path: '/edit/:documentId',
+                authed: true,
+                components: {
+                    content: {
+                        component: DocumentWrite,
+                        translationKey: 'documentWrite'
+                    }
+                }
             },
             {
                 path: '/view/:documentId',

@@ -1,6 +1,6 @@
 export default {
     cannotFind: "해당 게시물을 불러올 수 없습니다.",
-    goBack: "목록으로 돌아가기",
+    toList: "목록으로",
     edit: "수정",
     history: "역사",
     delete: "지우기",

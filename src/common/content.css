@@ -1,0 +1,17 @@
+.content {
+    line-height: 160%;
+}
+
+.content h1 {
+    margin: 20px 0 18px 0;
+    padding-bottom: 7px;
+    font-weight: 400;
+    border-bottom: 1px dotted rgba(0, 0, 0, .5);
+    font-size: 22px;
+}
+
+.content h2 {
+    margin-top: 15px;
+    font-size: 18px;
+    font-weight: 400;
+}

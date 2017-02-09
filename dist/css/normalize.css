@@ -452,3 +452,7 @@ input {
 * {
     box-sizing: border-box;
 }
+
+del {
+    color: #666;
+}

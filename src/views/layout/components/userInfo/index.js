@@ -51,7 +51,7 @@ class UserInfo extends React.Component {
                 <div>
                     <div className={css.title}>
                         <img 
-                            src={`${Settings.host}/user/${this.state.user}/picture`} 
+                            src={`${Settings.host}/user/${this.state.user.id}/picture`} 
                             className={css.image}/>
                         <div className={css.id}>
                             <div className={css.name}>

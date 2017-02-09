@@ -35,34 +35,45 @@ class DocumentModule {
     }
 
     async addDocument(title, content, tags) {
-        let self = this;
+        try {
+            const { data: result } = await axios.post(`${Settings.host}/document`, {
+                title: title,
+                content: content,
+                tags: tags
+            });
 
-        return await axios.post(`${Settings.host}/document`, {
-            title: title,
-            content: content,
-            tags: tags
-        }).then(function(result) {
-            result = result.data;
+            return result.document.id;
+        } catch (e) {
+            throw e.response.data.error;
+        }
+    }
 
-            if (result.error) {
-                return Promise.reject(result.error.message);
-            }
-        });
+    async editDocument(documentId, title, content, tags) {
+        try {
+            const { data: result } = await axios.put(`${Settings.host}/document/${documentId}`, {
+                title: title,
+                content: content,
+                tags: tags
+            });
+
+            return result.document.id;
+        } catch (e) {
+            throw e.response.data.error;
+        }
     }
 
     async getDocument(documentId) {
-        let self = this;
+        if (!documentId) {
+            return {};
+        }
 
-        return await axios.get(`${Settings.host}/document/${documentId}`)
-            .then(function(result) {
-                result = result.data;
+        try {
+            const { data: result } = await axios.get(`${Settings.host}/document/${documentId}`);
 
-                if (result.error) {
-                    return Promise.reject(result.error.message);
-                }
-
-                return result.document;
-            });
+            return result.document;
+        } catch (e) {
+            return e.response.result.error;
+        }
     }
 
     async addComment(documentId, tagInfo) {

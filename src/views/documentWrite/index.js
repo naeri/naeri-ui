@@ -16,10 +16,11 @@ class DocumentWrite extends React.Component {
 
         this.state = {
             title: '',
-            text: '',
-            parsedText: '',
+            content: '',
+            parsedContent: '',
             tags: [],
             suggestions: [],
+            documentId: undefined,
             writeMode: true,
             submitting: false
         };
@@ -46,11 +47,19 @@ class DocumentWrite extends React.Component {
     }
 
     async componentDidMount() {
-        const { tagModule } = this.context;
+        const { documentModule, tagModule } = this.context;
+        const { documentId } = this.props.params;
 
-        let suggestions = await tagModule.getTagList();
+        let [document, suggestions] = await Promise.all([
+            documentModule.getDocument(documentId),
+            tagModule.getTagList()
+        ]);
 
         this.setState({
+            title: document.title,
+            content: document.content,
+            tags: document.tags,
+            documentId: document.id,
             suggestions: suggestions
         });
     }
@@ -127,15 +136,22 @@ class DocumentWrite extends React.Component {
         }
 
         const { documentModule } = this.context;
-        const { title, text, tags } = this.state;
+        const { title, content, tags, documentId } = this.state;
 
         this.setState({
             submitting: true
         });
 
         try {
-            await documentModule.addDocument(title, text, tags);
-            browserHistory.push('/');
+            let id;
+
+            if (!documentId) {
+                id = await documentModule.addDocument(title, content, tags);
+            } else {
+                id = await documentModule.editDocument(documentId, title, content, tags);
+            }
+
+            browserHistory.push(`/view/${id}`);
         } catch (e) {
             this.setState({
                 submitting: false
@@ -156,8 +172,8 @@ class DocumentWrite extends React.Component {
                     placeholder={translation.whatTitle} />
                 <div className={css.contentWrap}>
                     <Editor
-                        value={this.state.text}
-                        onChange={(event) => this.setState({ text: event.target.value })} />
+                        value={this.state.content}
+                        onChange={(event) => this.setState({ content: event.target.value })} />
                 </div>
                 <div className={css.tagWrap}>
                     <div className={css.tagInputWrap}>

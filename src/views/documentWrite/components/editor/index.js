@@ -298,11 +298,13 @@ class Editor extends React.Component {
 
             const { key: buttonKey } = button;
 
-            if (buttonKey.specialKeys.includes(CTRL) && !ctrlKey) {
+            if ((buttonKey.specialKeys.includes(CTRL) && !ctrlKey) ||
+                (!buttonKey.specialKeys.includes(CTRL) && ctrlKey)) {
                 return true;
             }
 
-            if (buttonKey.specialKeys.includes(SHIFT) && !shiftKey) {
+            if ((buttonKey.specialKeys.includes(SHIFT) && !shiftKey) ||
+                (!buttonKey.specialKeys.includes(SHIFT) && shiftKey)) {
                 return true;
             }
 
