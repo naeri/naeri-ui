@@ -25,6 +25,7 @@
     "css-loader": "^0.26.1",
     "extract-text-webpack-plugin": "^1.0.1",
     "flexibility": "^1.0.6",
+    "fontfaceobserver": "^2.0.8",
     "hangul-js": "^0.2.2",
     "koto-parser": "^0.2.7",
     "moment": "^2.17.1",

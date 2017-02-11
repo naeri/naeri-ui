@@ -12,7 +12,7 @@ class CommentView extends React.Component {
             expand: false
         }
 
-        this.toggleExpand = this.toggleExpand.bind(this);
+        this.onExpand = this.onExpand.bind(this);
         this.onHighlightComment = this.onHighlightComment.bind(this);
         this.onDehighlightComment = this.onDehighlightComment.bind(this);
     }
@@ -21,10 +21,8 @@ class CommentView extends React.Component {
         translation: React.PropTypes.object
     }
 
-    toggleExpand() {
-        this.setState({
-            expand: !this.state.expand
-        });
+    onExpand() {
+        this.props.onExpand(this.props.top)
     }
 
     onHighlightComment(range, event) {
@@ -37,38 +35,41 @@ class CommentView extends React.Component {
 
     render() {
         const { translation } = this.context;
+        const { show, expand, comments: _comments } = this.props;
 
-        if (!this.props.show) {
+        if (!show) {
             return null;
         }
 
-        if (!this.state.expand) {
+        if (!expand) {
             return (
                 <div
                     className={css.wrap}
-                    style={{ top: Math.round(this.props.top) - 5 }}>
+                    style={{ top: Math.round(this.props.top) }}>
                     <span 
                         className={css.count}
-                        onClick={this.toggleExpand}>
+                        onClick={this.onExpand}>
                         {this.props.comments.length}
                     </span>
                 </div>
             )
         }
 
-        const comments = this.props.comments.map((comment) => (
+        const comments = _comments.map((comment) => (
             <div
                 className={css.comment}
                 key={comment.id}
                 onMouseOver={() => this.onHighlightComment(comment.range)}
                 onMouseLeave={this.onDehighlightComment}>
-                <div className={css.author}>
-                    <b>{comment.author.name}</b>
+                <div className={css.meta}>
+                    <b className={css.author}>{comment.author.name}</b>
                     <span className={css.small}>
                         {moment(comment.createdAt).format(translation.updatedTimeFormat)}
                     </span>
                 </div>
-                {comment.content}
+                <div className={css.content}>
+                    {comment.content}
+                </div>
             </div>
         ));
 
@@ -80,7 +81,7 @@ class CommentView extends React.Component {
                     {translation.commentList}
                     <a
                         className={css.close}
-                        onClick={this.toggleExpand}>
+                        onClick={this.onExpand}>
                         &times;
                     </a>
                 </header>

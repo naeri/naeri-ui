@@ -2,6 +2,7 @@ import React from 'react';
 import { findDOMNode } from 'react-dom';
 import { browserHistory } from 'react-router';
 import ClickOutside from 'react-click-outside';
+import FontObserver from 'fontfaceobserver';
 
 import Spinner from 'components/spinner';
 import SelectionMenu from './components/selectionMenu';
@@ -50,6 +51,7 @@ class DocumentView extends React.Component {
             selection: null,
             showSelectionMenu: false,
             showCommentForm: false,
+            expandCommentTop: -1,
             comments: null
         };
 
@@ -60,6 +62,7 @@ class DocumentView extends React.Component {
         this.onContentClickOutside = this.onContentClickOutside.bind(this);
         this.onWindowResize = this.onWindowResize.bind(this);
         this.onHighlightComment = this.onHighlightComment.bind(this);
+        this.onCommentExpand = this.onCommentExpand.bind(this);
         this.refresh = this.refresh.bind(this);
     }
 
@@ -69,10 +72,12 @@ class DocumentView extends React.Component {
         await this.refresh();
     }
 
-    componentDidUpdate() {
+    async componentDidUpdate() {
         const { document, comments } = this.state;
+        const font = new FontObserver('Spoqa Han Sans');
 
         if (document && !comments) {
+            await font.load();
             this.loadComments();
         }
     }
@@ -179,7 +184,6 @@ class DocumentView extends React.Component {
     }
 
     hideCommentForm() {
-        console.log('aaa');
         dehighlight(this.contentContainer, css.highlight);
 
         this.setState({
@@ -225,6 +229,18 @@ class DocumentView extends React.Component {
         const range = importSelection(this.contentContainer, _range);
         highlight(range, css.highlight);
     }
+    
+    onCommentExpand(top) {
+        const { expandCommentTop } = this.state;
+
+        if (top === expandCommentTop) {
+            top = -1;
+        }
+
+        this.setState({
+            expandCommentTop: top
+        });
+    }
 
     loadComments() {
         try {
@@ -255,11 +271,13 @@ class DocumentView extends React.Component {
                 });
 
             this.setState({
-                comments: groupedComments
+                comments: groupedComments,
+                expandCommentTop: -1
             })
         } catch (e) {
             this.setState({
-                comments: null
+                comments: null,
+                expandCommentTop: -1
             });
         }
     }
@@ -270,6 +288,7 @@ class DocumentView extends React.Component {
             comments: _comments,
             showSelectionMenu,
             showCommentForm,
+            expandCommentTop,
             selection
         } = this.state;
         const { translation } = this.props;
@@ -322,7 +341,9 @@ class DocumentView extends React.Component {
                             key={top}
                             comments={_comments[top]}
                             top={top} 
-                            show={!showCommentForm}
+                            show={!showCommentForm && (expandCommentTop === -1 || expandCommentTop === top)}
+                            expand={expandCommentTop === top}
+                            onExpand={this.onCommentExpand}
                             onHighlightComment={this.onHighlightComment}
                             onDehighlightComment={() => dehighlight(this.contentContainer, css.highlight)} />
                     );
