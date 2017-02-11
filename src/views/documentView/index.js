@@ -9,7 +9,9 @@ import Spinner from 'components/spinner';
 import SelectionMenu from './components/selectionMenu';
 import CommentView from './components/commentView';
 import CommentForm from './components/commentForm';
-import DeleteDocument from './components/deleteDocument';
+import ArchiveDocument from './components/archiveDocument';
+import DeleteComment from './components/deleteComment';
+import CommentGroup from './components/commentGroup';
 
 import { 
     importSelection, 
@@ -24,7 +26,9 @@ import Settings from 'settings';
 import css from './style.css';
 
 const GROUP_HEIGHT = 180;
-const DELETE_DOCUMENT = 'deleteDocument';
+const ARCHIVE_DOCUMENT = 'archiveDocument';
+const DELETE_COMMENT = 'deleteComment';
+const COMMENT_GROUP = 'commentGroup';
 
 const colors = Settings.colors.map((color) => {
     const rgba = {
@@ -38,7 +42,9 @@ const colors = Settings.colors.map((color) => {
 const modalFactory = (() => {
     const factory = {};
 
-    factory[DELETE_DOCUMENT] = DeleteDocument;
+    factory[ARCHIVE_DOCUMENT] = ArchiveDocument;
+    factory[DELETE_COMMENT] = DeleteComment;
+    factory[COMMENT_GROUP] = CommentGroup;
 
     return factory;
 })();
@@ -57,7 +63,8 @@ const Button = ({ iconId, content, onClick }) => (
 class DocumentView extends React.Component {
     getChildContext() {
         return {
-            translation: this.props.translation
+            translation: this.props.translation,
+            documentId: this.props.params.documentId
         }
     }
     
@@ -87,13 +94,16 @@ class DocumentView extends React.Component {
         this.onWindowResize = this.onWindowResize.bind(this);
         this.onCommentExpand = this.onCommentExpand.bind(this);
         this.onCommentEditing = this.onCommentEditing.bind(this);
+        this.onCommentDeleting = this.onCommentDeleting.bind(this);
+        this.onCommentGroupSelected = this.onCommentGroupSelected.bind(this);
         this.onDocumentDeleting = this.onDocumentDeleting.bind(this);
         this.onModalClose = this.onModalClose.bind(this);
         this.refresh = this.refresh.bind(this);
     }
 
     static childContextTypes = {
-        translation: React.PropTypes.object
+        translation: React.PropTypes.object,
+        documentId: React.PropTypes.string
     }
 
     static contextTypes = {
@@ -224,7 +234,8 @@ class DocumentView extends React.Component {
             selectionInfo: null,
             commentFormInfo: null,
             showSelectionMenu: false,
-            selectedCommentId: undefined
+            selectedCommentId: undefined,
+            modalInfo: null
         });
 
         try {
@@ -297,9 +308,35 @@ class DocumentView extends React.Component {
 
         this.setState({
             modalInfo: {
-                name: DELETE_DOCUMENT,
+                name: ARCHIVE_DOCUMENT,
                 props: {
                     documentId: document.id,
+                    onClose: this.onModalClose
+                }
+            }
+        });
+    }
+
+    onCommentDeleting(commentId) {
+        this.setState({
+            modalInfo: {
+                name: DELETE_COMMENT,
+                props: {
+                    commentId: commentId,
+                    onClose: this.onModalClose,
+                    onDeleted: this.refresh
+                }
+            }
+        });
+    }
+
+    onCommentGroupSelected(commentGroup) {
+        this.setState({
+            modalInfo: {
+                name: COMMENT_GROUP,
+                props: {
+                    commentGroup: commentGroup,
+                    onCommentAdded: this.refresh,
                     onClose: this.onModalClose
                 }
             }
@@ -313,6 +350,8 @@ class DocumentView extends React.Component {
     }
 
     loadComments() {
+        dehighlight(this.contentContainer, css.commentHighlight);
+
         try {
             const { document, selectedCommentId } = this.state;
             const { comments } = document;
@@ -323,7 +362,10 @@ class DocumentView extends React.Component {
 
             const groupedComments = comments
                 .sort((a, b) => {
-                    return a.range.start - b.range.start; 
+                    const aDate = Date.parse(a.createdAt);
+                    const bDate = Date.parse(b.createdAt);
+
+                    return a.range.start - b.range.start || bDate - aDate; 
                 })
                 .reduce((groupedComments, comment) => {
                     const range = importSelection(this.contentContainer, comment.range);
@@ -461,7 +503,9 @@ class DocumentView extends React.Component {
                             show={!commentFormInfo && (expandCommentTop == -1 || expandCommentTop == top)}
                             expand={expandCommentTop == top}
                             onExpand={this.onCommentExpand}
-                            onCommentEditing={this.onCommentEditing} />
+                            onCommentEditing={this.onCommentEditing}
+                            onCommentDeleting={this.onCommentDeleting}
+                            onCommentGroupSelected={this.onCommentGroupSelected} />
                     );
                 });
             }
@@ -505,8 +549,8 @@ class DocumentView extends React.Component {
                             if (!document.isArchived) {
                                 return (
                                     <Button 
-                                        iconId="trash" 
-                                        content={translation.delete} 
+                                        iconId="archive" 
+                                        content={translation.archive} 
                                         onClick={this.onDocumentDeleting}/>
                                 );
                             }

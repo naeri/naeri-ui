@@ -4,11 +4,17 @@ export default {
     edit: "Edit",
     history: "History",
     delete: "Delete",
+    archive: "Archive",
     timeFormat: "MMM D hh:mm",
     replying: 'Replying..',
     reply: 'Reply',
     whatOpinion: 'What opinion do you have about this?',
     commentList: 'Comment list',
-    deleteDocument: 'Delete document',
-    deleteDocumentWarning: 'Do you really want to delete this document?'
+    archiveDocument: 'Archive document',
+    archiveDocumentWarning: 'Do you really want to archive this document?',
+    deleteComment: 'Delete comment',
+    deleteCommentWarning: 'Do you really want to delete this comment?',
+    commentGroup: 'Comment group',
+    more: 'More...',
+    documentContent: 'Document content'
 };

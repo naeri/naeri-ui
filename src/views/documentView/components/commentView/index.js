@@ -37,7 +37,8 @@ class CommentView extends React.Component {
         const { 
             show, 
             expand, 
-            groupedComments: _groupedComments
+            groupedComments: _groupedComments,
+            onCommentGroupSelected
         } = this.props;
         const { user } = this.state;
 
@@ -60,17 +61,21 @@ class CommentView extends React.Component {
         }
 
         const groupedComments = _groupedComments.map((commentGroup, i) => {
-            const comments = commentGroup.comments.map((comment) => {
+            const comments = commentGroup.comments.slice(0, 3).map((comment) => {
                 const buttons = (() => {
                     if (user && user.id === comment.author.id) {
                         return (
-                            <div className={css.buttons}>
+                            <div 
+                                className={css.buttons}
+                                onClick={(event) => event.stopPropagation()}>
                                 <a 
                                     className={css.button}
                                     onClick={() => this.props.onCommentEditing(comment.range, comment.id, comment.content)}>
                                     {translation.edit}
                                 </a>
-                                <a className={css.button}>
+                                <a 
+                                    className={css.button}
+                                    onClick={() => this.props.onCommentDeleting(comment.id)}>
                                     {translation.delete}
                                 </a>
                             </div>
@@ -85,11 +90,12 @@ class CommentView extends React.Component {
                         <div className={css.meta}>
                             <b className={css.author}>{comment.author.name}</b>
                             <span className={css.small}>
-                                {moment(comment.createdAt).format(translation.updatedTimeFormat)}
+                                {moment(comment.createdAt).format(translation.timeFormat)}
                             </span>
                         </div>
                         <div className={css.content}>
-                            {comment.content}
+                            {comment.content.slice(0, 50)}
+                            {comment.content.length > 50 ? '...' : ''}
                         </div>
                         {buttons}
                     </div>
@@ -99,7 +105,8 @@ class CommentView extends React.Component {
             return (
                 <div 
                     className={css.commentGroup} 
-                    key={i}>
+                    key={i}
+                    onClick={() => onCommentGroupSelected(commentGroup)}>
                     <div
                         className={css.commentContent}>
                         <span style={{ background: commentGroup.color }}>
@@ -108,6 +115,13 @@ class CommentView extends React.Component {
                     </div>
                     <div className={css.comments}>
                         {comments}
+                        {(() => {
+                            if (commentGroup.comments.length > 3) {
+                                return (
+                                    <div className={css.more}>{translation.more}</div>
+                                );
+                            }
+                        })()}
                     </div>
                 </div>
             );

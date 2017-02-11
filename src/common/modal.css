@@ -14,3 +14,10 @@
     color: #2382e5;
     text-align: center;
 }
+
+.label {
+    display: block;
+    font-size: 14px;
+    margin: 10px 0 5px 0;
+    color: #666;
+}

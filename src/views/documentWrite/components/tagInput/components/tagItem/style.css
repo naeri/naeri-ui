@@ -71,10 +71,7 @@
 }
 
 .label {
-    display: block;
-    font-size: 14px;
-    margin: 10px 0 5px 0;
-    color: #666;
+    composes: label from 'commonCss/modal.css';
 }
 
 .input {

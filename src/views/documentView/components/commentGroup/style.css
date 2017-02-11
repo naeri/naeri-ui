@@ -1,0 +1,94 @@
+.wrap {
+    composes: modal from 'commonCss/modal.css';
+    position: relative;
+    width: 500px;
+}
+
+.title {
+    composes: title from 'commonCss/modal.css';
+}
+
+.close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    cursor: pointer;
+}
+
+.label {
+    composes: label from 'commonCss/modal.css';
+    margin-top: 20px;
+}
+
+.commentSnippet {
+    font-size: 18px;
+}
+
+.textarea {
+    margin-bottom: 10px;
+    padding: 10px;
+    width: 100%;
+    height: 80px;
+    border: 1px solid #ddd;
+    resize: none;
+    outline: none;
+}
+
+.comments {
+    margin: 10px 0;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.comment {
+    padding: 10px 0;
+    border-bottom: 1px solid #ddd;
+}
+
+.comment:first-child {
+    padding-top: 0;
+}
+
+.comment:last-child {
+    border-bottom: none;
+}
+
+.meta {
+    margin-bottom: 5px;
+}
+
+.authorName {
+    max-width: 100px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: hidden;
+}
+
+.small {
+    margin-left: 5px;
+    color: #666;
+    font-size: .8em;
+}
+
+.content {
+    line-height: 140%;
+}
+
+.btnBase {
+    display: block;
+    width: 100%;
+    font-size: 16px;
+    font-weight: 400;
+    height: 35px;
+    line-height: 35px;
+}
+
+.button {
+    composes: button from 'commonCss/button.css';
+    composes: btnBase;
+}
+
+.submittingBtn {
+    composes: submittingBtn from 'commonCss/button.css';
+    composes: btnBase;
+}

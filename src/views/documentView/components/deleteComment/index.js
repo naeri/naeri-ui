@@ -1,32 +1,34 @@
 import React from 'react';
-import { browserHistory } from 'react-router';
 
 import css from './style.css';
 
-class DeleteDocument extends React.Component {
+class DeleteComment extends React.Component {
     constructor() {
         super();
 
         this.state = {
             deleting: false
         };
+
+        this.onDelete = this.onDelete.bind(this);
     }
 
     static contextTypes = {
-        translation: React.PropTypes.object,
-        documentModule: React.PropTypes.object
+        documentModule: React.PropTypes.object,
+        translation: React.PropTypes.object
     }
 
-    async onDelete(documentId) {
+    async onDelete() {
         const { documentModule } = this.context;
+        const { commentId, onDeleted } = this.props;
 
         this.setState({
             deleting: true
         });
 
         try {
-            await documentModule.deleteDocument(documentId);
-            browserHistory.push('/');
+            await documentModule.deleteComment(commentId);
+            onDeleted();
         } catch (e) {
             this.setState({
                 deleting: false
@@ -35,24 +37,24 @@ class DeleteDocument extends React.Component {
     }
 
     render() {
-        const { documentId, onClose } = this.props;
+        const { onClose } = this.props;
         const { deleting } = this.state;
         const { translation } = this.context;
 
         return (
             <div className={css.wrap}>
                 <div className={css.title}>
-                    {translation.deleteDocument}
+                    {translation.deleteComment}
                     <span 
                         className={css.close}
                         onClick={onClose}>
                         &times;
                     </span>
                 </div>
-                {translation.deleteDocumentWarning}
+                {translation.deleteCommentWarning}
                 <button 
                     className={deleting ? css.submittingBtn : css.button}
-                    onClick={() => this.onDelete(documentId)}>
+                    onClick={this.onDelete}>
                     {translation.delete}
                 </button>
             </div>
@@ -60,4 +62,4 @@ class DeleteDocument extends React.Component {
     }
 }
 
-export default DeleteDocument;
+export default DeleteComment;

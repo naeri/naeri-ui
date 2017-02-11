@@ -40,11 +40,14 @@
     composes: wrap;
     composes: wrap from 'commonCss/modalMini.css';
     font-size: 14px;
+    padding-left: 0;
+    padding-right: 0;
 }
 
 .title {
     composes: title from 'commonCss/modalMini.css';
     position: relative;
+    margin: 0 15px;
 }
 
 .close {
@@ -61,8 +64,23 @@
 }
 
 .commentGroup {
-    padding: 15px 0;
+    position: relative;
+    padding: 15px;
+    transition: background .1s;
+    cursor: pointer;
+}
+
+.commentGroup::after {
+    position: absolute;
+    bottom: 0;
+    content: ' ';
     border-bottom: 1px solid #eee;
+    display: block;
+    width: calc(100% - 30px);
+}
+
+.commentGroup:hover {
+    background: #fafafa;
 }
 
 .commentContent {
@@ -74,11 +92,22 @@
 }
 
 .comment {
+    margin: 10px 0;
     position: relative;
-    margin-top: 5px;
-    cursor: pointer;
-    background: #fff;
     transition: background .1s;
+}
+
+.comment:last-child {
+    margin-bottom: 0;
+}
+
+.more {
+    display: inline-block;
+    color: #666;
+}
+
+.more:hover {
+    text-decoration: underline;
 }
 
 .meta {
@@ -104,11 +133,14 @@
     line-height: 140%;
 }
 
+.buttons {
+    display: inline-block;
+}
+
 .button {
     margin-right: 5px;
     color: #666;
     text-decoration: none;
-    font-size: .8em;
 }
 
 .button:hover {

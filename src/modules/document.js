@@ -76,7 +76,7 @@ class DocumentModule {
         }
     }
 
-    async deleteDocument(documentId) {
+    async archiveDocument(documentId) {
         try {
             await axios.delete(`${Settings.host}/document/${documentId}`);
         } catch (e) {
@@ -86,11 +86,13 @@ class DocumentModule {
 
     async addComment(documentId, comment, selectionInfo) {
         try {
-            await axios.post(`${Settings.host}/comment`, {
+            const { data: result } = await axios.post(`${Settings.host}/comment`, {
                 documentId: documentId,
                 content: comment,
                 range: selectionInfo
             });
+
+            return result.comment;
         } catch (e) {
             throw e.response.result.error;
         }
@@ -101,6 +103,14 @@ class DocumentModule {
             await axios.put(`${Settings.host}/comment/${commentId}`, {
                 content: content
             });
+        } catch (e) {
+            throw e.response.result.error;
+        }
+    }
+
+    async deleteComment(commentId) {
+        try {
+            await axios.delete(`${Settings.host}/comment/${commentId}`);
         } catch (e) {
             throw e.response.result.error;
         }
