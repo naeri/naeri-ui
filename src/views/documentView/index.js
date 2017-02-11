@@ -388,15 +388,20 @@ class DocumentView extends React.Component {
                                 comments: [comment]
                             });
                         }
+
+                        commentGroups.count++;
                     } else {
                         groupingTop = top;
 
-                        groupedComments[top] = [{
+                        const commentGroups = [{
                             range: comment.range,
                             color: colors[colorIndex++ % colors.length],
                             content: range.toString(),
                             comments: [comment]
                         }];
+                        commentGroups.count = 1;
+
+                        groupedComments[top] = commentGroups;
                     }
 
                     if (comment.id === selectedCommentId) {

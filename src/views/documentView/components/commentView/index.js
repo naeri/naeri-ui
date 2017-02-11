@@ -54,7 +54,7 @@ class CommentView extends React.Component {
                     <span 
                         className={css.count}
                         onClick={this.onExpand}>
-                        {_groupedComments.length}
+                        {_groupedComments.count}
                     </span>
                 </div>
             )
