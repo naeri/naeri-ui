@@ -75,9 +75,9 @@ const buttons = [
             key: 'i'
         },
         text: {
-            leadingText: '![](',
-            trailingText: ')',
-            defaultText: '이미지 링크'
+            leadingText: '![',
+            trailingText: ']()',
+            defaultText: '이미지 캡션'
         }
     },
     { 
@@ -89,9 +89,9 @@ const buttons = [
             key: 'f'
         },
         text: {
-            leadingText: '#[](',
-            trailingText: ')',
-            defaultText: '파일 링크'
+            leadingText: '#[',
+            trailingText: ']()',
+            defaultText: '파일 캡션'
         }
     },
     { 
@@ -103,9 +103,9 @@ const buttons = [
             key: 'k'
         },
         text: {
-            leadingText: '[](',
-            trailingText: ')',
-            defaultText: '링크'
+            leadingText: '[',
+            trailingText: ']()',
+            defaultText: '링크 내용'
         }
     },
     {
@@ -193,26 +193,26 @@ function insertAndCreateRange(textarea, startStr, endStr, defaultValue) {
     let middle = value.substring(startPos, endPos);
     let end = value.substring(endPos);
 
-    if (start.slice(-startStr.length, ) === startStr) {
+    const removingMode = (start.slice(-startStr.length, ) === startStr) &&
+                         (end.substring(0, endStr.length) === endStr);
+
+    if (removingMode) {
         start = start.substring(0, start.length - startStr.length);
-        console.log(start);
         startPos -= startStr.length;
         endPos -= startStr.length;
+
+        end = end.substring(endStr.length);
     } else {
         start += startStr;
         startPos += startStr.length;
         endPos += startStr.length;
+
+        end = endStr + end;
     }
 
     if (middle === '') {
         middle = defaultValue;
         endPos += defaultValue.length;
-    }
-
-    if (end.substring(0, endStr.length) === endStr) {
-        end = end.substring(endStr.length);
-    } else {
-        end = endStr + end;
     }
 
     textarea.value = start + middle + end;

@@ -41,6 +41,10 @@
     width: 50%;
 }
 
+.left .button {
+    margin-right: 5px;
+}
+
 .right {
     width: 50%;
     text-align: right;
@@ -57,25 +61,44 @@
 
 .grid {
     composes: wrap from 'commonCss/grid.css';
+    min-height: 100%;
     height: auto;
 }
 
 .document {
     composes: big from 'commonCss/grid.css';
-    height: inherit;
-    padding: 15px 40px;
+    min-height: 100%;
+    height: auto;
+    padding: 20px 40px;
     border-right: 1px solid #ddd;
+    position: relative;
 }
 
 .title {
-    font-size: 30px;
     margin: 30px 0;
+    font-size: 30px;
 }
 
 .content {
     composes: content from 'commonCss/content.css';
 }
 
-.comments {
+.highlight {
+    background-color: #b9f1d1;
+}
+
+.sidebar {
     composes: small from 'commonCss/grid.css';
+    position: relative;
+    background: #fafafa;
+    height: auto;
+    z-index: 0;
+}
+
+.meta {
+    height: 120px;
+}
+
+.comments {
+    
 }

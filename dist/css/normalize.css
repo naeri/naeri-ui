@@ -456,3 +456,7 @@ input {
 del {
     color: #666;
 }
+
+p {
+    margin: 1em 0;
+}

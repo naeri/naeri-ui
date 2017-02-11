@@ -1,21 +1,24 @@
 import React from 'react';
-import clickOutside from 'react-click-outside';
 import moment from 'moment';
 
 import Settings from 'settings';
 import css from './style.css';
 
-class CommentViewComponent extends React.Component {
+class CommentView extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            expand: this.props.expand
+            expand: false
         }
 
         this.toggleExpand = this.toggleExpand.bind(this);
         this.onHighlightComment = this.onHighlightComment.bind(this);
-        this.onClearHighlight = this.onClearHighlight.bind(this);
+        this.onDehighlightComment = this.onDehighlightComment.bind(this);
+    }
+
+    static contextTypes = {
+        translation: React.PropTypes.object
     }
 
     toggleExpand() {
@@ -28,75 +31,65 @@ class CommentViewComponent extends React.Component {
         this.props.onHighlightComment(range);
     }
 
-    onClearHighlight() {
-        this.props.onClearHighlight();
-    }
-
-    handleClickOutside() {
-        this.setState({
-            expand: false
-        });
+    onDehighlightComment() {
+        this.props.onDehighlightComment();
     }
 
     render() {
         const { translation } = this.context;
 
-        const content = (() => {
-            if (this.state.expand) {
-                const comments = this.props.comments.map((comment) => {
-                    return (
-                        <div
-                            className={css.comment}
-                            key={comment._id}
-                            onMouseEnter={this.onHighlightComment.bind(this, comment.range)}
-                            onMouseLeave={this.onClearHighlight}>
-                            <div className={css.author}>
-                                <b>{comment.author.username}</b>
-                                {' '}
-                                {moment(comment.createdAt).format(translation.updatedTimeFormat)}
-                            </div>
-                            {comment.content}
-                        </div>
-                    );
-                });
+        if (!this.props.show) {
+            return null;
+        }
 
-                return (
-                    <div>
-                        <header className={css.title}>
-                            {translation.commentList}
-                            <a
-                                className={css.close}
-                                onClick={this.toggleExpand}>
-                                &times;
-                            </a>
-                        </header>
-                        {comments}
-                    </div>
-                )
-            } else {
-                return (
+        if (!this.state.expand) {
+            return (
+                <div
+                    className={css.wrap}
+                    style={{ top: Math.round(this.props.top) - 5 }}>
                     <span 
                         className={css.count}
                         onClick={this.toggleExpand}>
-                        <i className="fa fa-comments" />
-                        {' '}
                         {this.props.comments.length}
                     </span>
-                );
-            }
-        })();
+                </div>
+            )
+        }
+
+        const comments = this.props.comments.map((comment) => (
+            <div
+                className={css.comment}
+                key={comment.id}
+                onMouseOver={() => this.onHighlightComment(comment.range)}
+                onMouseLeave={this.onDehighlightComment}>
+                <div className={css.author}>
+                    <b>{comment.author.name}</b>
+                    <span className={css.small}>
+                        {moment(comment.createdAt).format(translation.updatedTimeFormat)}
+                    </span>
+                </div>
+                {comment.content}
+            </div>
+        ));
 
         return (
             <div 
-                className={this.state.expand ? css.modalWrap : css.wrap}
-                style={{ 
-                    top: Math.round(this.props.top) - 2,
-                    zIndex: this.state.expand ? 9999 : 1
-                }}>
-                {content}
+                className={css.modalWrap}
+                style={{ top: Math.round(this.props.top) - 45 }}>
+                <header className={css.title}>
+                    {translation.commentList}
+                    <a
+                        className={css.close}
+                        onClick={this.toggleExpand}>
+                        &times;
+                    </a>
+                </header>
+                <div className={css.comments}>
+                    {comments}
+                </div>
             </div>
         );
     }
 }
 
-export default clickOutside(CommentViewComponent);
+export default CommentView;

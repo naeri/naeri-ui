@@ -66,7 +66,8 @@ const routeTable = [
                         component: DocumentWrite,
                         translationKey: 'documentWrite'
                     }
-                }
+                },
+                key: 'documents'
             },
             {
                 path: '/view/:documentId',

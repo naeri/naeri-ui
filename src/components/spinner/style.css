@@ -1,7 +1,9 @@
 .wrap {
-	  display: flex;
+	display: flex;
     -webkit-justify-content: center;
     justify-content: center;
+    -webkit-align-items: center;
+    align-items: center;
 }
 
 .left {

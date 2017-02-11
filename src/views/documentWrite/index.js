@@ -7,6 +7,7 @@ import Settings from 'settings';
 import TagInput from './components/tagInput';
 import ResizeAnimationButton from 'components/resizeAnimationButton';
 import Editor from './components/editor';
+import Spinner from 'components/spinner';
 
 import css from './style.css';
 
@@ -20,9 +21,10 @@ class DocumentWrite extends React.Component {
             parsedContent: '',
             tags: [],
             suggestions: [],
-            documentId: undefined,
+            documentId: props.params.documentId,
             writeMode: true,
-            submitting: false
+            submitting: false,
+            loadedDocument: false
         };
 
         this.onTagAdded = this.onTagAdded.bind(this);
@@ -59,8 +61,8 @@ class DocumentWrite extends React.Component {
             title: document.title,
             content: document.content,
             tags: document.tags,
-            documentId: document.id,
-            suggestions: suggestions
+            suggestions: suggestions,
+            loadedDocument: true
         });
     }
 
@@ -161,25 +163,38 @@ class DocumentWrite extends React.Component {
 
     render() {
         const { translation } = this.props;
+        const { 
+            documentId, 
+            title,
+            content, 
+            tags, 
+            suggestions,
+            submitting,
+            loadedDocument
+        } = this.state
+
+        if (documentId && !loadedDocument) {
+            return <Spinner style={{ height: 50 }} />;
+        }
 
         return (
             <div className={css.wrap}>
                 <input 
                     type="text"
                     className={css.title}
-                    value={this.state.title}
+                    value={title}
                     onChange={(event) => this.setState({ title: event.target.value })}
                     placeholder={translation.whatTitle} />
                 <div className={css.contentWrap}>
                     <Editor
-                        value={this.state.content}
+                        value={content}
                         onChange={(event) => this.setState({ content: event.target.value })} />
                 </div>
                 <div className={css.tagWrap}>
                     <div className={css.tagInputWrap}>
                         <TagInput
-                            tags={this.state.tags}
-                            suggestions={this.state.suggestions}
+                            tags={tags}
+                            suggestions={suggestions}
                             onTagAdded={this.onTagAdded}
                             onTagUpdated={this.onTagUpdated}
                             onTagRemoved={this.onTagRemoved} />
@@ -190,7 +205,7 @@ class DocumentWrite extends React.Component {
                             submittingClassName={css.submittingBtn}
                             content={translation.publish}
                             submittingContent={translation.publishing}
-                            submitting={this.state.submitting}
+                            submitting={submitting}
                             onClick={this.onFormSubmitted} /> 
                     </div>
                 </div>

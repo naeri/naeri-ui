@@ -1,15 +1,45 @@
 .wrap {
     position: absolute;
-    left: calc(50% + 450px);
+    width: 100%;
 }
 
 .count {
-    color: #666;
+    margin-left: 10px;
+    width: 30px;
+    height: 25px;
+    line-height: 25px;
+    display: inline-block;
+    text-align: center;
+    background: #888;
+    color: #fff;
     cursor: pointer;
+    transition: background .1s;
+}
+
+.count:hover {
+    background: #3f92e8;
+}
+
+.count::after {
+    margin-bottom: -6px;
+    content: ' ';
+    display: block;
+    border: 10px solid transparent;
+    border-left: 10px solid #999;
+    position: absolute;
+    bottom: 0;
+    z-index: -1;
+    transition: border .1s;
+}
+
+.count:hover::after {
+    border-left: 10px solid #519cea;
 }
 
 .modalWrap {
+    composes: wrap;
     composes: wrap from 'commonCss/modalMini.css';
+    font-size: 14px;
 }
 
 .title {
@@ -23,6 +53,11 @@
     cursor: pointer;
     color: #666;
     text-decoration: none;
+}
+
+.comments {
+    max-height: 125px;
+    overflow-y: auto;
 }
 
 .comment {
@@ -41,7 +76,7 @@
     display: inline-block;
     width: 16px;
     height: 16px;
-    border-radius: 16px;
+    border-radius: 100%;
     background-color: #fff;
     transition: background .1s;
 }
@@ -54,4 +89,9 @@
 .author {
     margin-bottom: 5px;
     color: #666;
+}
+
+.small {
+    margin-left: 3px;
+    font-size: .8em;
 }

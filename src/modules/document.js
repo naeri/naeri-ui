@@ -72,24 +72,20 @@ class DocumentModule {
 
             return result.document;
         } catch (e) {
-            return e.response.result.error;
+            throw e.response.result.error;
         }
     }
 
-    async addComment(documentId, tagInfo) {
-        let self = this;
-
-        return await axios.post(`${Settings.host}/comment/add`, {
-            documentId: documentId,
-            content: tagInfo.comment,
-            range: tagInfo.selectionInfo
-        }).then(function(result) {
-            result = result.data;
-
-            if (result.error) {
-                return Promise.reject(result.error.message);
-            }
-        });
+    async addComment(documentId, comment, selectionInfo) {
+        try {
+            await axios.post(`${Settings.host}/comment`, {
+                documentId: documentId,
+                content: comment,
+                range: selectionInfo
+            });
+        } catch (e) {
+            throw e.response.result.error;
+        }
     }
 }
 

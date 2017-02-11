@@ -1,12 +1,25 @@
 .wrap {
     position: absolute;
-    padding: 10px;
     background: #333;
     color: #fff;
     border-radius: 5px;
 }
 
 .wrap a {
+    padding: 10px;
+    display: inline-block;
     color: #fff;
     text-decoration: none;
+}
+
+.wrap:after {
+    margin-left: -5px;
+    margin-bottom: -8px;
+    display: inline-block;
+    position: absolute;
+    content: ' ';
+    left: 50%;
+    bottom: 0;
+    border: 5px solid transparent;
+    border-top: 5px solid #333;
 }

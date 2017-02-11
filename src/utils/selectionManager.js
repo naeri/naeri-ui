@@ -134,7 +134,27 @@ function surroundRangeContents(range, templateElement) {
     range.setEnd(lastTextNode, lastTextNode.length);
 }
 
-function highlight(range, className) {
+function dehighlight(container, className) {
+    const elements = container.getElementsByClassName(className);
+
+    for (let i = elements.length - 1; i >= 0; i--) {
+        const element = elements[i];
+        const parent = element.parentNode;
+
+        element.childNodes.forEach((child) => {
+            parent.insertBefore(child, element);
+        });
+
+        parent.removeChild(element);
+        parent.normalize();
+    }
+}
+
+function highlight(range, className, key) {
+    if (range.collapsed) {
+        return;
+    }
+
     const templateElement = document.createElement("span");
     templateElement.className = className;
 
@@ -174,7 +194,7 @@ function importSelection(container, selection) {
 
             if (!foundStart &&
                 selection.start >= charIndex &&
-                selection.start <= nextCharIndex) {
+                selection.start < nextCharIndex) {
                 range.setStart(node, selection.start - charIndex);
                 foundStart = true;
             }
@@ -198,4 +218,22 @@ function importSelection(container, selection) {
     return range;
 }
 
-export { importSelection, exportSelection, highlight };
+function selectionContainsContent(selection) {
+    if (!selection || selection.isCollapsed || !selection.rangeCount) {
+        return false;
+    }
+
+    if (selection.toString().trim() === '') {
+        return false;
+    }
+
+    return true;
+}
+
+export { 
+    importSelection, 
+    exportSelection, 
+    highlight, 
+    dehighlight,
+    selectionContainsContent 
+};

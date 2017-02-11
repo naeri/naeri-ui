@@ -15,6 +15,10 @@ class SelectionMenu extends React.Component {
         this.onMouseUp = this.onMouseUp.bind(this);
     }
 
+    static contextTypes = {
+        translation: React.PropTypes.object
+    }
+
     componentDidMount() {
         const width = this.container.clientWidth;
         const height = this.container.clientHeight;
@@ -26,29 +30,29 @@ class SelectionMenu extends React.Component {
     }
 
     onCommentAdding(event) {
+        this.props.onCommentAdding();
+
         event.preventDefault();
         event.stopPropagation();
-        this.props.onCommentAdding();
     }
 
     onMouseUp(event) {
+        this.props.onMouseUp();
+
         event.preventDefault();
         event.stopPropagation();
-        this.props.onMenuSelected();
     }
 
     render() {
         const { translation } = this.context;
-
-        const x = this.props.X;
-        const y = this.props.Y;
+        const { X, Y } = this.props;
 
         return (
             <div 
                 className={css.wrap}
                 style={{ 
-                    top: y - this.state.height - 10,
-                    left: x - this.state.width / 2 
+                    top: Y - this.state.height - 10,
+                    left: X - this.state.width / 2 
                 }}
                 ref={(container) => { this.container = container; }}
                 onMouseUp={this.onMouseUp}>
@@ -60,10 +64,6 @@ class SelectionMenu extends React.Component {
             </div>
         );
     }
-}
-
-SelectionMenu.contextTypes = {
-    translation: React.PropTypes.object
 }
 
 export default SelectionMenu;

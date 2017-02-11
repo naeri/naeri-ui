@@ -3,18 +3,22 @@ import React from 'react';
 import Settings from 'settings';
 import css from './style.css';
 
-class CommentInput extends React.Component {
+class CommentForm extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
             comment: '',
-            submitting: false,
-            hidden: false
+            submitting: false
         }
 
         this.onCommentChanged = this.onCommentChanged.bind(this);
         this.onCommentAdded = this.onCommentAdded.bind(this);
+    }
+
+    static contextTypes = {
+        documentModule: React.PropTypes.object,
+        translation: React.PropTypes.object
     }
 
     onCommentChanged(event) {
@@ -23,35 +27,26 @@ class CommentInput extends React.Component {
         });
     }
 
-    onCommentAdded() {
-        const documentModule = this.props.documentModule;
-        const documentId = this.props.documentId;
+    async onCommentAdded() {
+        const { documentId, selectionInfo } = this.props;
+        const { comment } = this.state;
+        const { documentModule } = this.context;
 
         this.setState({
             submitting: true
         });
 
-        documentModule
-            .addComment(documentId, {
-                comment: this.state.comment,
-                selectionInfo: this.props.selectionInfo
-            })
-            .then(() => {
-                this.setState({
-                    submitting: false,
-                    hidden: true
-                });
+        await documentModule.addComment(documentId, comment, selectionInfo);
 
-                this.props.onCommentAdded();
-            });
+        this.setState({
+            submitting: false
+        });
+
+        this.props.onCommentAdded();
     }
 
     render() {
         const { translation } = this.context;
-
-        if (this.state.hidden) {
-            return null;
-        }
 
         const buttonContent = (() => {
             if (this.state.submitting) {
@@ -71,7 +66,7 @@ class CommentInput extends React.Component {
             <div 
                 className={css.wrap}
                 style={{ 
-                    top: this.props.Y - 14
+                    top: this.props.Y - 45
                 }}>
                 <header className={css.title}>
                     {translation.reply}
@@ -91,8 +86,4 @@ class CommentInput extends React.Component {
     }
 }
 
-CommentInput.contextTypes = {
-    translation: React.PropTypes.object
-}
-
-export default CommentInput;
+export default CommentForm;

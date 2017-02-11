@@ -1,13 +1,12 @@
 .wrap {
-    position: absolute;
-    left: calc(50% + 450px); 
-    width: 280px;
     padding: 15px;
     background: #fff;
 }
 
 .title {
     font-size: 14px;
+    height: 25px;
+    line-height: 20px;
     padding-bottom: 5px;
     color: #666;
     border-bottom: 1px solid #ccc;
