@@ -60,29 +60,24 @@
     overflow-y: auto;
 }
 
+.commentGroup {
+    padding: 15px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.commentContent {
+    margin-bottom: 5px;
+    font-size: 16px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
 .comment {
     position: relative;
-    margin-top: 10px;
+    margin-top: 5px;
     cursor: pointer;
     background: #fff;
-    transition: background .1s;
-}
-
-.comment:after {
-    content: ' ';
-    position: absolute;
-    top: 0;
-    right: 0;
-    display: inline-block;
-    width: 16px;
-    height: 16px;
-    border-radius: 100%;
-    background-color: #fff;
-    transition: background .1s;
-}
-
-.comment:hover:after {
-    background-color: #b9f1d1;
     transition: background .1s;
 }
 
@@ -105,5 +100,17 @@
 }
 
 .content {
+    margin-bottom: 3px;
     line-height: 140%;
+}
+
+.button {
+    margin-right: 5px;
+    color: #666;
+    text-decoration: none;
+    font-size: .8em;
+}
+
+.button:hover {
+    text-decoration: underline;
 }

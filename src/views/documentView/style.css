@@ -83,8 +83,19 @@
     composes: content from 'commonCss/content.css';
 }
 
-.highlight {
-    background-color: #b9f1d1;
+.noHighlightContent {
+    composes: content;
+}
+
+.noHighlightContent .commentHighlight {
+    background: none !important;
+}
+
+.selectionHighlight {
+    background-color: #b9f1ed;
+}
+
+.commentHighlight {
 }
 
 .sidebar {

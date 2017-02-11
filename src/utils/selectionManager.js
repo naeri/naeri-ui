@@ -150,13 +150,14 @@ function dehighlight(container, className) {
     }
 }
 
-function highlight(range, className, key) {
+function highlight(range, className, backgroundColor) {
     if (range.collapsed) {
         return;
     }
 
     const templateElement = document.createElement("span");
     templateElement.className = className;
+    templateElement.style.backgroundColor = backgroundColor;
 
     surroundRangeContents(range, templateElement);    
 }

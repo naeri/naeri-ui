@@ -87,6 +87,16 @@ class DocumentModule {
             throw e.response.result.error;
         }
     }
+
+    async editComment(commentId, content) {
+        try {
+            await axios.put(`${Settings.host}/comment/${commentId}`, {
+                content: content
+            });
+        } catch (e) {
+            throw e.response.result.error;
+        }
+    }
 }
 
 export default DocumentModule;

@@ -16,10 +16,21 @@ import {
     dehighlight,
     selectionContainsContent
 } from 'utils/selectionManager';
+import { isDescendant, format, hexToRgb } from 'utils';
+import Settings from 'settings';
 
 import css from './style.css';
 
 const GROUP_HEIGHT = 180;
+
+const colors = Settings.colors.map((color) => {
+    const rgba = {
+        ...hexToRgb(color),
+        a: .2
+    };
+
+    return format('rgba({0}, {1}, {2}, {3})', rgba.r, rgba.g, rgba.b, rgba.a);
+});
 
 const Button = ({ iconId, content, onClick }) => (
     <div 
@@ -48,11 +59,12 @@ class DocumentView extends React.Component {
 
         this.state = {
             document: undefined,
-            selection: null,
+            selectionInfo: null,
             showSelectionMenu: false,
-            showCommentForm: false,
+            commentFormInfo: null,
             expandCommentTop: -1,
-            comments: null
+            comments: undefined,
+            selectedCommentId: undefined
         };
 
         this.onMouseUp = this.onMouseUp.bind(this);
@@ -61,8 +73,8 @@ class DocumentView extends React.Component {
         this.onCommentAdding = this.onCommentAdding.bind(this);
         this.onContentClickOutside = this.onContentClickOutside.bind(this);
         this.onWindowResize = this.onWindowResize.bind(this);
-        this.onHighlightComment = this.onHighlightComment.bind(this);
         this.onCommentExpand = this.onCommentExpand.bind(this);
+        this.onCommentEditing = this.onCommentEditing.bind(this);
         this.refresh = this.refresh.bind(this);
     }
 
@@ -76,7 +88,7 @@ class DocumentView extends React.Component {
         const { document, comments } = this.state;
         const font = new FontObserver('Spoqa Han Sans');
 
-        if (document && !comments) {
+        if (document && comments === undefined) {
             await font.load();
             this.loadComments();
         }
@@ -86,9 +98,9 @@ class DocumentView extends React.Component {
         // There is a bug where the selection object is not updated 
         // when we click inside the selection object
         setTimeout(() => {
-            dehighlight(this.contentContainer, css.highlight)
+            dehighlight(this.contentContainer, css.selectionHighlight)
 
-            const { showCommentForm, showSelectionMenu } = this.state;
+            const { commentFormInfo, showSelectionMenu } = this.state;
 
             // If a selection is cancelled,
             // there exists 3 situations:
@@ -98,9 +110,9 @@ class DocumentView extends React.Component {
 
             // 2nd. Selection menu is shown but comment form is not shown.
             // then, we should make the selection object null hide selection menu.
-            if (showSelectionMenu && !showCommentForm) {
+            if (showSelectionMenu && !commentFormInfo) {
                 this.setState({
-                    selection: null,
+                    selectionInfo: null,
                     showSelectionMenu: false
                 });
             }
@@ -108,7 +120,7 @@ class DocumentView extends React.Component {
             // 3rd. Selection menu is hidden and the comment form is shown.
             // then, we should dehighlight the content container and make the selection null.
             // Finally, we hide the comment form.
-            if (!showSelectionMenu && showCommentForm) {
+            if (!showSelectionMenu && commentFormInfo) {
                 this.hideCommentForm();
             }
         }, 0);
@@ -127,44 +139,32 @@ class DocumentView extends React.Component {
             return;
         }
 
-        const _rect = selection.getRangeAt(0).getBoundingClientRect();
-        const position = ((rect) => {
-            const { scrollTop } = this.wrap;
-
-            const top = rect.top - this.wrap.getBoundingClientRect().top;
-            const left = rect.left - this.wrap.getBoundingClientRect().left;
-
-            return {
-                X: left + rect.width / 2,
-                Y: scrollTop + top
-            }
-        })(_rect);
+        if (!isDescendant(this.contentContainer, selection.anchorNode)) {
+            return;
+        }
 
         this.setState({
-            selection: {
-                info: { ...exportSelection(this.contentContainer) },
-                menuPos: { ...position }
-            },
+            selectionInfo: exportSelection(this.contentContainer),
             showSelectionMenu: true
         });
     }
 
     onSelectionMenuSelected() {
-        dehighlight(this.contentContainer, css.highlight);
+        dehighlight(this.contentContainer, css.selectionHighlight);
 
         this.setState({ 
-            selection: null, 
+            selectionInfo: null, 
             showSelectionMenu: false 
         });
     }
 
     onCommentAdding() {
-        highlight(this.getSelection(), css.highlight);
+        highlight(this.getSelection(), css.selectionHighlight);
         window.getSelection().empty();
 
         this.setState({
             showSelectionMenu: false,
-            showCommentForm: true 
+            commentFormInfo: {}
         });
     }
 
@@ -173,46 +173,46 @@ class DocumentView extends React.Component {
 
         if ((this.comments !== target) &&
             !findDOMNode(this.comments).contains(target)) {
-            dehighlight(this.contentContainer, css.highlight);
+            dehighlight(this.contentContainer, css.selectionHighlight);
 
             this.setState({ 
-                selection: null, 
-                showCommentForm: false, 
+                selectionInfo: null, 
+                commentFormInfo: null, 
                 showSelectionMenu: false 
             });
         }
     }
 
     hideCommentForm() {
-        dehighlight(this.contentContainer, css.highlight);
+        dehighlight(this.contentContainer, css.selectionHighlight);
 
         this.setState({
-            selection: null,
-            showCommentForm: false
+            selectionInfo: null,
+            commentFormInfo: null
         })
     }
     
-    async refresh() {
+    async refresh(commentId) {
         const { documentModule } = this.context;
         const { documentId } = this.props.params;
 
         this.setState({
             document: undefined,
-            comments: null,
-            selection: null,
-            showCommentForm: false,
-            showSelectionMenu: false
-        })
+            comments: undefined,
+            selectionInfo: null,
+            commentFormInfo: null,
+            showSelectionMenu: false,
+            selectedCommentId: undefined
+        });
 
         try {
             const document = await documentModule.getDocument(documentId);
 
             this.setState({
-                document: document
+                document: document,
+                selectedCommentId: commentId
             });
         } catch (e) {
-            console.log(e);
-            
             this.setState({
                 document: null
             });
@@ -222,19 +222,27 @@ class DocumentView extends React.Component {
     onWindowResize() {
         this.loadComments();
     }
-
-    onHighlightComment(_range) {
-        dehighlight(this.contentContainer, css.highlight);
-
-        const range = importSelection(this.contentContainer, _range);
-        highlight(range, css.highlight);
-    }
     
     onCommentExpand(top) {
-        const { expandCommentTop } = this.state;
+        dehighlight(this.contentContainer, css.commentHighlight);
+
+        const {
+            comments,
+            expandCommentTop
+        } = this.state;
 
         if (top === expandCommentTop) {
+            dehighlight(this.contentContainer, css.commentHighlight)
             top = -1;
+        } else {
+            const commentGroups = comments[top];
+
+            commentGroups.forEach((commentGroup) => {
+                const range = importSelection(this.contentContainer, commentGroup.range);
+                const { color } = commentGroup;
+
+                highlight(range, css.commentHighlight, color);
+            });
         }
 
         this.setState({
@@ -242,42 +250,82 @@ class DocumentView extends React.Component {
         });
     }
 
+    onCommentEditing(range, commentId, content) {
+        const selection = importSelection(this.contentContainer, range);
+        highlight(selection, css.selectionHighlight);
+
+        this.setState({
+            selectionInfo: range,
+            commentFormInfo: {
+                content: content,
+                id: commentId
+            }
+        });
+    }
+
     loadComments() {
         try {
-            const { comments } = this.state.document;
+            const { document, selectedCommentId } = this.state;
+            const { comments } = document;
 
-            const groupedComments = {};
             let groupingTop = undefined;
+            let colorIndex = 0;
+            let selectedCommentTop = undefined;
 
-            comments
+            const groupedComments = comments
                 .sort((a, b) => {
                     return a.range.start - b.range.start; 
                 })
-                .forEach((comment) => {
+                .reduce((groupedComments, comment) => {
                     const range = importSelection(this.contentContainer, comment.range);
                     let top = range.getBoundingClientRect().top - this.wrap.getBoundingClientRect().top;
 
                     if (groupingTop >= 0 && top - groupingTop < GROUP_HEIGHT) {
                         top = groupingTop;
+
+                        const commentGroups = groupedComments[top];
+                        const lastCommentGroup = commentGroups[commentGroups.length - 1];
+
+                        if (lastCommentGroup.range.start === comment.range.start &&
+                            lastCommentGroup.range.end === comment.range.end) {
+                            lastCommentGroup.comments.push(comment);
+                        } else {
+                            commentGroups.push({
+                                range: comment.range,
+                                color: colors[colorIndex++ % colors.length],
+                                content: range.toString(),
+                                comments: [comment]
+                            });
+                        }
                     } else {
                         groupingTop = top;
+
+                        groupedComments[top] = [{
+                            range: comment.range,
+                            color: colors[colorIndex++ % colors.length],
+                            content: range.toString(),
+                            comments: [comment]
+                        }];
                     }
 
-                    if (!groupedComments[top]) {
-                        groupedComments[top] = [];
+                    if (comment.id === selectedCommentId) {
+                        selectedCommentTop = top;
                     }
 
-                    groupedComments[top].push(comment);
-                });
+                    return groupedComments;
+                }, {});
 
             this.setState({
                 comments: groupedComments,
-                expandCommentTop: -1
+                expandCommentTop: selectedCommentTop || -1,
+                showCommentId: null
             })
         } catch (e) {
+            console.log(e);
             this.setState({
                 comments: null,
-                expandCommentTop: -1
+                expandCommentTop: -1,
+                showCommentId: null
             });
         }
     }
@@ -287,9 +335,9 @@ class DocumentView extends React.Component {
             document,
             comments: _comments,
             showSelectionMenu,
-            showCommentForm,
+            commentFormInfo,
             expandCommentTop,
-            selection
+            selectionInfo
         } = this.state;
         const { translation } = this.props;
 
@@ -301,9 +349,26 @@ class DocumentView extends React.Component {
             return <div className={css.wrap}>{translation.cannotFind}</div>;
         }
 
+        const position = (() => {
+            if (!this.contentContainer || !selectionInfo) {
+                return;
+            }
+
+            const rect = importSelection(this.contentContainer, selectionInfo).getBoundingClientRect();
+            const { scrollTop } = this.wrap;
+
+            const top = rect.top - this.wrap.getBoundingClientRect().top;
+            const left = rect.left - this.wrap.getBoundingClientRect().left;
+
+            return {
+                X: left + rect.width / 2,
+                Y: scrollTop + top
+            }
+        })();
+
         const selectionMenu = (() => {
             if (showSelectionMenu) {
-                const { X, Y } = selection.menuPos;
+                const { X, Y } = position;
 
                 return (
                     <SelectionMenu
@@ -317,17 +382,18 @@ class DocumentView extends React.Component {
         })();
 
         const commentForm = (() => {
-            if (showCommentForm) {
-                const { Y } = selection.menuPos;
+            if (commentFormInfo) {
+                const { Y } = position;
 
                 return (
                     <ClickOutside
                         onClickOutside={() => this.hideCommentForm()}>
                         <CommentForm 
                             Y={Y}
-                            selectionInfo={selection.info}
+                            selectionInfo={selectionInfo}
                             documentId={document.id}
-                            onCommentAdded={this.refresh} />
+                            onCommentUpdated={(commentId) => this.refresh(commentId)}
+                            commentInfo={commentFormInfo} />
                     </ClickOutside>
                 );
             }
@@ -339,13 +405,12 @@ class DocumentView extends React.Component {
                     return (
                         <CommentView 
                             key={top}
-                            comments={_comments[top]}
+                            groupedComments={_comments[top]}
                             top={top} 
-                            show={!showCommentForm && (expandCommentTop === -1 || expandCommentTop === top)}
+                            show={!commentFormInfo && (expandCommentTop === -1 || expandCommentTop === top)}
                             expand={expandCommentTop === top}
                             onExpand={this.onCommentExpand}
-                            onHighlightComment={this.onHighlightComment}
-                            onDehighlightComment={() => dehighlight(this.contentContainer, css.highlight)} />
+                            onCommentEditing={this.onCommentEditing} />
                     );
                 });
             }
@@ -394,7 +459,7 @@ class DocumentView extends React.Component {
                             <ClickOutside 
                                 onClickOutside={this.onContentClickOutside}>
                                 <div
-                                    className={css.content}
+                                    className={commentFormInfo ? css.noHighlightContent : css.content}
                                     dangerouslySetInnerHTML={{ __html: document.parsedContent }}
                                     onMouseDown={this.onMouseDown}
                                     onMouseUp={this.onMouseUp}

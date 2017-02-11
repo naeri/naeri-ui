@@ -1,7 +1,6 @@
 import React from 'react';
 import { browserHistory } from 'react-router';
 import moment from 'moment';
-import _ from 'utils';
 
 import Settings from 'settings.js';
 import css from './style.css';

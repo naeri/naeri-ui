@@ -7,8 +7,10 @@ class CommentForm extends React.Component {
     constructor(props) {
         super(props);
 
+        const { commentInfo } = props;
+
         this.state = {
-            comment: '',
+            comment: commentInfo ? commentInfo.content : '',
             submitting: false
         }
 
@@ -28,7 +30,7 @@ class CommentForm extends React.Component {
     }
 
     async onCommentAdded() {
-        const { documentId, selectionInfo } = this.props;
+        const { documentId, selectionInfo, commentInfo } = this.props;
         const { comment } = this.state;
         const { documentModule } = this.context;
 
@@ -36,17 +38,22 @@ class CommentForm extends React.Component {
             submitting: true
         });
 
-        await documentModule.addComment(documentId, comment, selectionInfo);
+        if (!commentInfo.id) {
+            await documentModule.addComment(documentId, comment, selectionInfo);
+        } else {
+            await documentModule.editComment(commentInfo.id, comment);
+        }
 
         this.setState({
             submitting: false
         });
 
-        this.props.onCommentAdded();
+        this.props.onCommentUpdated(commentInfo.id);
     }
 
     render() {
         const { translation } = this.context;
+        const { commentInfo } = this.props;
 
         const buttonContent = (() => {
             if (this.state.submitting) {
@@ -56,7 +63,7 @@ class CommentForm extends React.Component {
                     <span>
                         <i className="fa fa-comment"></i>
                         {' '}
-                        {translation.reply}
+                        {commentInfo ? translation.edit : translation.reply}
                     </span>
                 );
             }
@@ -73,7 +80,7 @@ class CommentForm extends React.Component {
                 </header>
                 <textarea
                     className={css.textarea}
-                    value={this.state.comment} 
+                    value={this.state.comment}
                     onChange={this.onCommentChanged}
                     placeholder={translation.whatOpinion} />
                 <button
