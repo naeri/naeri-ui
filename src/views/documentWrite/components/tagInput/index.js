@@ -110,6 +110,7 @@ class TagInput extends React.Component {
 
     render() {
         const { translation } = this.context;
+        const { tags: _tags } = this.props;
 
         let { suggestions: suggestionList } = this.state;
         let suggestions = null;
@@ -118,25 +119,30 @@ class TagInput extends React.Component {
             suggestions = suggestionList.reduce((result, suggestion, index) => {
                 let isActive = this.state.selectedIndex == index;
 
-                result.push(
-                    <li 
-                        key={index}
-                        className={isActive ? css.active : css.li}
-                        onMouseDown={this.onAutoCompleteClick.bind(this, suggestion.title)}>
-                        {suggestion.title}
-                    </li>
-                );
-                return result;
-            }, []);
+                if (!_tags.find((tag) => tag.title === suggestion.title)) {
+                    result.push(
+                        <li 
+                            key={index}
+                            className={isActive ? css.active : css.li}
+                            onMouseDown={this.onAutoCompleteClick.bind(this, suggestion.title)}>
+                            {suggestion.title}
+                        </li>
+                    );
+                }
 
-            suggestions = (
-                <ul className={css.suggestions}>
-                    {suggestions}
-                </ul>
-            );
+                return result;
+            }, []).slice(0, 4);
+
+            suggestions = suggestions.length > 0 ? (
+                <div className={css.suggestionsWrap}>
+                    <ul className={css.suggestions}>
+                        {suggestions}
+                    </ul>
+                </div>
+            ) : null ;
         }
 
-        let tags = this.props.tags.map((tag) => {
+        let tags = _tags.map((tag) => {
             return (
                 <TagItem
                     key={tag.title}

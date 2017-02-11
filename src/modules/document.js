@@ -76,6 +76,14 @@ class DocumentModule {
         }
     }
 
+    async deleteDocument(documentId) {
+        try {
+            await axios.delete(`${Settings.host}/document/${documentId}`);
+        } catch (e) {
+            throw e.response.result.error;
+        }
+    }
+
     async addComment(documentId, comment, selectionInfo) {
         try {
             await axios.post(`${Settings.host}/comment`, {

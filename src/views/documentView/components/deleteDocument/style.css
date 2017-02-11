@@ -1,0 +1,33 @@
+.wrap {
+    composes: modal from 'commonCss/modal.css';
+    position: relative;
+    border-top: 1px solid #e73a46;
+}
+
+.title {
+    composes: title from 'commonCss/modal.css';
+    color: #e73a46;
+}
+
+.close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    cursor: pointer;
+}
+
+.btnBase {
+    display: block;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.button {
+    composes: red from 'commonCss/button.css';
+    composes: btnBase;
+}
+
+.submittingBtn {
+    composes: submittingBtn from 'commonCss/button.css';
+    composes: btnBase;
+}

@@ -3,11 +3,13 @@ import { findDOMNode } from 'react-dom';
 import { browserHistory } from 'react-router';
 import ClickOutside from 'react-click-outside';
 import FontObserver from 'fontfaceobserver';
+import moment from 'moment';
 
 import Spinner from 'components/spinner';
 import SelectionMenu from './components/selectionMenu';
 import CommentView from './components/commentView';
 import CommentForm from './components/commentForm';
+import DeleteDocument from './components/deleteDocument';
 
 import { 
     importSelection, 
@@ -22,6 +24,7 @@ import Settings from 'settings';
 import css from './style.css';
 
 const GROUP_HEIGHT = 180;
+const DELETE_DOCUMENT = 'deleteDocument';
 
 const colors = Settings.colors.map((color) => {
     const rgba = {
@@ -31,6 +34,14 @@ const colors = Settings.colors.map((color) => {
 
     return format('rgba({0}, {1}, {2}, {3})', rgba.r, rgba.g, rgba.b, rgba.a);
 });
+
+const modalFactory = (() => {
+    const factory = {};
+
+    factory[DELETE_DOCUMENT] = DeleteDocument;
+
+    return factory;
+})();
 
 const Button = ({ iconId, content, onClick }) => (
     <div 
@@ -64,7 +75,8 @@ class DocumentView extends React.Component {
             commentFormInfo: null,
             expandCommentTop: -1,
             comments: undefined,
-            selectedCommentId: undefined
+            selectedCommentId: undefined,
+            modalInfo: null
         };
 
         this.onMouseUp = this.onMouseUp.bind(this);
@@ -75,8 +87,18 @@ class DocumentView extends React.Component {
         this.onWindowResize = this.onWindowResize.bind(this);
         this.onCommentExpand = this.onCommentExpand.bind(this);
         this.onCommentEditing = this.onCommentEditing.bind(this);
+        this.onDocumentDeleting = this.onDocumentDeleting.bind(this);
+        this.onModalClose = this.onModalClose.bind(this);
         this.refresh = this.refresh.bind(this);
     }
+
+    static childContextTypes = {
+        translation: React.PropTypes.object
+    }
+
+    static contextTypes = {
+        documentModule: React.PropTypes.object
+    };
 
     async componentDidMount() {
         window.addEventListener('resize', this.onWindowResize);
@@ -224,29 +246,36 @@ class DocumentView extends React.Component {
     }
     
     onCommentExpand(top) {
-        dehighlight(this.contentContainer, css.commentHighlight);
-
-        const {
-            comments,
-            expandCommentTop
-        } = this.state;
+        const { expandCommentTop } = this.state;
 
         if (top === expandCommentTop) {
             dehighlight(this.contentContainer, css.commentHighlight)
+
             top = -1;
         } else {
-            const commentGroups = comments[top];
-
-            commentGroups.forEach((commentGroup) => {
-                const range = importSelection(this.contentContainer, commentGroup.range);
-                const { color } = commentGroup;
-
-                highlight(range, css.commentHighlight, color);
-            });
+            this.highlightComments(top);
         }
 
         this.setState({
             expandCommentTop: top
+        });
+    }
+
+    highlightComments(top) {
+        const { comments } = this.state;
+        const commentGroups = comments[top];
+
+        if (!commentGroups) {
+            return;
+        }
+
+        dehighlight(this.contentContainer, css.commentHighlight);
+
+        commentGroups.forEach((commentGroup) => {
+            const range = importSelection(this.contentContainer, commentGroup.range);
+            const { color } = commentGroup;
+
+            highlight(range, css.commentHighlight, color);
         });
     }
 
@@ -260,6 +289,26 @@ class DocumentView extends React.Component {
                 content: content,
                 id: commentId
             }
+        });
+    }
+
+    onDocumentDeleting() {
+        const { document } = this.state;
+
+        this.setState({
+            modalInfo: {
+                name: DELETE_DOCUMENT,
+                props: {
+                    documentId: document.id,
+                    onClose: this.onModalClose
+                }
+            }
+        })
+    }
+
+    onModalClose() {
+        this.setState({
+            modalInfo: null
         });
     }
 
@@ -318,10 +367,11 @@ class DocumentView extends React.Component {
             this.setState({
                 comments: groupedComments,
                 expandCommentTop: selectedCommentTop || -1,
-                showCommentId: null
-            })
+                selectedCommentId: null
+            }, () => {
+                this.highlightComments(selectedCommentTop);
+            });
         } catch (e) {
-            console.log(e);
             this.setState({
                 comments: null,
                 expandCommentTop: -1,
@@ -337,7 +387,8 @@ class DocumentView extends React.Component {
             showSelectionMenu,
             commentFormInfo,
             expandCommentTop,
-            selectionInfo
+            selectionInfo,
+            modalInfo
         } = this.state;
         const { translation } = this.props;
 
@@ -407,8 +458,8 @@ class DocumentView extends React.Component {
                             key={top}
                             groupedComments={_comments[top]}
                             top={top} 
-                            show={!commentFormInfo && (expandCommentTop === -1 || expandCommentTop === top)}
-                            expand={expandCommentTop === top}
+                            show={!commentFormInfo && (expandCommentTop == -1 || expandCommentTop == top)}
+                            expand={expandCommentTop == top}
                             onExpand={this.onCommentExpand}
                             onCommentEditing={this.onCommentEditing} />
                     );
@@ -416,6 +467,20 @@ class DocumentView extends React.Component {
             }
 
             return null;
+        })();
+
+        const modal = (() => {
+            if (!modalInfo) {
+                return;
+            }
+
+            const Modal = modalFactory[modalInfo.name];
+
+            return (
+                <div className={css.modalWrap}>
+                    <Modal {...modalInfo.props}/>
+                </div>
+            );
         })();
 
         return (
@@ -442,7 +507,7 @@ class DocumentView extends React.Component {
                                     <Button 
                                         iconId="trash" 
                                         content={translation.delete} 
-                                        onClick={() => browserHistory.push(`/delete/${document.id}`)}/>
+                                        onClick={this.onDocumentDeleting}/>
                                 );
                             }
                         })()}
@@ -453,8 +518,24 @@ class DocumentView extends React.Component {
                     ref={(wrap) => this.wrap = wrap}>
                     <div className={css.grid}>
                         <div className={css.document}>
+                            <div className={css.author}>
+                                <img
+                                    className={css.pic} 
+                                    src={`${Settings.host}/user/${document.author.id}/picture`} />
+                                <div className={css.metaWrap}>
+                                    <div className={css.authorWrap}>
+                                        <span className={css.authorName}>{document.author.name}</span>
+                                        <span className={css.authorId}>@{document.author.id}</span>
+                                    </div>
+                                    <div className={css.updated}>
+                                        {moment(document.createdAt).locale(translation.lang).fromNow()} 
+                                    </div>
+                                </div>
+                            </div>
                             <div className={css.title}>
-                                {document.title}
+                                <div className={css.titleText}>
+                                    {document.title}
+                                </div>
                             </div>
                             <ClickOutside 
                                 onClickOutside={this.onContentClickOutside}>
@@ -470,8 +551,28 @@ class DocumentView extends React.Component {
                         <div 
                             className={css.sidebar}
                             ref={(comments) => this.comments = comments}>
-                            <div className={css.meta}>
-                            </div>
+                            {(() => {
+                                if (document.tags.length > 0) {
+                                    return (
+                                        <div className={css.meta}>
+                                            <div className={css.metaTitle}>
+                                                태그
+                                            </div>
+                                            <div className={css.tags}>
+                                                {document.tags.map(({ color, title }, i) => (
+                                                    <span 
+                                                        className={css.tag}    
+                                                        style={{ backgroundColor: color }}
+                                                        key={i}>
+                                                        {title}
+                                                    </span>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    );
+                                }
+                            })()}
+
                             <div className={css.comments}>
                                 {comments}
                             </div>
@@ -479,17 +580,10 @@ class DocumentView extends React.Component {
                         </div>
                     </div>
                 </section>
+                {modal}
             </div>
         )
     }
 }
-
-DocumentView.childContextTypes = {
-    translation: React.PropTypes.object
-}
-
-DocumentView.contextTypes = {
-    documentModule: React.PropTypes.object
-};
 
 export default DocumentView;

@@ -13,6 +13,8 @@
 .userInfo {
     margin-bottom: 15px;
 	display: flex;
+    -webkit-align-items: center;
+    align-items: center;
 }
 
 .profileImage {
@@ -21,6 +23,7 @@
 }
 
 .authorWrap {
+    flex-grow: 1;
     margin: 3px 0;
     margin-left: 10px;
 }
@@ -54,15 +57,16 @@
 }
 
 .tags {
-    margin-left: 5px;
 }
 
 .tag {
     display: inline-block;
-    padding: 3px 5px;
+    padding: 0 3px;
     vertical-align: middle;
     color: #fff;
     font-size: 12px;
+    height: 20px;
+    line-height: 20px;
 }
 
 .tag:first-child {

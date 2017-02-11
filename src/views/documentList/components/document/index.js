@@ -50,14 +50,14 @@ class Document extends React.Component {
                             <span className={css.updated}>
                                 {moment(document.createdAt).locale(translation.lang).fromNow()}
                             </span>
-                            { 
-                                tags.length > 0 ? 
-                                <span className={css.tags}>
-                                    {tags}
-                                </span> :
-                                ''
-                            }  
                         </div>
+                    </div>
+                    <div className={css.tags}>
+                        { 
+                            tags.length > 0 ? 
+                            tags :
+                            ''
+                        }  
                     </div>
                 </div>
                 

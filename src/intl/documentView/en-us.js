@@ -4,10 +4,11 @@ export default {
     edit: "Edit",
     history: "History",
     delete: "Delete",
-    updated: "Updated at {1} by {0}",
-    updatedTimeFormat: "MMM D hh:mm",
+    timeFormat: "MMM D hh:mm",
     replying: 'Replying..',
     reply: 'Reply',
     whatOpinion: 'What opinion do you have about this?',
-    commentList: 'Comment list'
+    commentList: 'Comment list',
+    deleteDocument: 'Delete document',
+    deleteDocumentWarning: 'Do you really want to delete this document?'
 };

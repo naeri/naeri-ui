@@ -58,9 +58,9 @@ class DocumentWrite extends React.Component {
         ]);
 
         this.setState({
-            title: document.title,
-            content: document.content,
-            tags: document.tags,
+            title: document.title || '',
+            content: document.content || '',
+            tags: document.tags || [],
             suggestions: suggestions,
             loadedDocument: true
         });

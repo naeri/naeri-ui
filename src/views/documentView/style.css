@@ -6,6 +6,7 @@
     color: #666;
     cursor: pointer;
     transition: color .1s;
+    user-select: none;
 }
 
 .button:hover {
@@ -75,7 +76,11 @@
 }
 
 .title {
-    margin: 30px 0;
+    margin: 25px 0 30px 0;
+}
+
+.titleText {
+    margin-bottom: 15px;
     font-size: 30px;
 }
 
@@ -98,6 +103,25 @@
 .commentHighlight {
 }
 
+.tag {
+    display: inline-block;
+    padding: 0 3px;
+    color: #fff;
+    height: 22px;
+    line-height: 22px;
+    font-size: 14px;
+}
+
+.tag:first-child {
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+.tag:last-child {
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
 .sidebar {
     composes: small from 'commonCss/grid.css';
     position: relative;
@@ -106,10 +130,61 @@
     z-index: 0;
 }
 
-.meta {
-    height: 120px;
+.pic {
+    border-radius: 5px;
 }
 
-.comments {
-    
+.meta {
+    composes: wrap from 'commonCss/modalMini.css';
+    padding: 0 15px 15px 15px;
+}
+
+.metaTitle {
+    composes: title from 'commonCss/modalMini.css';
+    height: 40px;
+    margin-bottom: 10px;
+    padding: 15px 0 5px 0;
+}
+
+.author {
+    margin-top: 10px;
+    display: flex;
+}
+
+.metaWrap {
+    margin: 3px 0;
+    margin-left: 10px;
+}
+
+.authorWrap {
+    margin-bottom: 4px;
+}
+
+.authorName {
+    font-weight: 400;
+}
+
+.authorId {
+    margin-left: 5px;
+    font-size: 14px;
+    color: #666;
+}
+
+.updated {
+    font-size: 14px;
+}
+
+.modalWrap {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, .3);
+	display: flex;
+    -webkit-align-items: center;
+    align-items: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    z-index: 99999999;
 }
