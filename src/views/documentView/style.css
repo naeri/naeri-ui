@@ -1,58 +1,17 @@
-.button {
-    display: inline-block;
-    min-width: 40px;
-    height: 35px;
-    text-align: center;
-    color: #666;
-    cursor: pointer;
-    transition: color .1s;
-    user-select: none;
-}
-
-.button:hover {
-    color: #519cea;
-}
-
-.icon {
-    margin-top: 5px;
-    display: block !important;
-    height: 20px;
-    line-height: 20px !important;
-    font-size: 20px !important;
-}
-
-.buttonText {
-    font-size: 12px;
-}
-
 .wrap {
     height: calc(100% - 70px);
 }
 
 .menus {
-    padding: 0 20px;
-    display: flex;
-    background: #fafafa;
-    height: 50px;
-    align-items: center;
-    border-bottom: 1px solid #ddd;
+    composes: menus from 'commonCss/topMenu.css';
 }
 
 .left {
-    width: 50%;
-}
-
-.left .button {
-    margin-right: 5px;
+    composes: left from 'commonCss/topMenu.css';
 }
 
 .right {
-    width: 50%;
-    text-align: right;
-}
-
-.right .button {
-    margin-left: 5px;
+    composes: right from 'commonCss/topMenu.css';
 }
 
 .documentWrap {
@@ -104,22 +63,7 @@
 }
 
 .tag {
-    display: inline-block;
-    padding: 0 3px;
-    color: #fff;
-    height: 22px;
-    line-height: 22px;
-    font-size: 14px;
-}
-
-.tag:first-child {
-    border-top-left-radius: 3px;
-    border-bottom-left-radius: 3px;
-}
-
-.tag:last-child {
-    border-top-right-radius: 3px;
-    border-bottom-right-radius: 3px;
+    composes: tag from 'commonCss/tags.css';
 }
 
 .sidebar {
@@ -128,50 +72,6 @@
     background: #fafafa;
     height: auto;
     z-index: 0;
-}
-
-.pic {
-    border-radius: 5px;
-}
-
-.meta {
-    composes: wrap from 'commonCss/modalMini.css';
-    padding: 0 15px 15px 15px;
-}
-
-.metaTitle {
-    composes: title from 'commonCss/modalMini.css';
-    height: 40px;
-    margin-bottom: 10px;
-    padding: 15px 0 5px 0;
-}
-
-.author {
-    margin-top: 10px;
-    display: flex;
-}
-
-.metaWrap {
-    margin: 3px 0;
-    margin-left: 10px;
-}
-
-.authorWrap {
-    margin-bottom: 4px;
-}
-
-.authorName {
-    font-weight: 400;
-}
-
-.authorId {
-    margin-left: 5px;
-    font-size: 14px;
-    color: #666;
-}
-
-.updated {
-    font-size: 14px;
 }
 
 .modalWrap {
@@ -187,4 +87,16 @@
     -webkit-justify-content: center;
     justify-content: center;
     z-index: 99999999;
+}
+
+.meta {
+    composes: wrap from 'commonCss/modalMini.css';
+    padding: 0 15px 15px 15px;
+}
+
+.metaTitle {
+    composes: title from 'commonCss/modalMini.css';
+    height: 40px;
+    margin-bottom: 10px;
+    padding: 15px 0 5px 0;
 }

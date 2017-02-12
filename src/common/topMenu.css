@@ -1,0 +1,25 @@
+.menus {
+    padding: 0 20px;
+    display: flex;
+    background: #fafafa;
+    height: 50px;
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+}
+
+.left {
+    width: 50%;
+}
+
+.left .button {
+    margin-right: 5px;
+}
+
+.right {
+    width: 50%;
+    text-align: right;
+}
+
+.right .button {
+    margin-left: 5px;
+}

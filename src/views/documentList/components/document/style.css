@@ -60,13 +60,7 @@
 }
 
 .tag {
-    display: inline-block;
-    padding: 0 3px;
-    vertical-align: middle;
-    color: #fff;
-    font-size: 12px;
-    height: 20px;
-    line-height: 20px;
+    composes: tag from 'commonCss/tags.css';
 }
 
 .tag:first-child {
