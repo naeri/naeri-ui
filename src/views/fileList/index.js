@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 import axios from 'axios';
+import moment from 'moment';
 
 import TagSelector from 'components/tagSelector';
 import Spinner from 'components/spinner';
@@ -121,7 +122,42 @@ class FileList extends React.Component {
             }
 
             return _files.map((file, i) => (
-                <div key={i}>파일입니다.</div>
+                <div
+                    className={css.file}
+                    key={i}>
+                    <div className={css.fileIcon}>
+                        {(() => {
+                            // TODO: implement various file icons
+                            return <i className="fa fa-file-o" />
+                        })()}
+                    </div>
+                    <div className={css.fileInfo}>
+                        <div className={css.fileName}>
+                            {file.title}
+                        </div>
+                        <div className={css.meta}>
+                            <span className={css.metaInfo}>
+                                {file.author.name}
+                                <span className={css.small}>
+                                    @{file.author.id}
+                                </span>
+                            </span>
+                            <span className={css.metaInfo}>
+                                {moment(file.createdAt).locale(translation.lang).fromNow()}
+                            </span>
+                        </div>
+                    </div>
+                    <div className={css.tags}>
+                        {file.tags.map((tag, i) => (
+                            <span 
+                                className={css.tag}
+                                key={i}
+                                style={{ background: tag.color }}>
+                                {tag.title}
+                            </span>
+                        ))}
+                    </div>
+                </div>
             ));
         })();
 

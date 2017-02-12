@@ -30,3 +30,62 @@
 .modalWrap {
     composes: modalWrap from 'commonCss/modal.css';
 }
+
+.file {
+    padding: 15px 20px;
+    display: flex;
+    -webkit-align-items: center;
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+}
+
+.fileIcon {
+    margin-right: 10px;
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    color: #fff;
+    background: #519cea;
+    border-radius: 100%;
+}
+
+.fileInfo {
+    flex-grow: 1;
+    flex-shrink: 0;
+    flex-basis: 0;
+}
+
+.fileName {
+    font-size: 18px;
+    line-height: 18px;
+    margin-bottom: 5px;
+}
+
+.meta {
+    font-size: 14px;
+    line-height: 14px;
+}
+
+.small {
+    margin-left: 3px;
+    font-size: .85em;
+    color: #888;
+}
+
+.meta {
+    color: #666;
+}
+
+.metaInfo::after {
+    content: ' · ';
+}
+
+.metaInfo:last-child::after {
+    content: '';
+}
+
+.tag {
+    composes: tag from 'commonCss/tags.css';
+}
