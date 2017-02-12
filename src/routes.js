@@ -10,6 +10,7 @@ import DocumentSearch from 'views/documentSearch';
 import DocumentList from 'views/documentList';
 import DocumentView from 'views/documentView';
 import DocumentWrite from 'views/documentWrite';
+import DocumentHistory from 'views/documentHistory';
 
 const routeTable = [
     {
@@ -77,6 +78,17 @@ const routeTable = [
                         component: DocumentView,
                         translationKey: 'documentView'
                     },
+                },
+                key: 'documents'
+            },
+            {
+                path: '/history/:documentId',
+                authed: true,
+                components: {
+                    content: {
+                        component: DocumentHistory,
+                        translationKey: 'documentHistory'
+                    }
                 },
                 key: 'documents'
             }

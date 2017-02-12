@@ -62,13 +62,3 @@
 .tag {
     composes: tag from 'commonCss/tags.css';
 }
-
-.tag:first-child {
-    border-top-left-radius: 3px;
-    border-bottom-left-radius: 3px;
-}
-
-.tag:last-child {
-    border-top-right-radius: 3px;
-    border-bottom-right-radius: 3px;
-}

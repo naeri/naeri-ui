@@ -1,0 +1,186 @@
+.menus {
+    composes: menus from 'commonCss/topMenu.css';
+}
+
+.left {
+    composes: left from 'commonCss/topMenu.css';
+}
+
+.right {
+    composes: right from 'commonCss/topMenu.css';
+}
+
+.history {
+    padding: 20px 40px;
+}
+
+.header {
+    margin: 30px 0 30px 0;
+    font-size: 30px;
+    font-weight: 400;
+}
+
+.documents {
+    position: relative;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+}
+
+.document {
+    display: flex;
+    -webkit-align-items: center;
+    align-items: center;
+    height: 90px;
+}
+
+.revision {
+    margin-right: 20px;
+    width: 24px;
+    height: 24px;
+    line-height: 24px;
+    background: #74b0ee;
+    left: 0;
+    top: 0;
+    color: #fff;
+    text-align: center;
+    border-radius: 100%;
+    font-size: 14px;
+}
+
+.latest {
+    composes: revision;
+    background: #fff;
+    color: #519cea;
+    border: 4px solid #519cea;
+    font-weight: bold;
+    font-size: 18px;
+    width: 30px;
+    height: 30px;
+    line-height: 22px;
+    margin-left: -3px;
+}
+
+.documentLeft {
+    position: relative;
+    width: 0;
+    height: 100%;
+    transition: width .2s cubic-bezier(.2, .8, .5, 1);
+}
+
+.documentLeft::after {
+    content: ' ';
+    position: absolute;
+    margin-right: -29px;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    border: none;
+    border-left: 4px solid #86baf0;
+    z-index: -1;
+}
+
+.document:first-child .documentLeft::after {
+    top: 35px;
+}
+
+.document:last-child .documentLeft::after {
+    bottom: 35px;
+}
+
+.expandedLeft {
+    composes: documentLeft;
+    width: 100px;
+}
+
+.buttons {
+    width: calc(100% - 20px);
+    height: 100%;
+    overflow: hidden;
+    border-bottom: 1px solid #ddd;
+    background: #f5f5f5;
+    box-shadow: inset -7px 0 9px -7px rgba(0,0,0,0.4);
+}
+
+.button {
+    display: block;
+    width: 80px;
+    height: 45px;
+    line-height: 45px;
+    padding: 0 10px;
+    background: none;
+    color: #000;
+    border: none;
+    border-bottom: 1px solid #ddd;
+    outline: none;
+}
+
+.button:active {
+    font-size: .8em;
+    line-height: 46px;
+}
+
+.button:last-child {
+    border-bottom: none;
+}
+
+.documentRight {
+    padding-left: 15px;
+    display: flex;
+    -webkit-align-items: center;
+    align-items: center;
+    height: 100%;
+    flex-grow: 1;
+    flex-shrink: 0;
+    flex-basis: 0;
+    cursor: pointer;
+}
+
+.documentInfo { 
+    display: flex;
+    flex-grow: 1;
+    flex-shrink: 0;
+    flex-basis: 0;
+    height: 100%;
+    -webkit-align-items: center;
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+}
+
+.document:last-child .documentInfo {
+    border-bottom: 0;
+}
+
+.userEditInfo {
+    margin-right: 20px;
+}
+
+.documentContent {
+    margin-top: 2px;
+}
+
+.title {
+    font-size: 20px;
+    line-height: 20px;
+    margin-bottom: 10px;
+}
+
+.content {
+    font-size: 14px;
+    line-height: 14px;
+    color: #666;
+}
+
+.tags {
+    margin-right: 15px;
+    flex-grow: 1;
+    flex-shrink: 0;
+    flex-basis: 0;
+    text-align: right;
+}
+
+.tag {
+    composes: tag from 'commonCss/tags.css';
+}

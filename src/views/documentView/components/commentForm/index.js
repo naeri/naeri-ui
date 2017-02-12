@@ -63,7 +63,7 @@ class CommentForm extends React.Component {
                     <span>
                         <i className="fa fa-comment"></i>
                         {' '}
-                        {commentInfo ? translation.edit : translation.reply}
+                        {commentInfo.id ? translation.edit : translation.reply}
                     </span>
                 );
             }

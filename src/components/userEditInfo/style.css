@@ -1,0 +1,32 @@
+.author {
+    display: flex;
+}
+
+.pic {
+    width: 40px;
+    height: 40px;
+    border-radius: 5px;
+}
+
+.metaWrap {
+    margin: 3px 0;
+    margin-left: 10px;
+}
+
+.authorWrap {
+    margin-bottom: 4px;
+}
+
+.authorName {
+    font-weight: 400;
+}
+
+.authorId {
+    margin-left: 5px;
+    font-size: 14px;
+    color: #666;
+}
+
+.updated {
+    font-size: 14px;
+}

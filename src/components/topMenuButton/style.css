@@ -1,0 +1,27 @@
+
+.button {
+    display: inline-block;
+    min-width: 40px;
+    height: 35px;
+    text-align: center;
+    color: #666;
+    cursor: pointer;
+    transition: color .1s;
+    user-select: none;
+}
+
+.button:hover {
+    color: #519cea;
+}
+
+.icon {
+    margin-top: 5px;
+    display: block !important;
+    height: 20px;
+    line-height: 20px !important;
+    font-size: 20px !important;
+}
+
+.buttonText {
+    font-size: 12px;
+}

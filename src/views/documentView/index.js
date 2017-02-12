@@ -12,6 +12,8 @@ import CommentForm from './components/commentForm';
 import ArchiveDocument from './components/archiveDocument';
 import DeleteComment from './components/deleteComment';
 import CommentGroup from './components/commentGroup';
+import Button from 'components/topMenuButton';
+import UserEditInfo from 'components/userEditInfo';
 
 import { 
     importSelection, 
@@ -48,17 +50,6 @@ const modalFactory = (() => {
 
     return factory;
 })();
-
-const Button = ({ iconId, content, onClick }) => (
-    <div 
-        className={css.button}
-        onClick={onClick}>
-        <i className={`fa fa-${iconId} ${css.icon}`} />
-        <span className={css.buttonText}>
-            {content}
-        </span>
-    </div>
-);
 
 class DocumentView extends React.Component {
     getChildContext() {
@@ -350,9 +341,9 @@ class DocumentView extends React.Component {
     }
 
     loadComments() {
-        dehighlight(this.contentContainer, css.commentHighlight);
-
         try {
+            dehighlight(this.contentContainer, css.commentHighlight);
+
             const { document, selectedCommentId } = this.state;
             const { comments } = document;
 
@@ -537,7 +528,7 @@ class DocumentView extends React.Component {
                 <div className={css.menus}>
                     <div className={css.left}>
                         <Button 
-                            iconId="chevron-left" 
+                            iconId="angle-left" 
                             content={translation.toList} 
                             onClick={() => browserHistory.push(`/`)}/>
                     </div>
@@ -567,20 +558,10 @@ class DocumentView extends React.Component {
                     ref={(wrap) => this.wrap = wrap}>
                     <div className={css.grid}>
                         <div className={css.document}>
-                            <div className={css.author}>
-                                <img
-                                    className={css.pic} 
-                                    src={`${Settings.host}/user/${document.author.id}/picture`} />
-                                <div className={css.metaWrap}>
-                                    <div className={css.authorWrap}>
-                                        <span className={css.authorName}>{document.author.name}</span>
-                                        <span className={css.authorId}>@{document.author.id}</span>
-                                    </div>
-                                    <div className={css.updated}>
-                                        {moment(document.createdAt).locale(translation.lang).fromNow()} 
-                                    </div>
-                                </div>
-                            </div>
+                            <UserEditInfo 
+                                id={document.author.id}
+                                name={document.author.name}
+                                updated={document.createdAt} />
                             <div className={css.title}>
                                 <div className={css.titleText}>
                                     {document.title}
