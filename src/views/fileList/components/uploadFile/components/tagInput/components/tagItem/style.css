@@ -1,18 +1,26 @@
 .wrap {
     display: inline-block;
-    margin: 5px 0;
+    width: calc(50% - 3px);
+    margin-top: 5px;
+}
+
+.wrap:nth-child(2n - 1) {
+    margin-right: 6px;
 }
 
 .tagItem {
     position: relative;
-    margin-right: 7px;
-    padding: 0 25px 0 5px;
-    display: inline-block;
-    height: 35px;
-    line-height: 35px;
-    font-size: 20px;
-    color: #fff;
+    padding: 0 25px 0 10px;
+    display: block;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: middle;
+    height: 40px;
+    line-height: 40px;
     border-radius: 3px;
+    color: #fff;
 }
 
 .title {
@@ -24,9 +32,9 @@
     top: 0;
     right: 5px;
     display: inline-block;
-    height: 35px;
+    height: 40px;
     width: 20px;
-    line-height: 35px;
+    line-height: 40px;
     text-align: center;
     cursor: pointer;
 }

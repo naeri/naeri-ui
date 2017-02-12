@@ -35,7 +35,9 @@
     bottom: 0;
 }
 
-.buttons button {
+.button {
+    composes: button from 'commonCss/button.css';
+    padding: 0;
     min-width: 30px;
     height: 30px;
     line-height: 30px;

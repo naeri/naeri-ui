@@ -60,7 +60,7 @@ export default (routeTable, userModule) => {
             }
 
             let onEnter = undefined;
-            if (route.authed !== null) {
+            if (route.authed !== undefined) {
                 onEnter = route.authed ? requireAuth : requireNotAuth;
             }
 

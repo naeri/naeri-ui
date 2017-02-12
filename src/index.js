@@ -8,11 +8,13 @@ import UserModule from 'modules/user';
 import TagModule from 'modules/tag';
 import DocumentModule from 'modules/document';
 import SiteModule from 'modules/site';
+import FileModule from 'modules/file';
 
 const userModule = new UserModule();
 const tagModule = new TagModule();
 const documentModule = new DocumentModule();
 const siteModule = new SiteModule();
+const fileModule = new FileModule();
 
 class AppContainer extends React.Component {
     getChildContext() {
@@ -20,7 +22,8 @@ class AppContainer extends React.Component {
             userModule: userModule,
             tagModule: tagModule,
             documentModule: documentModule,
-            siteModule: siteModule
+            siteModule: siteModule,
+            fileModule: fileModule
         }
     }
 
@@ -28,7 +31,8 @@ class AppContainer extends React.Component {
         userModule: React.PropTypes.object,
         tagModule: React.PropTypes.object,
         documentModule: React.PropTypes.object,
-        siteModule: React.PropTypes.object
+        siteModule: React.PropTypes.object,
+        fileModule: React.PropTypes.object
     }
 
     render() {

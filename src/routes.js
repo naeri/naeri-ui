@@ -6,11 +6,14 @@ import Join from 'views/member/join';
 import Login from 'views/member/login';
 
 import Layout from 'views/layout';
+
 import DocumentSearch from 'views/documentSearch';
 import DocumentList from 'views/documentList';
 import DocumentView from 'views/documentView';
 import DocumentWrite from 'views/documentWrite';
 import DocumentHistory from 'views/documentHistory';
+
+import FileList from 'views/fileList';
 
 const routeTable = [
     {
@@ -38,19 +41,7 @@ const routeTable = [
         },
         routes: [
             {
-                indexRoute: true,
-                authed: true,
-                components: {
-                    content: {
-                        component: DocumentList,
-                        translationKey: 'documentList'
-                    }
-                },
-                key: 'documents'
-            },
-            {
                 path: '/write',
-                authed: true,
                 components: {
                     content: {
                         component: DocumentWrite,
@@ -61,7 +52,6 @@ const routeTable = [
             },
             {
                 path: '/edit/:documentId',
-                authed: true,
                 components: {
                     content: {
                         component: DocumentWrite,
@@ -72,7 +62,6 @@ const routeTable = [
             },
             {
                 path: '/view/:documentId',
-                authed: true,
                 components: {
                     content: {
                         component: DocumentView,
@@ -83,7 +72,6 @@ const routeTable = [
             },
             {
                 path: '/history/:documentId',
-                authed: true,
                 components: {
                     content: {
                         component: DocumentHistory,
@@ -91,7 +79,37 @@ const routeTable = [
                     }
                 },
                 key: 'documents'
-            }
+            },
+            {
+                path: '/files(/:fileId)',
+                components: {
+                    content: {
+                        component: FileList,
+                        translationKey: 'fileList'
+                    }
+                },
+                key: 'files'
+            },
+            {
+                indexRoute: true,
+                components: {
+                    content: {
+                        component: DocumentList,
+                        translationKey: 'documentList'
+                    }
+                },
+                key: 'documents'
+            },
+            {
+                path: '/(:tagId)',
+                components: {
+                    content: {
+                        component: DocumentList,
+                        translationKey: 'documentList'
+                    }
+                },
+                key: 'documents'
+            },
         ]
     }
 ];

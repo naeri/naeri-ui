@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router';
 import axios from 'axios';
 
-import TagSelector from './components/tagSelector';
+import TagSelector from 'components/tagSelector';
 import Document from './components/document';
 import Spinner from 'components/spinner';
 
@@ -136,7 +136,8 @@ class DocumentList extends React.Component {
                             {translation.tags}
                         </span>
                         <span className={css.buttons}>
-                            <button>
+                            <button
+                                className={css.button}>
                                 <i className="fa fa-cog" />
                             </button>
                         </span>
@@ -150,7 +151,8 @@ class DocumentList extends React.Component {
                         </span>
                         <span className={css.buttons}>
                             <Link to="/write">
-                                <button>
+                                <button
+                                    className={css.button}>
                                     <i className="fa fa-pencil" />
                                 </button>
                             </Link>

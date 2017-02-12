@@ -1,0 +1,175 @@
+.wrap {
+	display: flex;
+    min-height: 300px;
+}
+
+.left {
+    padding: 40px 30px;
+    background: #519cea;
+    flex-shrink: 0;
+    width: 300px;
+    position: relative;
+}
+
+.featured {
+    margin: 0;
+    font-weight: 400;
+    font-size: 28px;
+    color: #fff;
+}
+
+.leftFooter {
+    position: absolute;
+    bottom: 40px;
+    color: #fff;
+}
+
+.link {
+    color: #fff;
+    text-decoration: none;
+}
+
+.link b {
+    text-decoration: underline;
+}
+
+.right {
+    width: 0; 
+    background: #fff;
+    overflow: hidden;
+    transition: width .3s;
+}
+
+.expandedRight {
+    composes: right;
+    width: 350px;
+}
+
+.rightContainer {
+    width: 350px;
+    padding: 40px 30px;
+}
+
+.title {
+    color: #2382e5;
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+
+.input {
+    margin: 5px 0;
+    padding: 0 10px;
+    height: 40px;
+    line-height: 40px;
+    width: 100%;
+    border: 1px solid #ddd;
+    outline: none;
+    border-radius: 3px;
+}
+
+.submitBase {
+    margin-top: 20px;
+    width: 100%;
+}
+
+.upload {
+    position: absolute;
+    top: 100px;
+    left: 30px;
+    right: 30px;
+    bottom: 40px;
+}
+
+.dropzone {
+    display: flex;
+    -webkit-align-items: center;
+    align-items: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    border: 4px dashed #f0f0f0;
+    transition: border .1s;
+    cursor: pointer;
+    font-size: 20px;
+    text-align: center;
+}
+
+.dropzoneActive {
+    composes: dropzone;
+    border: 4px dashed #fff;
+}
+
+.dropzoneWrap {
+    color: #f0f0f0;
+}
+
+.dropzoneActiveWrap {
+    composes: dropzoneWrap;
+    color: #fff;
+}
+
+.dropzoneUploadedWrap {
+    composes: dropzoneWrap;
+    cursor: default;
+}
+
+.icon {
+    font-size: 32px !important;
+}
+
+.uploadPic {
+    max-width: 220px;
+    max-height: 80px;
+}
+
+.dropzoneText {
+    margin: 0 10px;
+    margin-top: 15px;
+    word-break: break-all;
+}
+
+.label {
+    margin-top: 20px;
+    color: #666;
+}
+
+.textarea {
+    margin: 5px 0;
+    padding: 10px;
+    width: 100%;
+    height: 60px;
+    border: 1px solid #ddd;
+    resize: none;
+    outline: none;
+    border-radius: 3px;
+}
+
+.uploadBtn {
+    composes: button from "commonCss/button.css";
+    composes: submitBase;
+}
+
+.uploadingBtn {
+    composes: submittingBtn from 'commonCss/button.css';
+    composes: submitBase;
+}
+
+.close {
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    font-size: 24px;
+    margin-left: -50px;
+    color: #fff;
+    position: relative;
+    z-index: 9999;
+    cursor: pointer;
+    user-select: none;
+}
+
+.expandedClose {
+    composes: close;
+    color: #519cea;
+}

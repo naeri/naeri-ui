@@ -26,3 +26,7 @@
 .button {
     composes: button from 'commonCss/grid.css';
 }
+
+.modalWrap {
+    composes: modalWrap from 'commonCss/modal.css';
+}
