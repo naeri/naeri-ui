@@ -14,6 +14,7 @@ import DocumentWrite from 'views/documentWrite';
 import DocumentHistory from 'views/documentHistory';
 
 import FileList from 'views/fileList';
+import FileView from 'views/fileView';
 
 const routeTable = [
     {
@@ -81,11 +82,21 @@ const routeTable = [
                 key: 'documents'
             },
             {
-                path: '/files(/:fileId)',
+                path: '/files(/:tagId)',
                 components: {
                     content: {
                         component: FileList,
                         translationKey: 'fileList'
+                    }
+                },
+                key: 'files'
+            },
+            {
+                path: '/file/:fileId',
+                components: {
+                    content: {
+                        component: FileView,
+                        translationKey: 'fileView'
                     }
                 },
                 key: 'files'

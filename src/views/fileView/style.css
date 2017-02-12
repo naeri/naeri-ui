@@ -1,0 +1,72 @@
+.wrap {
+    height: calc(100% - 70px);
+}
+
+.menus {
+    composes: menus from 'commonCss/topMenu.css';
+}
+
+.left {
+    composes: left from 'commonCss/topMenu.css';
+}
+
+.right {
+    composes: right from 'commonCss/topMenu.css';
+}
+
+.fileWrap {
+    height: calc(100% - 50px);
+    overflow-y: auto;
+}
+
+.grid {
+    composes: wrap from 'commonCss/grid.css';
+    min-height: 100%;
+    height: auto;
+}
+
+.file {
+    composes: big from 'commonCss/grid.css';
+    min-height: 100%;
+    height: auto;
+    padding: 20px 40px;
+    border-right: 1px solid #ddd;
+    position: relative;
+}
+
+.title {
+    margin: 30px 0;
+}
+
+.titleText {
+    margin-bottom: 15px;
+    font-size: 30px;
+}
+
+.tag {
+    composes: tag from 'commonCss/tags.css';
+}
+
+.sidebar {
+    composes: small from 'commonCss/grid.css';
+    position: relative;
+    background: #fafafa;
+    height: auto;
+    z-index: 0;
+}
+
+.modalWrap {
+    composes: modalWrap from 'commonCss/modal.css';
+}
+
+.meta {
+    composes: wrap from 'commonCss/modalMini.css';
+    padding: 0 15px 15px 15px;
+}
+
+.metaTitle {
+    composes: title from 'commonCss/modalMini.css';
+    height: 40px;
+    margin-bottom: 10px;
+    padding: 15px 0 5px 0;
+}

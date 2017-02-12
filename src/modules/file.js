@@ -45,6 +45,20 @@ class FileModule {
             throw e.response.data.error;
         }
     }
+
+    async getFile(fileId) {
+        if (!fileId) {
+            return {};
+        }
+
+        try {
+            const { data: result } = await axios.get(`${Settings.host}/file/${fileId}`);
+
+            return result.file;
+        } catch (e) {
+            throw e.response.data.error;
+        }
+    }
 }
 
 export default FileModule;

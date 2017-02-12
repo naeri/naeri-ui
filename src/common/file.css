@@ -1,0 +1,59 @@
+:global .file {
+    padding: 15px 20px;
+    display: flex;
+    -webkit-align-items: center;
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+    transition: background .1s;
+    cursor: pointer;
+}
+
+:global .inline {
+    width: 300px;
+    height: 80px;
+    border: 1px solid #ddd;
+}
+
+:global .fileIcon {
+    margin-right: 10px;
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    color: #fff;
+    background: #519cea;
+    border-radius: 100%;
+}
+
+:global .fileInfo {
+    flex-grow: 1;
+    flex-shrink: 0;
+    flex-basis: 0;
+}
+
+:global .fileName {
+    font-size: 18px;
+    line-height: 18px;
+    margin-bottom: 5px;
+}
+
+:global .fileMeta {
+    font-size: 14px;
+    line-height: 14px;
+    color: #666;
+}
+
+:global .fileMetaItem::after {
+    content: ' · ';
+}
+
+:global .fileMetaItem:last-child::after {
+    content: '';
+}
+
+:global .fileSmall {
+    margin-left: 3px;
+    font-size: .85em;
+    color: #888;
+}

@@ -10,6 +10,8 @@ import DocumentModule from 'modules/document';
 import SiteModule from 'modules/site';
 import FileModule from 'modules/file';
 
+import 'commonCss/file.css';
+
 const userModule = new UserModule();
 const tagModule = new TagModule();
 const documentModule = new DocumentModule();

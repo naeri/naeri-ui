@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router';
+import { browserHistory, Link } from 'react-router';
 import axios from 'axios';
 import moment from 'moment';
 
@@ -123,26 +123,27 @@ class FileList extends React.Component {
 
             return _files.map((file, i) => (
                 <div
-                    className={css.file}
-                    key={i}>
-                    <div className={css.fileIcon}>
+                    className="file"
+                    key={i}
+                    onClick={() => browserHistory.push(`/file/${file.id}`)}>
+                    <div className="fileIcon">
                         {(() => {
                             // TODO: implement various file icons
                             return <i className="fa fa-file-o" />
                         })()}
                     </div>
-                    <div className={css.fileInfo}>
-                        <div className={css.fileName}>
+                    <div className="fileInfo">
+                        <div className="fileName">
                             {file.title}
                         </div>
-                        <div className={css.meta}>
-                            <span className={css.metaInfo}>
+                        <div className="fileMeta">
+                            <span className="fileMetaItem">
                                 {file.author.name}
-                                <span className={css.small}>
+                                <span className="fileSmall">
                                     @{file.author.id}
                                 </span>
                             </span>
-                            <span className={css.metaInfo}>
+                            <span className="fileMetaItem">
                                 {moment(file.createdAt).locale(translation.lang).fromNow()}
                             </span>
                         </div>
