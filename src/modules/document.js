@@ -48,12 +48,13 @@ class DocumentModule {
         }
     }
 
-    async editDocument(documentId, title, content, tags) {
+    async editDocument(documentId, historyId, title, content, tags) {
         try {
             const { data: result } = await axios.put(`${Settings.host}/document/${documentId}`, {
                 title: title,
                 content: content,
-                tags: tags
+                tags: tags,
+                historyId: historyId
             });
 
             return result.document.id;
@@ -72,7 +73,17 @@ class DocumentModule {
 
             return result.document;
         } catch (e) {
-            throw e.response.result.error;
+            throw e.response.data.error;
+        }
+    }
+
+    async getHistory(documentId) {
+        try {
+            const { data: result } = await axios.get(`${Settings.host}/document/${documentId}/history`);
+
+            return result.documents;
+        } catch (e) {
+            throw e.response.data.error;
         }
     }
 
@@ -80,7 +91,7 @@ class DocumentModule {
         try {
             await axios.delete(`${Settings.host}/document/${documentId}`);
         } catch (e) {
-            throw e.response.result.error;
+            throw e.response.data.error;
         }
     }
 
@@ -94,7 +105,7 @@ class DocumentModule {
 
             return result.comment;
         } catch (e) {
-            throw e.response.result.error;
+            throw e.response.data.error;
         }
     }
 
@@ -104,7 +115,7 @@ class DocumentModule {
                 content: content
             });
         } catch (e) {
-            throw e.response.result.error;
+            throw e.response.data.error;
         }
     }
 
@@ -112,7 +123,7 @@ class DocumentModule {
         try {
             await axios.delete(`${Settings.host}/comment/${commentId}`);
         } catch (e) {
-            throw e.response.result.error;
+            throw e.response.data.error;
         }
     }
 }

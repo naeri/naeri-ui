@@ -20,6 +20,7 @@ class DocumentWrite extends React.Component {
             content: '',
             parsedContent: '',
             tags: [],
+            historyId: null,
             suggestions: [],
             documentId: props.params.documentId,
             writeMode: true,
@@ -61,6 +62,7 @@ class DocumentWrite extends React.Component {
             title: document.title || '',
             content: document.content || '',
             tags: document.tags || [],
+            historyId: document.historyId,
             suggestions: suggestions,
             loadedDocument: true
         });
@@ -138,7 +140,7 @@ class DocumentWrite extends React.Component {
         }
 
         const { documentModule } = this.context;
-        const { title, content, tags, documentId } = this.state;
+        const { title, content, tags, documentId, historyId } = this.state;
 
         this.setState({
             submitting: true
@@ -150,7 +152,7 @@ class DocumentWrite extends React.Component {
             if (!documentId) {
                 id = await documentModule.addDocument(title, content, tags);
             } else {
-                id = await documentModule.editDocument(documentId, title, content, tags);
+                id = await documentModule.editDocument(documentId, historyId, title, content, tags);
             }
 
             browserHistory.push(`/view/${id}`);
