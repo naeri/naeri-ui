@@ -39,7 +39,8 @@ module.exports = {
                 loader: 'babel',
                 include: [
                     path.join(__dirname, 'src'),
-                    path.dirname(require.resolve('koto-parser'))
+                    path.dirname(require.resolve('koto-parser')),
+                    path.dirname(require.resolve('escape-html-whitelist'))
                 ],
                 query: {
                     presets: ['react', 'es2015', 'stage-0'],

@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server --inline --content-base dist --history-api-fallback"
+    "start": "webpack-dev-server --inline --content-base dist --history-api-fallback",
+    "build": "webpack"
   },
   "keywords": [],
   "author": "Suhjin Park <raon0211@outlook.com>",
@@ -24,7 +25,6 @@
     "babel-preset-stage-0": "^6.16.0",
     "css-loader": "^0.26.1",
     "extract-text-webpack-plugin": "^1.0.1",
-    "flexibility": "^1.0.6",
     "fontfaceobserver": "^2.0.8",
     "hangul-js": "^0.2.2",
     "koto-parser": "^0.2.7",
