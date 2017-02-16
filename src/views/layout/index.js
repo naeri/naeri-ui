@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router';
+import { browserHistory, Link } from 'react-router';
 
 import UserInfo from './components/userInfo';
 import SiteName from './components/siteName';
@@ -15,14 +15,25 @@ const MenuBtn = ({ link, title, iconId, active }) => (
 );
 
 class Layout extends React.Component {
-    getChildContext() {
-        return {
-            translation: this.props.translation
-        }
-    }
-    
     static childContextTypes = {
         translation: React.PropTypes.object
+    }
+
+    static contextTypes = {
+        userModule: React.PropTypes.object
+    }
+
+    constructor() {
+        super();
+
+        this.logout = this.logout.bind(this);
+    }
+
+    async logout() {
+        const { userModule } = this.context;
+
+        await userModule.logout();
+        browserHistory.push('/login');
     }
 
     render() {
