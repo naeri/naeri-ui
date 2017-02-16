@@ -42,3 +42,7 @@
     text-decoration: underline;
     font-weight: 400;
 }
+
+.content img {
+    max-width: 100%;
+}
