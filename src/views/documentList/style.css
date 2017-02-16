@@ -26,3 +26,8 @@
 .button {
     composes: button from 'commonCss/grid.css';
 }
+
+.documents {
+    overflow-y: auto;
+    height: calc(100% - 50px);
+}

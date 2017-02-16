@@ -54,6 +54,7 @@
 
 .content {
     line-height: 160%;
+    word-break: break-all;
 }
 
 .tags {
